@@ -25,6 +25,7 @@ Exemple :
     }
     return 0;
 }
+// Leak de Readline (428 leaks, 181 frees !)
 
 
 

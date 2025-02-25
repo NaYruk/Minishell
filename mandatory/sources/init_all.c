@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/25 20:12:11 by mmilliot         ###   ########.fr       */
+/*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
+/*   Updated: 2025/02/25 18:44:47 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+t_data	*init_all(void)
 {
-	(void)argv;
-	(void)envp;
-
-	t_data	*data;
+	t_data *data;
 	
-	if (argc != 1)
+	data = NULL;
+	data = malloc(sizeof(t_data));
+	if (!data)
 	{
-		ft_putstr_fd("Error ! nbr of arguments != 1\n", 2);
+		perror("Error with a malloc\n");
 		exit(EXIT_FAILURE);
 	}
-	data = init_all();
-	while (1)
-	{
-		data->prompt = readline("SegfaultBros>");
-		if (!data->prompt)
-			break ; //AJOUTER LA SECURISATION AVEC LE FREE DU DATA PROPREMENT ET EXIT*/
-	}
-	if (isatty(STDIN_FILENO))
-		ft_putstr_fd("exit\n", 2);
-	return (0);
+	data->nbr_pipes = 0;
+	data->prompt = NULL;
+	data->split = NULL;
+	return (data);
 }

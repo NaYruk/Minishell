@@ -4,10 +4,13 @@ SUCCESS = \033[32m✔\033[0m
 
 CC = cc 
 INCLUDES = -I./mandatory/includes
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS = -Wall -Wextra -Werror -g3 $(INCLUDES)
+
+# -fsanitize=address 
 
 SRC_PATH = ./mandatory/sources/
-SRC = $(SRC_PATH)main.c
+SRC = $(SRC_PATH)main.c \
+	  $(SRC_PATH)init_all.c \
 
 OBJ = $(SRC:.c=.o)
 NAME = minishell

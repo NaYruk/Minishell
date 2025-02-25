@@ -1,0 +1,24 @@
+Commande git pour travailler en duo(ou en duel)
+
+pour creer une branch : git checkout -b <nameofbranch>
+pour push : git push origin <nameofbranch>
+pour retourner sur master : git checkout master
+
+- INDICATION POUR MINISHELL -
+
+Se renseigner sur les garbage collectors.
+Se renseigner sur la tokenisation.
+Se renseigner sur le parsing
+Se renseigner sur enlever les leaks de readline (slack)
+
+- CHOSE A SE RAPPELER -
+
+SIGINT = CTRL C : Retour a la ligne dans le shell (ecire ^C (a voir !))
+SIQUIT = CTRL \ : Ne rien faire
+SIG_IGN = CTRL D : Quitter le programme en faisant un retour a la ligne et ecrire exit
+possibilité d'utiliser enum pour faire la tokenisation.
+
+
+- LISTE DE CHOSE A FAIRE DEMAIN -
+
+GERER les signaux comme dit au dessus.

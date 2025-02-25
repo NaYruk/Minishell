@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/25 15:54:01 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/25 20:07:44 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,14 @@
 # include "../../Libft/includes/ft_printf.h"
 # include "../../Libft/includes/get_next_line.h"
 # include "../../Libft/includes/libft.h"
+
+typedef struct	s_data
+{
+	char *prompt;
+	char **split;
+	int	 nbr_pipes;
+} t_data;
+
+t_data	*init_all(void);
 
 #endif
