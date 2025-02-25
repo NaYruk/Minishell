@@ -5,7 +5,7 @@ RESET = \033[0m
 
 CC = cc 
 INCLUDES = -I./mandatory/includes
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS = -Wall -Wextra -Werror  $(INCLUDES)
 
 SRC_PATH = ./mandatory/sources/
 SRC = $(SRC_PATH)main.c
@@ -20,7 +20,7 @@ all: $(LIBFT_LIB) $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT_LIB)
 		@echo "\n$(CYAN)Starting compilation...$(RESET)\n"
-		@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -o $(NAME)
+		@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -lreadline -o  $(NAME)
 		@echo "\n$(GREEN)Compilation of Minishell project is complete.$(RESET)\n"
 
 $(LIBFT_LIB):
@@ -30,13 +30,13 @@ $(LIBFT_LIB):
 
 clean: 
 	   @echo "Cleaning $(YELLOW)Minishell$(RESET) object files..."
-	   @rm -rf $(OBJ_PATH)
+	   @rm -rf $(OBJ)
 	   @echo "Cleaning $(YELLOW)Minishell$(RESET) object files is FINISH"
 
 fclean: 
 		@echo "\n$(GREEN)Cleaning all...\n$(RESET)"
 		@echo "Cleaning $(YELLOW)Minishell$(RESET) object files..."
-	    @rm -rf $(OBJ_PATH)
+	    @rm -rf $(OBJ)
 	    @echo "Cleaning $(YELLOW)Minishell$(RESET) object files is FINISH"
 		@rm -rf $(NAME)
 		@echo "Cleaning $(YELLOW)Executable$(RESET) file..."
