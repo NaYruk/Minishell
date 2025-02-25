@@ -28,18 +28,14 @@ AR = ar -r -c -s
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@echo "\n$(CYAN)Archiving Libft functions into $(NAME)...$(RESET)\n"
 	@$(AR) $(NAME) $(OBJ)
-	@echo "$(GREEN)Libft archive created :$(RESET) $(YELLOW)$(NAME)$(RESET)\n"
 
 $(OBJ): %.o: %.c
-		@echo "Compiling $<"
 		@$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: bonus clean fclean re
 
 clean:
-	@echo "Cleaning $(YELLOW)Libft$(RESET) object files..."
 	@rm -rf $(OBJ) $(BONUS_OBJ)
 
 fclean: clean
