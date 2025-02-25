@@ -1,11 +1,10 @@
-GREEN = \033[32m
-CYAN = \033[36m
-YELLOW = \033[33m
-RESET = \033[0m
+PROGRESS = \033[33m⏳\033[0m
+BROOM = \033[33m🧹\033[0m
+SUCCESS = \033[32m✔\033[0m
 
 CC = cc 
 INCLUDES = -I./mandatory/includes
-CFLAGS = -Wall -Wextra -Werror  $(INCLUDES)
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
 
 SRC_PATH = ./mandatory/sources/
 SRC = $(SRC_PATH)main.c
@@ -16,32 +15,24 @@ NAME = minishell
 LIBFT_DIR = ./Libft
 LIBFT_LIB = ./Libft/libft.a
 
-all: $(LIBFT_LIB) $(NAME)
+all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT_LIB)
-		@echo "\n$(CYAN)Starting compilation...$(RESET)\n"
-		@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -lreadline -o  $(NAME)
-		@echo "\n$(GREEN)Compilation of Minishell project is complete.$(RESET)\n"
+$(NAME): $(OBJ) $(LIBFT_LIB) 
+		@echo "\n$(PROGRESS) Compiled in progress $(PROGRESS)...\n"
+		@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -o $(NAME)
+		@echo "$(SUCCESS) Compiling is finished $(SUCCESS) !!!"
 
 $(LIBFT_LIB):
-			@echo "Compiling Libft..."
-			@make -C $(LIBFT_DIR)
-			@echo "Libft Successfully compiled !\n"
+			@make -s -C $(LIBFT_DIR)
 
 clean: 
-	   @echo "Cleaning $(YELLOW)Minishell$(RESET) object files..."
+	   @echo "\n$(BROOM) Cleaning !!! $(BROOM)\n"
+	   @make -s -C $(LIBFT_DIR) clean
 	   @rm -rf $(OBJ)
-	   @echo "Cleaning $(YELLOW)Minishell$(RESET) object files is FINISH"
 
-fclean: 
-		@echo "\n$(GREEN)Cleaning all...\n$(RESET)"
-		@echo "Cleaning $(YELLOW)Minishell$(RESET) object files..."
-	    @rm -rf $(OBJ)
-	    @echo "Cleaning $(YELLOW)Minishell$(RESET) object files is FINISH"
+fclean: clean
+		@make -s -C $(LIBFT_DIR) fclean
 		@rm -rf $(NAME)
-		@echo "Cleaning $(YELLOW)Executable$(RESET) file..."
-		@echo "Cleaning $(YELLOW)Executable$(RESET) file is FINISH"
-
 
 re: fclean all
 
