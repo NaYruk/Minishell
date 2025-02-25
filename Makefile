@@ -19,7 +19,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT_LIB) 
 		@echo "\n$(PROGRESS) Compiled in progress $(PROGRESS)...\n"
-		@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -o $(NAME)
+		@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -lreadline -o $(NAME)
 		@echo "$(SUCCESS) Compiling is finished $(SUCCESS) !!!"
 
 $(LIBFT_LIB):
