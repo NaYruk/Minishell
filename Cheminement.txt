@@ -22,3 +22,7 @@ possibilité d'utiliser enum pour faire la tokenisation.
 - LISTE DE CHOSE A FAIRE DEMAIN -
 
 GERER les signaux comme dit au dessus.
+
+
+COMMANDE VALGRIND POUR LES FD
+valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes

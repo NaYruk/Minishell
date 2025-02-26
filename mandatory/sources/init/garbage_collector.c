@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:50:41 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/26 15:04:56 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:35:05 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 void	init_garbage_collector(t_data *data)
 {
-	data->g_c = malloc(sizeof(t_garbage_collector));
+	data->g_c = malloc(sizeof(t_garb_c));
 	if (!data->g_c)
 	{
 		free(data);
@@ -32,6 +32,7 @@ void	init_garbage_collector(t_data *data)
 	}
 	data->g_c->memory = NULL;
 	data->g_c->next = NULL;
+	data->g_c->is_array = 0;
 	return ;
 }
 
@@ -39,7 +40,7 @@ void	init_garbage_collector(t_data *data)
 Function for add a new node in the front of garbage collector chained list 
 */
 
-void	add_front_node(t_garbage_collector **lst, t_garbage_collector *new_node)
+void	add_front_node(t_garb_c **lst, t_garb_c *new_node)
 {
 	if (!lst || !new_node)
 		return ;
@@ -55,12 +56,12 @@ void	add_front_node(t_garbage_collector **lst, t_garbage_collector *new_node)
 	**memory = memory malloc cast in a **void. So : (void **)memory.
 */
 
-void	add_new_g_b_node(t_data *data, t_garbage_collector **g_c, void **memory)
+void	add_g_c_node(t_data *data, t_garb_c **g_c, void **memory, bool is_arr)
 {
-	t_garbage_collector *new_node;
-	
+	t_garb_c	*new_node;
+
 	new_node = NULL;
-	new_node = malloc(sizeof(t_garbage_collector));
+	new_node = malloc(sizeof(t_garb_c));
 	if (!new_node)
 	{
 		perror("Error with a malloc\n");
@@ -69,24 +70,56 @@ void	add_new_g_b_node(t_data *data, t_garbage_collector **g_c, void **memory)
 	}
 	new_node->memory = memory;
 	new_node->next = NULL;
+	if (is_arr == true)
+		new_node->is_array = true;
+	else
+		new_node->is_array = false;
 	add_front_node(g_c, new_node);
 	return ;
 }
 
-/* Function for free all memory malloc in the programm */
+static void	free_array(t_data *data)
+{
+	char	**array;
+	int		i;
+
+	array = NULL;
+	array = (char **)data->g_c->memory;
+	i = 0;
+	while (array[i] != NULL)
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+}
+
+/* 
+	Function for free all memory malloc in the programm :
+	- If the memory is an array, the fonction free the contain
+		and free the array.
+*/
 
 void	free_garbage(t_data *data)
 {
-	t_garbage_collector	*temp;
-	
+	t_garb_c	*temp;
+
 	while (data->g_c != NULL)
 	{
 		temp = data->g_c->next;
 		if (data->g_c->memory)
-			free(data->g_c->memory);
+		{
+			if (data->g_c->is_array == true)
+				free_array(data);
+			else
+			{
+				free(*data->g_c->memory);
+				data->g_c->memory = NULL;
+			}
+		}
 		free(data->g_c);
 		data->g_c = temp;
 	}
 	free(data);
 }
-

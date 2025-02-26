@@ -6,11 +6,35 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/26 15:14:38 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:35:34 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* Function for copy the envp in a char ** variable */
+
+void	copy_envp(char **envp, t_data *data)
+{
+	int	line_number;
+	int	i;
+
+	line_number = 0;
+	while (envp[line_number] != NULL)
+		line_number++;
+	data->env = malloc(sizeof(char *) * (line_number + 1));
+	if (!data->env)
+	{
+		perror("Error with a malloc\n");
+		free_garbage(data);
+		exit(EXIT_FAILURE);
+	}
+	add_g_c_node(data, &data->g_c, (void **)data->env, true);
+	i = -1;
+	while (envp[++i] != NULL)
+		data->env[i] = ft_strdup(envp[i]);
+	data->env[i] = NULL;
+}
 
 /* 
 	Function for initialize all data need in Minishell 
@@ -20,10 +44,10 @@
 	of the malloc adress in the garbage collector.
 */
 
-t_data	*init_all(void)
+t_data	*init_all(char **envp)
 {
-	t_data *data;
-	
+	t_data	*data;
+
 	data = NULL;
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -32,8 +56,8 @@ t_data	*init_all(void)
 		exit(EXIT_FAILURE);
 	}
 	init_garbage_collector(data);
-	data->nbr_pipes = 0;
 	data->prompt = NULL;
-	data->split = NULL;
+	data->env = NULL;
+	copy_envp(envp, data);
 	return (data);
 }
