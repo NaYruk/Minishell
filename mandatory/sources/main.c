@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/25 20:12:11 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:05:05 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		data->prompt = readline("SegfaultBros>");
 		if (!data->prompt)
-			break ; //AJOUTER LA SECURISATION AVEC LE FREE DU DATA PROPREMENT ET EXIT*/
+			break ; //AJOUTER LA SECURISATION AVEC LE FREE DU DATA PROPREMENT ET EXIT
 	}
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
+	free_garbage(data);
 	return (0);
 }
