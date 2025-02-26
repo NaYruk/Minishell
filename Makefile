@@ -11,7 +11,8 @@ CFLAGS = -Wall -Wextra -Werror -g3 $(INCLUDES)
 SRC_PATH = ./mandatory/sources/
 SRC = $(SRC_PATH)main.c \
       $(SRC_PATH)init/init_all.c \
-      $(SRC_PATH)init/garbage_collector.c
+      $(SRC_PATH)init/garbage_collector.c \
+	   $(SRC_PATH)init/signal.c \
 
 OBJ_DIR = ./tmp
 OBJ = $(SRC:$(SRC_PATH)%.c=$(OBJ_DIR)/%.o)

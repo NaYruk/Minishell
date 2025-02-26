@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/26 20:34:02 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:53:17 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <readline/history.h>
 # include <stdio.h>
 # include <stdbool.h>
+# include <signal.h>
 
 /* Libft Headers */
 # include "../../Libft/includes/ft_printf.h"
@@ -58,5 +59,8 @@ t_data	*init_all(char **envp);
 void	init_garbage_collector(t_data *data);
 void	add_g_c_node(t_data *data, t_garb_c **g_c, void **memory, bool is_arr);
 void	free_garbage(t_data *data);
+
+/* Function for manage signals */
+void	sig_handler(void);
 
 #endif

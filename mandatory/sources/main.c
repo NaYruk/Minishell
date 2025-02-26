@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/26 20:34:34 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:54:22 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int argc, char **argv, char **envp)
 	data = init_all(envp);
 	while (1)
 	{
+		sig_handler();
 		data->prompt = readline("SegfaultBros>");
 		if (!data->prompt)
 			break ;
