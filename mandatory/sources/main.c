@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/26 15:05:05 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:34:34 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,21 @@
 
 int	main(int argc, char **argv, char **envp)
 {
+	t_data	*data;
+
 	(void)argv;
 	(void)envp;
-
-	t_data	*data;
-	
 	if (argc != 1)
 	{
 		ft_putstr_fd("Error ! nbr of arguments != 1\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	data = init_all();
+	data = init_all(envp);
 	while (1)
 	{
 		data->prompt = readline("SegfaultBros>");
 		if (!data->prompt)
-			break ; //AJOUTER LA SECURISATION AVEC LE FREE DU DATA PROPREMENT ET EXIT
+			break ;
 	}
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
