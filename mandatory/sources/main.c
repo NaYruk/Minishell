@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/26 20:54:22 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:38:00 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,14 @@ int	main(int argc, char **argv, char **envp)
 		data->prompt = readline("SegfaultBros>");
 		if (!data->prompt)
 			break ;
+		if (data->prompt[0] != '\0')
+		{
+			add_history(data->prompt);
+			write_history("history.txt");
+		}
+		free(data->prompt);
 	}
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
-	free_garbage(data);
-	return (0);
+	return (rl_clear_history(), free_garbage(data), 0);
 }
