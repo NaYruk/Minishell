@@ -6,13 +6,13 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/27 17:38:00 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 11:38:00 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+/* int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
@@ -40,4 +40,13 @@ int	main(int argc, char **argv, char **envp)
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
 	return (rl_clear_history(), free_garbage(data), 0);
+} */
+
+int main(int argc, char **argv)
+{
+	(void)argc;
+	(void)argv;
+	char *str = "sat\"\"";
+	int k = check_quotes(str);
+	printf("%d", k);
 }

@@ -1,0 +1,24 @@
+TOKENIZATION
+
+Liste des tokens:
+
+PIPE,
+CMD,
+ARG,
+//INFILE,
+//OUTFILE,
+HEREDOC (<<),
+APPEND (>>),
+REDIR (< ou >),
+OR (||),
+AND (&&),
+
+
+
+SIMPLE_QUOTE '\''
+DOUBLE_QUOTES '\"'
+
+1. Check quotes : paires / impaires : si impair ou pas ferme -> erreur et sortie du programme
+2. Tokenization:
+	a. avance tant que espaces || white spaces et stockage dans t_token data->token
+	b. association des defines a chaque token
