@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/26 20:35:34 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:05:33 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_data	*init_all(char **envp)
 {
 	t_data	*data;
 
+	(void)envp;
 	data = NULL;
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -58,6 +59,7 @@ t_data	*init_all(char **envp)
 	init_garbage_collector(data);
 	data->prompt = NULL;
 	data->env = NULL;
+	data->lst_token = NULL;
 	copy_envp(envp, data);
 	return (data);
 }
