@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:50:41 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/26 20:35:05 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:05:52 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	free_garbage(t_data *data)
 				free_array(data);
 			else
 			{
-				free(*data->g_c->memory);
+				free(data->g_c->memory);
 				data->g_c->memory = NULL;
 			}
 		}

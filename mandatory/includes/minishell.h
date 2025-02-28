@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 12:08:20 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:08:20 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include "../../Libft/includes/ft_printf.h"
 # include "../../Libft/includes/get_next_line.h"
 # include "../../Libft/includes/libft.h"
+# include "./define.h"
 
 /* Chained List Garbage collector */
 typedef struct s_garbage_collector
@@ -46,6 +47,7 @@ typedef struct s_data
 	char		*prompt;
 	char		**env;
 	t_garb_c	*g_c;
+	t_token		*lst_token; 
 }	t_data;
 
 /* Function for all initialization */
@@ -66,5 +68,7 @@ void	sig_handler(void);
 /* Functions for command-line tokenization */
 int check_quotes(char *str);
 
+/* Function for add a new token in the chained list */
+void	add_new_token_node(t_data *data, t_token **lst, char *line, int token);
 
 #endif
