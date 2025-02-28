@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 18:38:37 by mmilliot          #+#    #+#             */
-/*   Updated: 2024/11/25 12:13:27 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:04:59 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,6 @@ static int	count_word(char const *str, char c)
 			i++;
 	}
 	return (count);
-}
-
-static char	*ft_strndup(const char *src, size_t count)
-{
-	char	*dest;
-	size_t	i;
-
-	i = 0;
-	dest = (char *)malloc(sizeof(char) * (count + 1));
-	if (!dest)
-		return (NULL);
-	while (i < count)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[count] = '\0';
-	return (dest);
 }
 
 static char	**free_all(char **str, size_t k)

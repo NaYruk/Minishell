@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                           :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/28 09:40:33 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 14:46:41 by mcotonea         ###   ########.fr       */
+/*   Created: 2025/02/28 14:57:17 by mcotonea          #+#    #+#             */
+/*   Updated: 2025/02/28 15:05:08 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#include "../includes/libft.h"
 
-# define PIPE 1
-# define CMD 2
-# define HEREDOC 3
-# define APPEND 4
-# define INFILE 5
-# define OUTFILE 6
-# define REDIR 7
-# define OR 8
-# define AND 9
-# define ARG 10
+char	*ft_strndup(const char *src, size_t count)
+{
+	char	*dest;
+	size_t	i;
 
-# define SIMPLE_QUOTES '\''
-# define DOUBLE_QUOTES '\"'
-
-typedef struct s_token {
-	char			*line;
-	int				token;
-	struct s_token	*next;
-}	t_token;
-
-#endif
+	i = 0;
+	dest = (char *)malloc(sizeof(char) * (count + 1));
+	if (!dest)
+		return (NULL);
+	while (i < count)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[count] = '\0';
+	return (dest);
+}

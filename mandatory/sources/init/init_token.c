@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 12:10:32 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:17:39 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	add_node_back(t_token **lst, t_token *new)
 	- a pointer in the next token
 */
 
-void	add_new_token_node(t_data *data, t_token **lst, char *line, int token)
+void	add_new_token_node(t_data *data, t_token **lst, char *line)
 {
 	t_token	*new;
 	
@@ -88,7 +88,7 @@ void	add_new_token_node(t_data *data, t_token **lst, char *line, int token)
 	}
 	new->line = line;
 	new->next = NULL;
-	new->token = token;
+	new->token = -1;
 	add_g_c_node(data, &data->g_c, (void **)new, false);
 	add_g_c_node(data, &data->g_c, (void **)line, false);
 	add_node_back(lst, new);

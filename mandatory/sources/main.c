@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/28 11:38:00 by mcotonea         ###   ########.fr       */
-/*   Updated: 2025/02/28 12:13:41 by mmilliot         ###   ########.fr       */
-
+/*   Updated: 2025/02/28 15:45:22 by mcotonea         ###   ########.fr       */
 /*                                                                            */
+/* ************************************************************************** */
+
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
@@ -43,3 +43,25 @@
 		ft_putstr_fd("exit\n", 2);
 	return (rl_clear_history(), free_garbage(data), 0);
 } */
+
+void	print_list(t_data *data)
+{
+	while (data->lst_token != NULL)
+	{
+		printf("%s\n", data->lst_token->line);
+		data->lst_token = data->lst_token->next;
+	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	(void)argc;
+	(void)envp;
+	(void)argv;
+
+	t_data *data = init_all(envp);
+	data->prompt = "< infile.txt cat | ls | wc -l > outfile.txt";
+	ft_token(data);
+	print_list(data);
+	free_garbage(data);
+}

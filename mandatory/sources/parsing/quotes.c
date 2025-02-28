@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:14:20 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/28 12:23:18 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:46:59 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,73 @@
 
 static int	ft_is_quote(char c)
 {
-	if (c == '\'' || c == '"')
+	if (c == SIMPLE_QUOTES || c == DOUBLE_QUOTES)
 		return (true);
 	return (false);
 }
 
+static int	ft_is_white_spaces(char c)
+{
+	if (c == 32 || (c >= 7 && c <= 13))
+		return (1);
+	return (0);
+}
 
+/* static int	ft_gettype(char *str)
+{
+	while (*str)
+	{
+		if (*str == '|')
+			return (PIPE);
+		if (*str == '<' || *str == '>')
+			return (REDIR);
+		if (*str == '<' && *str + 1 == '<')
+			return (HEREDOC);
+		if (*str == '>' && *str + 1 == '>')
+			return (APPEND);
+		if (*str == '&' && *str + 1 == '&')
+			return (AND);
+		if (*str == '|' && *str + 1 == '|')
+			return (OR);
+	}
+	return (0);
+} */
 
-/* Checker si str[i] == SQ ou DQ et si str[i + 1] == str[i] alors on peut skip 
+void	ft_token(t_data *data)
+{
+	int i;
+	char	*line;
+	
+	while (*data->prompt)
+	{
+		i = 0;
+		while (ft_is_white_spaces(*data->prompt) && *data->prompt)
+			data->prompt++;
+		while (!ft_is_white_spaces(*data->prompt) && *data->prompt)
+		{
+			data->prompt++;
+			i++;
+		}
+		data->prompt -= i;
+		line = ft_strndup(data->prompt, i);
+		if (!line)
+		{
+			perror("Error with a malloc\n");
+			free_garbage(data);
+			exit(EXIT_FAILURE);
+		}
+		add_new_token_node(data, &data->lst_token, line);
+		data->prompt += i;
+	}
+}
 
-ft_strchr return l'endroit ou le caractere cible est trouve, si le caractere cible n'est pas trouve alors elle return NULL
+/* Function to check if string contains simple_quote or double_quotes.
+   If str contains quotes, check if the following character is a closed quote.
+   If there is a closed quote, skip the 2 characters.
+   Otherwise, increment a single or double quote counter.
+   At the end of str, if the counter is even -> return true. 
+					  if the counter is odd -> return false and display 
+					  an error message.
 */
 
 int	check_quotes(char *str)
@@ -39,9 +96,9 @@ int	check_quotes(char *str)
 			str = ft_strchr(str + 1, *str) + 1;
 		else
 		{
-			if (*str == '\'')
+			if (*str == SIMPLE_QUOTES)
 				squotes++;
-			else if (*str == '"')
+			else if (*str == DOUBLE_QUOTES)
 				dquotes++;
 			str++;
 		}
