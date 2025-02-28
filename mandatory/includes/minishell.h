@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 15:22:45 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:58:22 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	free_garbage(t_data *data);
 void	sig_handler(void);
 
 /* Functions for command-line tokenization */
-int check_quotes(char *str);
+int 	check_quotes(t_data *data, char *str);
 void	ft_token(t_data *data);
 
 

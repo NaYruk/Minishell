@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:40:33 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 14:46:41 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:31:06 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define ARG 10
 
 # define SIMPLE_QUOTES '\''
-# define DOUBLE_QUOTES '\"'
+# define DOUBLE_QUOTES '"'
 
 typedef struct s_token {
 	char			*line;

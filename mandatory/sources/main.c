@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/28 15:45:22 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:52:50 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 
 	t_data *data = init_all(envp);
-	data->prompt = "< infile.txt cat | ls | wc -l > outfile.txt";
+	data->prompt = "echo \"Marc insane ton gc\" >> file.txt";
 	ft_token(data);
 	print_list(data);
 	free_garbage(data);
