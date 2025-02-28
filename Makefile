@@ -13,8 +13,8 @@ SRC = $(SRC_PATH)main.c \
       $(SRC_PATH)init/init_all.c \
       $(SRC_PATH)init/garbage_collector.c \
 	  $(SRC_PATH)init/signal.c \
+	  $(SRC_PATH)parsing/quotes.c \
 	  $(SRC_PATH)init/init_token.c \
-
 
 OBJ_DIR = ./tmp
 OBJ = $(SRC:$(SRC_PATH)%.c=$(OBJ_DIR)/%.o)
@@ -44,10 +44,11 @@ fclean: clean
 
 re: fclean all
 
-$(OBJ_DIR)/%.o: $(SRC_PATH)%.c | $(OBJ_DIR)/init
+$(OBJ_DIR)/%.o: $(SRC_PATH)%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/init:
+$(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/init
+	@mkdir -p $(OBJ_DIR)/parsing
 
-.PHONY: all clean fclean re
+.PHONY: NAME all clean fclean re

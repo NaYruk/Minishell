@@ -6,13 +6,15 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
+/*   Updated: 2025/02/28 11:38:00 by mcotonea         ###   ########.fr       */
 /*   Updated: 2025/02/28 12:13:41 by mmilliot         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+/* int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
@@ -40,4 +42,4 @@ int	main(int argc, char **argv, char **envp)
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
 	return (rl_clear_history(), free_garbage(data), 0);
-}
+} */

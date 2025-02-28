@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 11:15:32 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:08:20 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ void	free_garbage(t_data *data);
 
 /* Function for manage signals */
 void	sig_handler(void);
+
+/* Functions for command-line tokenization */
+int check_quotes(char *str);
 
 /* Function for add a new token in the chained list */
 void	add_new_token_node(t_data *data, t_token **lst, char *line, int token);
