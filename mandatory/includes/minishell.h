@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 15:58:22 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:45:14 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_data
 	char		*prompt;
 	char		**env;
 	t_garb_c	*g_c;
-	t_token		*lst_token; 
+	t_token		*lst_token;
 }	t_data;
 
 /* Function for all initialization */
@@ -66,9 +66,12 @@ void	free_garbage(t_data *data);
 void	sig_handler(void);
 
 /* Functions for command-line tokenization */
-int 	check_quotes(t_data *data, char *str);
-void	ft_token(t_data *data);
-
+int		check_quotes(t_data *data, char *str);
+int		ft_is_quote(char c);
+int		ft_is_white_spaces(char c);
+void	cut_the_line(t_data *data);
+/* Main Function for the tokenization ! */
+void	tokenization(t_data *data);
 
 /* Function for add a new token in the chained list */
 void	add_new_token_node(t_data *data, t_token **lst, char *line);

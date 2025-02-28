@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/28 16:52:50 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:46:08 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,16 @@
 
 #include "../includes/minishell.h"
 
-/* int	main(int argc, char **argv, char **envp)
+void	print_list(t_data *data)
+{
+	while (data->lst_token != NULL)
+	{
+		printf("%s\n", data->lst_token->line);
+		data->lst_token = data->lst_token->next;
+	}
+}
+
+int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
@@ -36,23 +45,17 @@
 		{
 			add_history(data->prompt);
 			write_history("history.txt");
+			cut_the_line(data);
+			print_list(data);
 		}
 		free(data->prompt);
 	}
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
 	return (rl_clear_history(), free_garbage(data), 0);
-} */
-
-void	print_list(t_data *data)
-{
-	while (data->lst_token != NULL)
-	{
-		printf("%s\n", data->lst_token->line);
-		data->lst_token = data->lst_token->next;
-	}
 }
 
+/* 
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
@@ -61,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 
 	t_data *data = init_all(envp);
 	data->prompt = "echo \"Marc insane ton gc\" >> file.txt";
-	ft_token(data);
+	cut_the_line(data);
 	print_list(data);
 	free_garbage(data);
-}
+} */

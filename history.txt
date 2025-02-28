@@ -1,0 +1,3 @@
+aojfajf
+jafpawhfopawf
+< infile cat | ls > outfile

@@ -3,88 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:14:20 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/28 17:22:14 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:49:41 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	ft_is_quote(char c)
+/* Function for check if a Quote is detected */
+
+int	ft_is_quote(char c)
 {
 	if (c == SIMPLE_QUOTES || c == DOUBLE_QUOTES)
 		return (true);
 	return (false);
 }
+/* 
+	Function for check if a Whitespace is detected in the current character
+*/
 
-static int	ft_is_white_spaces(char c)
+int	ft_is_white_spaces(char c)
 {
 	if (c == 32 || (c >= 7 && c <= 13))
 		return (1);
 	return (0);
-}
-
-/* static int	ft_gettype(char *str)
-{
-	int		i;
-	char	*line;
-
-	while (*str)
-	{
-		if (*str == '|')
-			return (PIPE);
-		if (*str == '<' || *str == '>')
-			return (REDIR);
-		if (*str == '<' && *str + 1 == '<')
-			return (HEREDOC);
-		if (*str == '>' && *str + 1 == '>')
-			return (APPEND);
-		if (*str == '&' && *str + 1 == '&')
-			return (AND);
-		if (*str == '|' && *str + 1 == '|')
-			return (OR);
-	}
-	return (0);
-} */
-
-
-void	ft_token(t_data *data)
-{
-	char	*line;
-	int		i = 0;
-	int		in_quotes = 0;
-	int		count;
-	char	quote_char = '\0';
-
-	while (data->prompt[i] != '\0')
-	{
-		while (ft_is_white_spaces(data->prompt[i]) && data->prompt[i] && !in_quotes)
-			i++;
-		if (data->prompt[i] == SIMPLE_QUOTES || data->prompt[i] == DOUBLE_QUOTES)
-		{
-			quote_char = data->prompt[i];
-			in_quotes = 1;
-			i++;
-		}
-		count = 0;
-		while (data->prompt[i] && (in_quotes || !ft_is_white_spaces(data->prompt[i])))
-		{
-			if (quote_char == data->prompt[i] && in_quotes)
-				in_quotes = 0;
-			i++;
-			count++;
-		}
-		line = ft_strndup(&data->prompt[i - count], count);
-		if (!line)
-		{
-			perror("Error with a malloc\n");
-			free_garbage(data);
-			exit(EXIT_FAILURE);
-		}
-		add_new_token_node(data, &data->lst_token, line);
-	}
 }
 
 /* Function to check if string contains simple_quote or double_quotes.

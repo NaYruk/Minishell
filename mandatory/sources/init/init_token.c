@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 15:17:39 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:44:25 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	size_list(t_token *lst)
 static t_token	*last_node(t_token *lst)
 {
 	int	i;
-	
+
 	if (!lst)
 		return (0);
 	i = size_list(lst);
@@ -44,7 +44,7 @@ static t_token	*last_node(t_token *lst)
 		i--;
 	}
 	return (lst);
-}	
+}
 
 /* Function for add a node in the back of the chained list */
 
@@ -77,7 +77,7 @@ static void	add_node_back(t_token **lst, t_token *new)
 void	add_new_token_node(t_data *data, t_token **lst, char *line)
 {
 	t_token	*new;
-	
+
 	new = NULL;
 	new = malloc(sizeof(t_token));
 	if (!new)

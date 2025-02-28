@@ -15,6 +15,8 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)init/signal.c \
 	  $(SRC_PATH)parsing/quotes.c \
 	  $(SRC_PATH)init/init_token.c \
+	  $(SRC_PATH)parsing/cut_the_line.c \
+	  $(SRC_PATH)parsing/token.c \
 
 OBJ_DIR = ./tmp
 OBJ = $(SRC:$(SRC_PATH)%.c=$(OBJ_DIR)/%.o)
