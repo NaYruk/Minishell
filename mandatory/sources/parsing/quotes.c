@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:14:20 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/02/28 18:49:41 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/02 15:51:27 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -49,7 +49,7 @@ int	check_quotes(t_data *data, char *str)
 	dquotes = 0;
 	while (*str)
 	{
-		if (ft_is_quote(*str) && (str + 1) && ft_strchr(str + 1, *str) != NULL)
+		if (*(str + 1) && ft_is_quote(*str) && ft_strchr(str + 1, *str) != NULL)
 			str = ft_strchr(str + 1, *str) + 1;
 		else
 		{

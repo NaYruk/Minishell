@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cut_the_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:14:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 18:53:30 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/02 15:54:15 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -74,7 +74,7 @@ void	cut_the_line(t_data *data)
 	quote_char = '\0';
 	line = NULL;
 	check_quotes(data, data->prompt);
-	while (data->prompt[i] != '\0')
+	while ((size_t)i < ft_strlen(data->prompt))
 	{
 		get_line(data, &i, &count, &quote_char);
 		line = ft_strndup(&data->prompt[i - count], count);
