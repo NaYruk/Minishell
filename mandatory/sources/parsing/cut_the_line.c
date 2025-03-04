@@ -3,15 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   cut_the_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/04 13:29:03 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:00:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+static int	is_operator(t_data *data, int *i)
+{
+	if (data->prompt[*i] == '<' || data->prompt[*i] == '>' || data->prompt[*i] == '|')
+	{
+		data->operator = true;
+		data->name_operator = ft_strdup(&data->prompt[*i]);
+		if (!data->name_operator)
+			malloc_error(data);
+		return (1);
+	}
+	return (0);
+}
 /* 
 	Function for get the line = each token
 	We cut the prompt by avoiding every whitespace,
@@ -23,7 +35,7 @@ static void	get_line(t_data *data, int *i, int *count, char *quote_char)
 	int	quote;
 
 	quote = 0;
-	while (ft_is_white_spaces(data->prompt[*i]) && data->prompt[*i] && !quote)
+	while (((ft_is_white_spaces(data->prompt[*i]) || is_operator(data, i)) && data->prompt[*i]) && !quote)
 		(*i)++;
 	if (data->prompt[*i] == SIMPLE_QUOTES || data->prompt[*i] == DOUBLE_QUOTES)
 	{
@@ -77,16 +89,20 @@ void	cut_the_line(t_data *data)
 	while ((size_t)i < ft_strlen(data->prompt))
 	{
 		get_line(data, &i, &count, &quote_char);
-		line = ft_strndup(&data->prompt[i - count], count);
-		if (data->prompt[i] == quote_char)
-			i++;
-		if (!line)
+		if (count > 0)
 		{
-			perror("Error with a malloc\n");
-			free_garbage(data);
-			exit(EXIT_FAILURE);
+			line = ft_strndup(&data->prompt[i - count], count);
+			if (data->prompt[i] == quote_char)
+				i++;
+			if (!line)
+				malloc_error(data);
+			add_new_token_node(data, &data->lst_token, line, quote_char);
 		}
-		add_new_token_node(data, &data->lst_token, line, quote_char);
+		if (data->operator == true)
+		{
+			data->operator = false;
+			add_new_token_node(data, &data->lst_token, data->name_operator, quote_char);
+		}
 	}
 	return ;
 }

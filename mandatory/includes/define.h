@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   define.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:40:33 by mmilliot          #+#    #+#             */
 /*   Updated: 2025/03/04 13:40:23 by mcotonea         ###   ########.fr       */
@@ -14,15 +14,15 @@
 # define DEFINE_H
 
 /* define for each token, it is for facilitate the parsing and execution. */
-# define PIPE 1
-# define CMD 2
-# define HEREDOC 3
+# define HEREDOC 1
+# define INFILE 2
+# define PIPE 3
 # define APPEND 4
-# define INFILE 5
-# define OUTFILE 6
-# define OR 7
-# define AND 8
-# define ARG 9
+# define OUTFILE 5
+# define OR 6
+# define AND 7
+# define ARG 8
+# define CMD 9
 # define OTHER 10
 
 /* Define for the Quotes */

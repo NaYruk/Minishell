@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 13:16:48 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:49:26 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,17 @@ typedef struct s_data
 {
 	char		*prompt;
 	char		**env;
+	bool		operator;
+	char		*name_operator;
 	t_garb_c	*g_c;
 	t_token		*lst_token;
 }	t_data;
 
 /* Function for all initialization */
 t_data	*init_all(char **envp);
+
+/* Function for write an error and return the program */
+void	malloc_error(t_data *data);
 
 /* 
 	Functions for manipulate the memory with a garbage collector
