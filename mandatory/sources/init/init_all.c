@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 12:05:33 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:44:40 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,7 @@ void	copy_envp(char **envp, t_data *data)
 		line_number++;
 	data->env = malloc(sizeof(char *) * (line_number + 1));
 	if (!data->env)
-	{
-		perror("Error with a malloc\n");
-		free_garbage(data);
-		exit(EXIT_FAILURE);
-	}
+		malloc_error(data);
 	add_g_c_node(data, &data->g_c, (void **)data->env, true);
 	i = -1;
 	while (envp[++i] != NULL)
@@ -60,6 +56,8 @@ t_data	*init_all(char **envp)
 	data->prompt = NULL;
 	data->env = NULL;
 	data->lst_token = NULL;
+	data->operator = false;
+	data->name_operator = NULL;
 	copy_envp(envp, data);
 	return (data);
 }

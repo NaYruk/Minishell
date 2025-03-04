@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/04 13:17:18 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/04 14:36:21 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_list(t_data *data)
 	
 	while (current != NULL)
 	{
-		printf("%s, %d\n", current->line, current->status);
+		printf("%s, %d\n", current->line, current->token);
 		current = current->next;
 	}
 }
@@ -48,10 +48,10 @@ int	main(int argc, char **argv, char **envp)
 			add_history(data->prompt);
 			write_history("history.txt");
 			tokenization(data);
-			print_list(data);
 		}
 		free(data->prompt);
 	}
+	print_list(data);
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
 	return (rl_clear_history(), free_garbage(data), 0);

@@ -3,47 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   init_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 13:20:08 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:45:10 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* Function for get the size of the chained list */
-
-static int	size_list(t_token *lst)
-{
-	int	i;
-
-	if (!lst)
-		return (0);
-	i = 0;
-	while (lst != NULL)
-	{
-		i++;
-		lst = lst->next;
-	}
-	return (i);
-}
-
 /* Function for get the last node of the chained list*/
 
-static t_token	*last_node(t_token *lst)
+static t_token *last_node(t_token *lst)
 {
-	int	i;
-
-	if (!lst)
-		return (0);
-	i = size_list(lst);
-	while (i > 1)
-	{
-		lst = lst->next;
-		i--;
-	}
-	return (lst);
+    if (!lst)
+        return NULL;
+    while (lst->next != NULL)
+    {
+        lst = lst->next;
+    }
+    return lst;
 }
 
 /* Function for add a node in the back of the chained list */
@@ -61,6 +40,7 @@ static void	add_node_back(t_token **lst, t_token *new)
 	}
 	end_list = last_node(*lst);
 	end_list->next = new;
+	new->prev = end_list;
 	return ;
 }
 
@@ -81,13 +61,10 @@ void	add_new_token_node(t_data *data, t_token **lst, char *line, char qc)
 	new = NULL;
 	new = malloc(sizeof(t_token));
 	if (!new)
-	{
-		perror("Error with a malloc\n");
-		free_garbage(data);
-		exit(EXIT_FAILURE);
-	}
+		malloc_error(data);
 	new->line = line;
 	new->next = NULL;
+	new->prev = NULL;
 	new->token = -1;
 	if (qc == SIMPLE_QUOTES)
 		new->status = 1;
