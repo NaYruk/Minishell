@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   init_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 17:06:38 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:56:24 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* Function for free each node in token chained list */
+
+void	free_token(t_data *data)
+{
+	t_token *tmp;
+	
+	tmp = NULL;
+	while (data->lst_token != NULL)
+	{
+		tmp = data->lst_token->next;
+		free(data->lst_token->line);
+		free(data->lst_token);
+		data->lst_token = tmp;
+	}
+	return ;
+}
 
 /* Function for get the last node of the chained list*/
 
@@ -72,8 +89,8 @@ void	add_new_token(t_data *data, t_token **lst, char *line, char qc)
 		new->status = 2;
 	else
 		new->status = 0;
-	add_g_c_node(data, &data->g_c, (void **)new, false);
-	add_g_c_node(data, &data->g_c, (void **)line, false);
+	//add_g_c_node(data, &data->g_c, (void **)new, false);
+	//add_g_c_node(data, &data->g_c, (void **)line, false);
 	add_node_back(lst, new);
 	return ;
 }

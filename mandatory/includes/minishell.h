@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 17:06:38 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:53:26 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,7 @@ void	tokenization(t_data *data);
 
 /* Function for add a new token in the chained list */
 void	add_new_token(t_data *data, t_token **lst, char *line, char qc);
+
+void	free_token(t_data *data);
 
 #endif
