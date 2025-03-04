@@ -1,1 +1,1 @@
-ls|cat
+<infile ls|cat fawifhawif

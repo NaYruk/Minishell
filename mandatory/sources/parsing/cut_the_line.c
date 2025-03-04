@@ -6,22 +6,30 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:00:42 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:45:56 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	is_operator(t_data *data, int *i)
+int	is_operator(t_data *data, int *i)
 {
 	if (data->prompt[*i] == '<' || data->prompt[*i] == '>' || data->prompt[*i] == '|')
 	{
 		data->operator = true;
-		data->name_operator = ft_strdup(&data->prompt[*i]);
+		data->name_operator = ft_strndup(&data->prompt[*i], 1);
 		if (!data->name_operator)
 			malloc_error(data);
+		(*i)++;
 		return (1);
 	}
+	return (0);
+}
+
+int		operator(char c)
+{
+	if (c == '<' || c == '>' || c == '|')
+		return (1);
 	return (0);
 }
 /* 
@@ -35,8 +43,11 @@ static void	get_line(t_data *data, int *i, int *count, char *quote_char)
 	int	quote;
 
 	quote = 0;
-	while (((ft_is_white_spaces(data->prompt[*i]) || is_operator(data, i)) && data->prompt[*i]) && !quote)
+	while ((ft_is_white_spaces(data->prompt[*i]) && data->prompt[*i]) && !quote)
 		(*i)++;
+	if ((data->prompt[*i]) && !quote)
+		if (is_operator(data, i))
+			return ;
 	if (data->prompt[*i] == SIMPLE_QUOTES || data->prompt[*i] == DOUBLE_QUOTES)
 	{
 		*quote_char = data->prompt[*i];
@@ -47,6 +58,8 @@ static void	get_line(t_data *data, int *i, int *count, char *quote_char)
 	while (data->prompt[*i]
 		&& (quote || !ft_is_white_spaces(data->prompt[*i])))
 	{
+		if (operator(data->prompt[*i]))
+			break ;
 		if (*quote_char == data->prompt[*i] && quote)
 			quote = 0;
 		(*i)++;
@@ -89,7 +102,7 @@ void	cut_the_line(t_data *data)
 	while ((size_t)i < ft_strlen(data->prompt))
 	{
 		get_line(data, &i, &count, &quote_char);
-		if (count > 0)
+		if (data->operator == false)
 		{
 			line = ft_strndup(&data->prompt[i - count], count);
 			if (data->prompt[i] == quote_char)
