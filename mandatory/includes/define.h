@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   define.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:40:33 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/02/28 18:55:25 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:24:21 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # define APPEND 4
 # define INFILE 5
 # define OUTFILE 6
-# define REDIR 7
-# define OR 8
-# define AND 9
-# define ARG 10
+# define OR 7
+# define AND 8
+# define ARG 9
+# define OTHER 10
 
 /* Define for the Quotes */
 # define SIMPLE_QUOTES '\''
@@ -35,6 +35,7 @@ typedef struct s_token
 {
 	char			*line;
 	int				token;
+	int				status;
 	struct s_token	*next;
 }	t_token;
 

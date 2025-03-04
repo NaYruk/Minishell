@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cut_the_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/28 18:14:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/02 15:54:15 by mmilliot         ###   ########.fr       */
+/*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
+/*   Updated: 2025/03/04 13:29:03 by mcotonea         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -86,7 +86,7 @@ void	cut_the_line(t_data *data)
 			free_garbage(data);
 			exit(EXIT_FAILURE);
 		}
-		add_new_token_node(data, &data->lst_token, line);
+		add_new_token_node(data, &data->lst_token, line, quote_char);
 	}
 	return ;
 }

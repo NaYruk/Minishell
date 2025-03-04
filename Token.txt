@@ -18,6 +18,22 @@ AND (&&),
 SIMPLE_QUOTE '\''
 DOUBLE_QUOTES '\"'
 
+En Bash, les SIMPLE_QUOTE empechent toute expansion ou evaluation a l'interieur de la chaine. 
+		 les DOUBLE_QUOTES permettent l'expansion des variables et l'evaluation des commandes a l'interieur de la chaine. 
+
+Peut etre mettre en place un quote_status :
+	0 = pas de quotes;
+	1 = presence d'un SIMPLE_QUOTE;
+	2 = presence d'un DOUBLE_QUOTES;
+
+L'expansion en Bash est le processus par lequel le shell transforme ou developpe certains types de symboles ou expressions avant d'executer une commande.
+Cela permet d'inclure des variables, des fichiers, des commandes... directement dans les commandes que tu ecris:
+
+name = "Alice"
+echo "Bonjour $name"
+
+--> Bonjour Alice
+
 1. Check quotes : paires / impaires : si impair ou pas ferme -> erreur et sortie du programme
 2. Tokenization:
 	a. avance tant que espaces || white spaces et stockage dans t_token data->token
