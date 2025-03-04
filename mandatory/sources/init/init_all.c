@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 15:44:40 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:04:51 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_data	*init_all(char **envp)
 	data->env = NULL;
 	data->lst_token = NULL;
 	data->operator = false;
-	data->name_operator = NULL;
+	data->name_op = NULL;
 	copy_envp(envp, data);
 	return (data);
 }

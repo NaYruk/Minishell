@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:47:20 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:09:04 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		sig_handler();
-		data->prompt = readline("SegfaultBros>");
+		data->prompt = readline("SegfaultBros> ");
 		if (!data->prompt)
 			break ;
 		if (data->prompt[0] != '\0')

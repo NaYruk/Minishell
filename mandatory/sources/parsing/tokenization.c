@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 15:32:11 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:03:17 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	attribute_cmd_or_arg(t_token *current)
 	else if (current->prev->token == INFILE || current->prev->token == OUTFILE
 		|| current->prev->token == HEREDOC || current->prev->token == APPEND
 		|| current->prev->token == CMD)
-	current->token = ARG;
+		current->token = ARG;
 	else if (current->prev->token == ARG)
 		current->token = ARG;
 	else if (current->prev->token == PIPE)
@@ -63,7 +63,7 @@ static void	attribute_cmd_or_arg(t_token *current)
 static void	cmd_or_arg(t_data *data)
 {
 	t_token	*current;
-	
+
 	current = data->lst_token;
 	while (current != NULL)
 	{

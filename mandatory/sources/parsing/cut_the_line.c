@@ -3,22 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   cut_the_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/04 16:45:56 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:06:53 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/* || non gere, return une erreur car | suivi d'un pipe -> prochaine etape! */
+
 int	is_operator(t_data *data, int *i)
 {
-	if (data->prompt[*i] == '<' || data->prompt[*i] == '>' || data->prompt[*i] == '|')
+	if (ft_strncmp(&data->prompt[*i], "<<", 2) == 0
+		|| ft_strncmp(&data->prompt[*i], ">>", 2) == 0)
 	{
 		data->operator = true;
-		data->name_operator = ft_strndup(&data->prompt[*i], 1);
-		if (!data->name_operator)
+		data->name_op = ft_strndup(&data->prompt[*i], 2);
+		if (!data->name_op)
+			malloc_error(data);
+		(*i) += 2;
+		return (1);
+	}
+	else if (data->prompt[*i] == '<' || data->prompt[*i] == '>'
+		|| data->prompt[*i] == '|')
+	{
+		data->operator = true;
+		data->name_op = ft_strndup(&data->prompt[*i], 1);
+		if (!data->name_op)
 			malloc_error(data);
 		(*i)++;
 		return (1);
@@ -26,7 +39,7 @@ int	is_operator(t_data *data, int *i)
 	return (0);
 }
 
-int		operator(char c)
+int	operator(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
 		return (1);
@@ -109,12 +122,12 @@ void	cut_the_line(t_data *data)
 				i++;
 			if (!line)
 				malloc_error(data);
-			add_new_token_node(data, &data->lst_token, line, quote_char);
+			add_new_token(data, &data->lst_token, line, quote_char);
 		}
 		if (data->operator == true)
 		{
 			data->operator = false;
-			add_new_token_node(data, &data->lst_token, data->name_operator, quote_char);
+			add_new_token(data, &data->lst_token, data->name_op, quote_char);
 		}
 	}
 	return ;

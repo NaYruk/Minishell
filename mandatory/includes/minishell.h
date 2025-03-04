@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 15:49:26 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:06:38 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_data
 	char		*prompt;
 	char		**env;
 	bool		operator;
-	char		*name_operator;
+	char		*name_op;
 	t_garb_c	*g_c;
 	t_token		*lst_token;
 }	t_data;
@@ -79,6 +79,6 @@ void	cut_the_line(t_data *data);
 void	tokenization(t_data *data);
 
 /* Function for add a new token in the chained list */
-void	add_new_token_node(t_data *data, t_token **lst, char *line, char qc);
+void	add_new_token(t_data *data, t_token **lst, char *line, char qc);
 
 #endif

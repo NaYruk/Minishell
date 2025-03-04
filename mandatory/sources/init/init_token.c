@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 15:45:10 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:06:38 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 /* Function for get the last node of the chained list*/
 
-static t_token *last_node(t_token *lst)
+static t_token	*last_node(t_token *lst)
 {
-    if (!lst)
-        return NULL;
-    while (lst->next != NULL)
-    {
-        lst = lst->next;
-    }
-    return lst;
+	if (!lst)
+		return (NULL);
+	while (lst->next != NULL)
+	{
+		lst = lst->next;
+	}
+	return (lst);
 }
 
 /* Function for add a node in the back of the chained list */
@@ -54,7 +54,7 @@ static void	add_node_back(t_token **lst, t_token *new)
 	- a pointer in the next token
 */
 
-void	add_new_token_node(t_data *data, t_token **lst, char *line, char qc)
+void	add_new_token(t_data *data, t_token **lst, char *line, char qc)
 {
 	t_token	*new;
 
