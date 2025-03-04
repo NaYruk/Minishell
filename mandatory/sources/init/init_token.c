@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 13:20:08 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:41:02 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static void	add_node_back(t_token **lst, t_token *new)
 	}
 	end_list = last_node(*lst);
 	end_list->next = new;
+	new->prev = end_list;
 	return ;
 }
 
@@ -88,6 +89,7 @@ void	add_new_token_node(t_data *data, t_token **lst, char *line, char qc)
 	}
 	new->line = line;
 	new->next = NULL;
+	new->prev = NULL;
 	new->token = -1;
 	if (qc == SIMPLE_QUOTES)
 		new->status = 1;

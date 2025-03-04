@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:40:33 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 13:24:21 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:40:23 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_token
 	int				token;
 	int				status;
 	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
 #endif
