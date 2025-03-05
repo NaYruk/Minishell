@@ -10,14 +10,15 @@ CFLAGS = -Wall -Wextra -Werror -g3 $(INCLUDES)
 
 SRC_PATH = ./mandatory/sources/
 SRC = $(SRC_PATH)main.c \
-      $(SRC_PATH)init/init_all.c \
-      $(SRC_PATH)init/garbage_collector.c \
-	  $(SRC_PATH)init/signal.c \
-	  $(SRC_PATH)parsing/quotes.c \
-	  $(SRC_PATH)init/init_token.c \
-	  $(SRC_PATH)parsing/cut_the_line.c \
-	  $(SRC_PATH)parsing/tokenization.c \
 	  $(SRC_PATH)init/error.c \
+	  $(SRC_PATH)init/garbage_collector.c \
+	  $(SRC_PATH)init/init_all.c \
+	  $(SRC_PATH)init/init_token.c \
+	  $(SRC_PATH)init/signal.c \
+	  $(SRC_PATH)parsing/cut_the_line.c \
+	  $(SRC_PATH)parsing/quotes.c \
+	  $(SRC_PATH)parsing/tokenization.c \
+	  $(SRC_PATH)built-in/pwd.c \
 
 OBJ_DIR = ./tmp
 OBJ = $(SRC:$(SRC_PATH)%.c=$(OBJ_DIR)/%.o)
@@ -51,7 +52,8 @@ $(OBJ_DIR)/%.o: $(SRC_PATH)%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)/init
-	@mkdir -p $(OBJ_DIR)/parsing
+	@mkdir -p $(OBJ_DIR)/init 
+	@mkdir -p $(OBJ_DIR)/parsing 
+	@mkdir -p $(OBJ_DIR)/built-in
 
 .PHONY: NAME all clean fclean re

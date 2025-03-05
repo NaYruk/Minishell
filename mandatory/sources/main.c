@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/04 17:55:58 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:53:04 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	print_list(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
+	//int		i = 0;
 
 	(void)argv;
 	(void)envp;
@@ -46,8 +47,9 @@ int	main(int argc, char **argv, char **envp)
 		if (data->prompt[0] != '\0')
 		{
 			add_history(data->prompt);
-			write_history("history.txt");
 			tokenization(data);
+			if (ft_strcmp(data->lst_token->line, "pwd") == 0)
+				ft_pwd(data);
 		}
 		print_list(data);
 		free(data->prompt);
@@ -57,17 +59,3 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("exit\n", 2);
 	return (rl_clear_history(), free_garbage(data), 0);
 }
-
-/* 
-int	main(int argc, char **argv, char **envp)
-{
-	(void)argc;
-	(void)envp;
-	(void)argv;
-
-	t_data *data = init_all(envp);
-	data->prompt = "echo \"Marc insane ton gc\" >> file.txt";
-	cut_the_line(data);
-	print_list(data);
-	free_garbage(data);
-} */
