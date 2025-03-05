@@ -6,11 +6,13 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:21:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 20:27:28 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/05 22:32:29 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* Function for write a token error */
 
 void	token_error(t_data *data, char *line)
 {
@@ -19,6 +21,8 @@ void	token_error(t_data *data, char *line)
 	ft_putstr_fd(line, 2);
 	exit(2);
 }
+
+/* Function for count the number of pipe in a line */
 
 static int	pipes_nbr(char *line, int nbr)
 {
@@ -35,6 +39,11 @@ static int	pipes_nbr(char *line, int nbr)
 	return (nbr);
 }
 
+/*
+	IF the first or last node is an | it is an error ! this is the function
+	of the check_first_and_last_node function.
+*/
+
 static void	check_first_and_last_node(t_token *token, t_data *data)
 {
 	int		nbr;
@@ -47,6 +56,17 @@ static void	check_first_and_last_node(t_token *token, t_data *data)
 		token_error(data, "syntax error near unexpected token `||'\n");
 }
 
+/* 
+	check_pipes = Verify the position of each | and find any error.
+	IF the first or last node is an | it is an error ! this is the function
+	of the check_first_and_last_node function.
+	Travel the chained list until the end.
+	IN THE STRUCT TOKEN WE HAVE THE STATUS VALUE
+	STATUS = 0 = NO QUOTES
+	STATUS = 1 = SIMPLE QUOTES
+	STATUS = 2 = DOUBLE QUOTES
+	we have several error for the pipes, dependinf on the number of pipes.
+*/
 void	check_pipes(t_data *data)
 {
 	t_token	*current;

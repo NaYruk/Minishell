@@ -6,11 +6,13 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/05 20:53:36 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/05 22:17:05 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* save_quotes : function for saves the value of the opening quote " or ' */
 
 static void	save_quotes(t_data *data, int *i, int *quote, char *quote_char)
 {
@@ -21,6 +23,23 @@ static void	save_quotes(t_data *data, int *i, int *quote, char *quote_char)
 		(*i)++;
 	}
 }
+
+/* 
+	get_line : Function for separate each token and
+				 stock each token node in a chained list.
+	quote variable is for indicate if a open quote is detected.
+	- Skip the Whitespaces.
+	- if an operator is detected,return for execute if (data->operator == true)
+	- save_quotes : function for saves the value of the opening quote " or '
+	- As long as there is no Whitespace or there is in the " " or ' '
+		- if an operator is detected and !quote, break for execute
+			if (data->operator == true)
+		- if the closing quote is find, quote = 0 for marking
+			the end of the quote
+		- Just count the number of character to stock in the token node.
+	- if the last char is the quote char, we need to i-- for get the
+		exact number for the token line malloc
+*/
 
 static void	get_line(t_data *data, int *i, int *count, char *quote_char)
 {
@@ -51,6 +70,12 @@ static void	get_line(t_data *data, int *i, int *count, char *quote_char)
 	}
 }
 
+/* 
+   Function for stock the line cut in a new token node
+   and add this token to the chained list
+   we skip the closing quote if it exists.
+*/
+   
 static void	stock_the_line(t_data *data, char *line, int *i, char quote_char)
 {
 	if (line[0] != '\0')
@@ -63,6 +88,25 @@ static void	stock_the_line(t_data *data, char *line, int *i, char quote_char)
 	}
 	return ;
 }
+
+/*
+	Cut_the_line = Function for Cut the line in token :
+		arg, cmd, and, or, pipe, outfile, append, infile, heredoc
+	- check_quotes : In this function we search if a quote is remain open in
+					 this case, we have a error message.
+	- While the Prompt contain any character, we parcour the line.
+	
+	- get_line : Function for separate each token and
+				 stock each token node in a chained list.
+	a TOKEN IS : part of the prompt line associated
+				 with its function at runtime.
+	- IF OPERATOR IS FALSE : If there is no operator in the actual
+							   line cut, just stock this part of the prompt
+							   in line variable and stock_the line in the node.
+	- IF OPERATOR IS TRUE : If the actual line cut is an operator, jsut stock
+							the operator in a new node and add this node in the
+							chained list.
+*/
 
 void	cut_the_line(t_data *data)
 {
