@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/05 15:40:09 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:53:28 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_list(t_data *data)
 	
 	while (current != NULL)
 	{
-		printf("%s, %d\n", current->line, current->token);
+		printf("%s, %d, %d\n", current->line, current->token, current->status);
 		current = current->next;
 	}
 }

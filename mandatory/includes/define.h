@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:40:33 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/04 13:40:23 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:29:34 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 /* define for each token, it is for facilitate the parsing and execution. */
 # define HEREDOC 1
 # define INFILE 2
-# define PIPE 3
-# define APPEND 4
-# define OUTFILE 5
+# define APPEND 3
+# define OUTFILE 4
+# define PIPE 5
 # define OR 6
 # define AND 7
 # define ARG 8

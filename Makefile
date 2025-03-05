@@ -19,6 +19,7 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)parsing/quotes.c \
 	  $(SRC_PATH)parsing/tokenization.c \
 	  $(SRC_PATH)built-in/pwd.c \
+	  $(SRC_PATH)parsing/check_parsing_error.c \
 	  $(SRC_PATH)built-in/exit.c \
 	  $(SRC_PATH)built-in/cd.c \
 	  $(SRC_PATH)built-in/exec_bt.c \

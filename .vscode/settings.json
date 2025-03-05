@@ -4,8 +4,8 @@
 	},
 	"makefile.launchConfigurations": [
 		{
-			"cwd": "/home/mcotonea/Desktop/Minishell",
-			"binaryPath": "/home/mcotonea/Desktop/Minishell/minishell",
+			"cwd": "/home/mmilliot/Stud/Minishell",
+			"binaryPath": "/home/mmilliot/Stud/Minishell/minishell",
 			"binaryArgs": []
 		}
 	]
