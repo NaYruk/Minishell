@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/05 18:53:28 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/05 20:53:11 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	main(int argc, char **argv, char **envp)
 	t_data	*data;
 
 	(void)argv;
-	(void)envp;
 	if (argc != 1)
 	{
 		ft_putstr_fd("Error ! nbr of arguments != 1\n", 2);
@@ -55,5 +54,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	if (isatty(STDIN_FILENO))
 		ft_putstr_fd("exit\n", 2);
-	return (rl_clear_history(), free_garbage(data), 0);
+	return (free_garbage(data), 0);
 }

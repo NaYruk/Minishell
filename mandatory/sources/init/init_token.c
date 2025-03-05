@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 14:30:51 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/05 20:20:24 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ void	add_new_token(t_data *data, t_token **lst, char *line, char qc)
 		new->status = 2;
 	else
 		new->status = 0;
-	//add_g_c_node(data, &data->g_c, (void **)new, false);
-	//add_g_c_node(data, &data->g_c, (void **)line, false);
 	add_node_back(lst, new);
 	return ;
 }

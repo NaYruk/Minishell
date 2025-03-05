@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 18:54:07 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/05 20:25:39 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	tokenization(t_data *data)
 	cut_the_line(data);
 	ft_gettype(data);
 	cmd_or_arg(data);
-	check_parsing_error(data);
+	check_pipes(data);
+	check_rafter(data);
 	return ;
 }
