@@ -28,7 +28,6 @@ void	print_list(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
-	//int		i = 0;
 
 	(void)argv;
 	(void)envp;
@@ -48,10 +47,9 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(data->prompt);
 			tokenization(data);
-			if (ft_strcmp(data->lst_token->line, "pwd") == 0)
-				ft_pwd(data);
+			exec_builtin(data);
 		}
-		print_list(data);
+		//print_list(data);
 		free(data->prompt);
 		free_token(data);
 	}

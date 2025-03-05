@@ -33,6 +33,8 @@
 # include "../../Libft/includes/libft.h"
 # include "./define.h"
 
+# define BUF_SIZE 1024
+
 /* Chained List Garbage collector */
 typedef struct s_garbage_collector
 {
@@ -48,6 +50,7 @@ typedef struct s_data
 	char		**env;
 	bool		operator;
 	char		*name_op;
+	char		prev_folder[BUF_SIZE];
 	t_garb_c	*g_c;
 	t_token		*lst_token;
 }	t_data;
@@ -92,5 +95,8 @@ void	check_parsing_error(t_data *data);
 /* Functions for built-in commands */
 
 int		ft_pwd(t_data *data);
+int		ft_exit(t_data *data);
+int		ft_cd(t_data *data);
+void	exec_builtin(t_data *data);
 
 #endif
