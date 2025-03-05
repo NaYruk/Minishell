@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:41:06 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/05 12:25:49 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:23:02 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 	
 */
 
-int	ft_pwd(t_data *data)
+/* int	ft_pwd(t_data *data)
 {
 	int		i;
 	char	*pwd;
@@ -46,4 +46,16 @@ int	ft_pwd(t_data *data)
 		i++;
 	}
 	return (EXIT_SUCCESS);
+} */
+
+int	ft_pwd(t_data *data)
+{
+	char	*dir;
+
+	(void)data;
+	dir = getcwd(NULL, 0);
+	if (!dir)
+		return (1);
+	printf("%s\n", dir);
+	return (0);
 }
