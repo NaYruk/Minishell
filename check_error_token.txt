@@ -1,0 +1,13 @@
+POUR DEMAIN :
+
+Parser les token de la liste pour check toutes les erreurs possible et inimaginable !
+
+Check si le dernier node est un pipe. dans ce cas : Print error exit(2)
+Check si les chevrons sont > 2. Si c'est le cas : voir bash pour le message d erreur, exit(2)
+
+SI : 1 = CMD, 2 = ARG, ARG tant que pas de |
+SI : 3 = PIPE alors 4 = CMD Possiblement 5 = ARG.
+SI : 1 = < alors 2 = ARG, 3 = CMD (fichier existant)
+SI : 4 = > alors 5 = ARG (fichier soit existant, soit a cree a default)
+SI : 1 = << alors 2 = ARG (Delimitateur).
+SI : 4 = >> alors 5 = ARG (outfile).0

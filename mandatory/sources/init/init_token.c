@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 12:13:16 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/05 14:30:51 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	free_token(t_data *data)
 
 /* Function for get the last node of the chained list*/
 
-static t_token	*last_node(t_token *lst)
+t_token	*last_node(t_token *lst)
 {
 	if (!lst)
 		return (NULL);

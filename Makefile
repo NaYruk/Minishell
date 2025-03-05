@@ -19,6 +19,7 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)parsing/quotes.c \
 	  $(SRC_PATH)parsing/tokenization.c \
 	  $(SRC_PATH)built-in/pwd.c \
+	  $(SRC_PATH)parsing/check_parsing_error.c \
 
 OBJ_DIR = ./tmp
 OBJ = $(SRC:$(SRC_PATH)%.c=$(OBJ_DIR)/%.o)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cut_the_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/05 12:53:41 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:44:29 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,62 @@
 
 int	is_operator(t_data *data, int *i)
 {
-	if (ft_strncmp(&data->prompt[*i], "<<", 2) == 0
-		|| ft_strncmp(&data->prompt[*i], ">>", 2) == 0)
+	int	count;
+
+	count = 0;
+	if (ft_strncmp(&data->prompt[*i], "<", 1) == 0)
 	{
+		while (data->prompt[*i] == '<')
+		{
+			count++;
+			(*i)++;
+		}
+		(*i) -= count;
 		data->operator = true;
-		data->name_op = ft_strndup(&data->prompt[*i], 2);
+		data->name_op = ft_strndup(&data->prompt[*i], count);
 		if (!data->name_op)
 			malloc_error(data);
-		(*i) += 2;
+		(*i) += count;
 		return (1);
 	}
-	else if (data->prompt[*i] == '<' || data->prompt[*i] == '>'
-		|| data->prompt[*i] == '|')
+	else if (ft_strncmp(&data->prompt[*i], ">", 1) == 0)
 	{
+		while (data->prompt[*i] == '>')
+		{
+			count++;
+			(*i)++;
+		}
+		(*i) -= count;
 		data->operator = true;
-		data->name_op = ft_strndup(&data->prompt[*i], 1);
+		data->name_op = ft_strndup(&data->prompt[*i], count);
 		if (!data->name_op)
 			malloc_error(data);
-		(*i)++;
+		(*i) += count;
+		return (1);
+	}
+ 	else if (ft_strncmp(&data->prompt[*i], "|", 1) == 0)
+	{
+		while (data->prompt[*i] == '|')
+		{
+			count++;
+			(*i)++;
+		}
+		(*i) -= count;
+		data->operator = true;
+		data->name_op = ft_strndup(&data->prompt[*i], count);
+		if (!data->name_op)
+			malloc_error(data);
+		(*i) += count;
 		return (1);
 	}
 	return (0);
 }
 
-int	operator(char c)
+static bool	operator(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
-		return (1);
-	return (0);
+		return (true);
+	return (false);
 }
 /* 
 	Function for get the line = each token
@@ -58,7 +86,7 @@ static void	get_line(t_data *data, int *i, int *count, char *quote_char)
 	quote = 0;
 	while ((ft_is_white_spaces(data->prompt[*i]) && data->prompt[*i]) && !quote)
 		(*i)++;
-	if ((data->prompt[*i]) && !quote)
+ 	if ((data->prompt[*i]) && !quote)
 		if (is_operator(data, i))
 			return ;
 	if (data->prompt[*i] == SIMPLE_QUOTES || data->prompt[*i] == DOUBLE_QUOTES)
@@ -71,7 +99,7 @@ static void	get_line(t_data *data, int *i, int *count, char *quote_char)
 	while (data->prompt[*i]
 		&& (quote || !ft_is_white_spaces(data->prompt[*i])))
 	{
-		if (operator(data->prompt[*i]))
+		if (operator(data->prompt[*i]) && !quote)
 			break ;
 		if (*quote_char == data->prompt[*i] && quote)
 			quote = 0;
@@ -118,11 +146,14 @@ void	cut_the_line(t_data *data)
 		if (data->operator == false)
 		{
 			line = ft_strndup(&data->prompt[i - count], count);
-			if (data->prompt[i] == quote_char)
-				i++;
-			if (!line)
-				malloc_error(data);
-			add_new_token(data, &data->lst_token, line, quote_char);
+			if (line[0] != '\0')
+			{
+				if (data->prompt[i] == quote_char)
+					i++;
+				if (!line)
+					malloc_error(data);
+				add_new_token(data, &data->lst_token, line, quote_char);
+			}
 		}
 		if (data->operator == true)
 		{
