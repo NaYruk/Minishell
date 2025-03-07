@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 21:59:06 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:02:52 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,13 @@ static void	cmd_or_arg(t_data *data)
 
 void	tokenization(t_data *data)
 {
-	cut_the_line(data);
+	data->exit_status = 0;
+	if (cut_the_line(data) == -1)
+		return ;
 	ft_gettype(data);
 	cmd_or_arg(data);
-	check_pipes(data);
-	check_rafter(data);
-	return ;
+	if (check_pipes(data) == -1)
+		return ;
+	if (check_rafter(data) == -1)
+		return ;
 }

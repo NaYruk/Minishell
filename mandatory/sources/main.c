@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/05 20:53:11 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 14:47:00 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,12 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(data->prompt);
 			tokenization(data);
-			exec_builtin(data);
+			if (data->exit_status == 0)
+			{
+				execution(data);
+			}
 		}
-		//print_list(data);
+		print_list(data);
 		free(data->prompt);
 		free_token(data);
 	}

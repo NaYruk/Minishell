@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:36 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/04 15:49:18 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 09:55:00 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	check_quotes(t_data *data, char *str)
 	if (squotes % 2 != 0 || dquotes % 2 != 0)
 	{
 		ft_putstr_fd("Missing closing quotes\n", 2);
-		free_garbage(data);
-		exit(EXIT_FAILURE);
+		data->exit_status = 2;
+		return (-1);
 	}
-	return (true);
+	return (1);
 }

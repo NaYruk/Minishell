@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/05 22:17:05 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 09:45:28 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static void	stock_the_line(t_data *data, char *line, int *i, char quote_char)
 							chained list.
 */
 
-void	cut_the_line(t_data *data)
+int	cut_the_line(t_data *data)
 {
 	char	*line;
 	char	quote_char;
@@ -119,7 +119,8 @@ void	cut_the_line(t_data *data)
 	i = 0;
 	quote_char = '\0';
 	line = NULL;
-	check_quotes(data, data->prompt);
+	if (check_quotes(data, data->prompt) == -1)
+		return (-1);
 	while ((size_t)i < ft_strlen(data->prompt))
 	{
 		get_line(data, &i, &count, &quote_char);
@@ -134,5 +135,5 @@ void	cut_the_line(t_data *data)
 			add_new_token(data, &data->lst_token, data->name_op, quote_char);
 		}
 	}
-	return ;
+	return (0);
 }
