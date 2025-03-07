@@ -116,6 +116,7 @@ int		ft_exit(t_data *data);
 int		ft_cd(t_data *data);
 int		ft_env(t_data	*data);
 int		ft_echo(t_data *data);
+char	*extract_value(t_data *data, char *name);
 int		exec_builtin(t_data *data);
 
 int		execution(t_data *data);
