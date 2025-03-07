@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 12:03:55 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 15:31:11 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 18:21:12 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,31 @@
 
 void	find_command_args(t_data *data, t_token *current)
 {
+	t_token	*token;
 	int	count;
 	int i;
 	
+	token = current;
 	count = 0;
-	i = -1;
-	current = current->next;
-	while (current != NULL && current->token == ARG)
+	i = 0;
+	while (token != NULL && (token->token == ARG || token->token == CMD))
 	{
 		count++;
-		current = current->next;
+		token = token->next;
 	}
 	data->exec->arg = malloc(sizeof(char **) * (count + 1));
 	if (!data->exec->arg)
 		malloc_error(data);
-	while (current != NULL && current->token != CMD)
-		current = current->prev;
-	while (current != NULL && (current->token == ARG || current->token == CMD))
+	token = current;
+	while (token != NULL && (token->token == CMD || token->token == ARG))
 	{
-		data->exec->arg[i] = ft_strdup(current->line);
+		data->exec->arg[i] = ft_strdup(token->line);
 		if (!data->exec->arg[i])
 			malloc_error(data);
-		current = current->next;
+		token = token->next;
+		i++;
 	}
-	return ;
+	data->exec->arg[i] = NULL;
 }
 
 char	*find_command_path(t_data *data, t_token *current)
@@ -55,7 +56,8 @@ char	*find_command_path(t_data *data, t_token *current)
 			return (tmp);
 		free(tmp);
 	}
-	tmp = ft_strjoin(current->line, "");
+	tmp = NULL;
+	tmp = ft_strdup(current->line);
 	if (!tmp)
 		malloc_error(data);
 	if (access(tmp, F_OK | X_OK) == 0)
