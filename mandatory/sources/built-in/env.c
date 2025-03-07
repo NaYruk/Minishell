@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 10:41:06 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/07 09:51:46 by mcotonea         ###   ########.fr       */
+/*   Created: 2025/03/07 08:56:15 by mcotonea          #+#    #+#             */
+/*   Updated: 2025/03/07 09:21:49 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* 
-	The ft_pwd function is used to obtain the
-	process's current working directory.
-*/
-
-int	ft_pwd(t_data *data)
+int	ft_env(t_data	*data)
 {
-	char	*dir;
-
-	(void)data;
-	dir = getcwd(NULL, 0);
-	if (!dir)
-		return (EXIT_FAILURE);
-	printf("%s\n", dir);
-	free(dir);
-	return (EXIT_SUCCESS);
+	int i;
+	
+	i = 0;
+	if (!data || !data->env)
+	{
+		return (1);
+	}
+	while (data->env[i])
+	{
+		ft_printf("%s\n", data->env[i]);
+		i++;
+	}
+	return (0);	
 }

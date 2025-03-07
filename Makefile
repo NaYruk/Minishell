@@ -18,12 +18,14 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)parsing/cut_the_line.c \
 	  $(SRC_PATH)parsing/quotes.c \
 	  $(SRC_PATH)parsing/tokenization.c \
-	  $(SRC_PATH)built-in/pwd.c \
 	  $(SRC_PATH)parsing/check_rafter.c \
 	  $(SRC_PATH)parsing/check_pipes.c \
 	  $(SRC_PATH)parsing/is_operator.c \
+	  $(SRC_PATH)built-in/pwd.c \
 	  $(SRC_PATH)built-in/exit.c \
 	  $(SRC_PATH)built-in/cd.c \
+	  $(SRC_PATH)built-in/env.c \
+	  $(SRC_PATH)built-in/echo.c \
 	  $(SRC_PATH)built-in/exec_bt.c \
 	  $(SRC_PATH)exec/execution.c \
 	  $(SRC_PATH)exec/execute_command.c \
