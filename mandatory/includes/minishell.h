@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 16:36:49 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/07 18:25:47 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include <signal.h>
+# include <sys/wait.h>
 
 /* Libft Headers */
 # include "../../Libft/includes/ft_printf.h"
@@ -45,7 +46,8 @@ typedef struct s_garbage_collector
 
 typedef struct s_exec
 {
-	int	pid;
+	int	 *pid;
+	int	 nbr_of_command;
 	char **arg;
 	char **path_cmd_env;
 	char *cmd_path;
