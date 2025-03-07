@@ -1,11 +1,17 @@
 {
 	"files.associations": {
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"libft.h": "c"
 	},
 	"makefile.launchConfigurations": [
 		{
 			"cwd": "/home/mmilliot/Stud/Minishell",
 			"binaryPath": "/home/mmilliot/Stud/Minishell/minishell",
+			"binaryArgs": []
+		},
+		{
+			"cwd": "/home/mcotonea/Desktop/Minishell",
+			"binaryPath": "/home/mcotonea/Desktop/Minishell/minishell",
 			"binaryArgs": []
 		}
 	]
