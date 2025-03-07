@@ -6,22 +6,17 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/07 15:26:05 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:10:22 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
-/* echo sans rien renvoie 0 et un \n */
-
-int	check_option(char *str)
+static int	check_option(char *str)
 {
 	int	i;
-	int	len;
 	
 	i = 0;
-	len = ft_strlen(str);
 	if (str[i] == '-')
 		i++;
 	while (str[i])
@@ -32,6 +27,41 @@ int	check_option(char *str)
 	}
 	return (1);
 	
+}
+
+static char	*extract_value(t_data *data, char *name)
+{
+	char	*value;
+	int		i;
+	int		len;
+	
+	i = 0;
+	len = ft_strlen(name);
+	while (data->env[i])
+	{
+		if (ft_strncmp(data->env[i], name, len) == 0)
+		{
+			value = ft_strdup(data->env[i] + len + 1);
+			add_g_c_node(data, &data->g_c, (void **)value, false);
+			return (value);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+static int	check_dollar(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	ft_echo(t_data *data)
@@ -69,28 +99,3 @@ int	ft_echo(t_data *data)
 		return (EXIT_FAILURE);
 }
 
-/* int	ft_echo(t_data *data)
-{
-	t_token *tmp;
-
-	tmp = data->lst_token;
-	if (!tmp->next)
-	{
-		printf("\n");
-		return (EXIT_SUCCESS);
-	}
-	else if (tmp->next->token == ARG)
-	{
-		while (tmp->next && tmp->next->token == ARG)
-		{
-			printf("%s", tmp->next->line);
-			tmp = tmp->next;
-			if (tmp->next && tmp->next->token == ARG)
-				printf(" ");
-		}
-		printf("\n");
-		return (EXIT_SUCCESS);
-	}
-	else
-		return (EXIT_FAILURE);	
-} */
