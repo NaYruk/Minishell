@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/07 14:53:41 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:42:36 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@
 	The function ft_cd is used to change the current directory. 
 	The ~ option takes you directly to home.
 */
-
-/* char *ft_get_home(void)
-{
-	char	*home;
-
-	home = getenv("HOME");
-	return (home);
-} */
 
 static char	*ft_get_home(t_data *data)
 {
@@ -41,7 +33,7 @@ static char	*ft_get_home(t_data *data)
 		}
 		i++;
 	}
-	return ("NULL");
+	return (NULL);
 }
 
 /* static char	*ft_get_prev_dir(t_data *data)
@@ -80,6 +72,7 @@ static void ft_update_env(t_data *data, char *name, char *value)
 		}
 		i++;
 	}
+	return ;
 }
 
 
@@ -95,7 +88,7 @@ int	ft_cd(t_data *data)
 	ft_update_env(data, "OLDPWD=", old_pwd);
 	free(old_pwd);
 	char *current_dir = getcwd(NULL, 0);
-	
+	free(current_dir);
 	if (!tmp || !tmp->next || ft_strcmp(tmp->next->line, "~") == 0)
 	{
 		home = ft_get_home(data);

@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 15:31:19 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:36:49 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ int		ft_exit(t_data *data);
 int		ft_cd(t_data *data);
 int		ft_env(t_data	*data);
 int		ft_echo(t_data *data);
+char	*extract_value(t_data *data, char *name);
 int		exec_builtin(t_data *data);
 
 int		execution(t_data *data);
