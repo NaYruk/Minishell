@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:21:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 22:32:29 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:06:19 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 /* Function for write a token error */
 
-void	token_error(t_data *data, char *line)
+int	token_error(t_data *data, char *line)
 {
-	free_token(data);
-	free_garbage(data);
 	ft_putstr_fd(line, 2);
-	exit(2);
+	data->exit_status = 2;
+	return (-1);
 }
 
 /* Function for count the number of pipe in a line */
@@ -44,16 +43,17 @@ static int	pipes_nbr(char *line, int nbr)
 	of the check_first_and_last_node function.
 */
 
-static void	check_first_and_last_node(t_token *token, t_data *data)
+static int	check_first_and_last_node(t_token *token, t_data *data)
 {
 	int		nbr;
 
 	nbr = 0;
 	if (token->token == PIPE)
-		token_error(data, "syntax error near unexpected token `|'\n");
+		return (token_error(data, "syntax error near unexpected token `|'\n"));
 	nbr = pipes_nbr(token->line, nbr);
 	if (nbr >= 2 && token->status == 0)
-		token_error(data, "syntax error near unexpected token `||'\n");
+		return (token_error(data, "syntax error near unexpected token `||'\n"));
+	return (0);
 }
 
 /* 
@@ -67,30 +67,32 @@ static void	check_first_and_last_node(t_token *token, t_data *data)
 	STATUS = 2 = DOUBLE QUOTES
 	we have several error for the pipes, dependinf on the number of pipes.
 */
-void	check_pipes(t_data *data)
+int	check_pipes(t_data *data)
 {
 	t_token	*current;
 	int		nbr;
 
 	nbr = 0;
 	current = data->lst_token;
-	check_first_and_last_node(current, data);
+	if (check_first_and_last_node(current, data) == -1)
+		return (-1);
 	while (current->next != NULL)
 	{
 		nbr = pipes_nbr(current->line, nbr);
 		if (nbr > 1 && current->status == 0)
 		{
 			if (nbr == 2)
-				token_error(data, "2 Pipes, we don't do bonus !\n");
+				return (token_error(data, "2 Pipes, we don't do bonus !\n"));
 			if (nbr == 3)
-				token_error(data, "syntax error near unexpected token `|'\n");
+				return (token_error(data, "syntax error near unexpected token `|'\n"));
 			if (nbr >= 4)
-				token_error(data, "syntax error near unexpected token `||'\n");
+				return (token_error(data, "syntax error near unexpected token `||'\n"));
 		}
 		if (current->next->token == PIPE && current->token == PIPE)
-			token_error(data, "syntax error near unexpected token `|'\n");
+			return (token_error(data, "syntax error near unexpected token `|'\n"));
 		current = current->next;
 	}
-	check_first_and_last_node(current, data);
-	return ;
+	if (check_first_and_last_node(current, data) == -1)
+		return (-1);
+	return (0);
 }

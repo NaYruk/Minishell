@@ -46,7 +46,10 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(data->prompt);
 			tokenization(data);
-			exec_builtin(data);
+			if (data->exit_status == 0)
+			{
+				execution(data);
+			}
 		}
 		//print_list(data);
 		free(data->prompt);

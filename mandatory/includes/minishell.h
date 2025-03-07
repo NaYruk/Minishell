@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 15:16:39 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:31:19 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ typedef struct s_garbage_collector
 	struct s_garbage_collector	*next;
 }	t_garb_c;
 
+typedef struct s_exec
+{
+	int	pid;
+	char **arg;
+	char **path_cmd_env;
+	char *cmd_path;
+}	t_exec;
+
 /* Struct data, she contain all struct / variable for Minishell */
 typedef struct s_data
 {
@@ -50,7 +58,8 @@ typedef struct s_data
 	char		**env;
 	bool		operator;
 	char		*name_op;
-	char		prev_folder[BUF_SIZE];
+	int			exit_status;
+	t_exec		*exec;
 	t_garb_c	*g_c;
 	t_token		*lst_token;
 }	t_data;
@@ -80,7 +89,7 @@ void	sig_handler(void);
 int		check_quotes(t_data *data, char *str);
 int		ft_is_quote(char c);
 int		ft_is_white_spaces(char c);
-void	cut_the_line(t_data *data);
+int		cut_the_line(t_data *data);
 int		is_operator(t_data *data, int *i);
 bool	operator(char c);
 int		outfile(t_data *data, int *i, int *count);
@@ -94,9 +103,9 @@ void	add_new_token(t_data *data, t_token **lst, char *line, char qc);
 void	free_token(t_data *data);
 
 /* Function for check any error after the tokenisation */
-void	check_rafter(t_data *data);
-void	check_pipes(t_data *data);
-void	token_error(t_data *data, char *line);
+int		check_rafter(t_data *data);
+int		check_pipes(t_data *data);
+int		token_error(t_data *data, char *line);
 
 /* Functions for built-in commands */
 
@@ -105,7 +114,13 @@ int		ft_exit(t_data *data);
 int		ft_cd(t_data *data);
 int		ft_env(t_data	*data);
 int		ft_echo(t_data *data);
-int	check_option(char *str);
-void	exec_builtin(t_data *data);
+int		exec_builtin(t_data *data);
+
+int		execution(t_data *data);
+void	free_exec_struct(t_data *data);
+char	*find_command_path(t_data *data, t_token *current);
+void	find_path_env(t_data *data);
+int		execute_command(t_data *data, t_token *current);
+void	find_command_args(t_data *data, t_token *current);
 
 #endif

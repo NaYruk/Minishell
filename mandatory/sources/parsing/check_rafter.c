@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:23:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 22:37:57 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:05:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,15 @@ static int	rafter_nbr(char *line, int nbr)
 				current->next->line);
 	}
 */
-static void	special_error(t_data *data, char *line, char *subline)
+static int	special_error(t_data *data, char *line, char *subline)
 {
 	ft_putstr_fd(line, 2);
 	ft_putstr_fd("`", 2);
 	ft_putstr_fd(subline, 2);
 	ft_putstr_fd("'", 2);
 	ft_putstr_fd("\n", 2);
-	free_token(data);
-	free_garbage(data);
-	exit(2);
+	data->exit_status = 2;
+	return (-1);
 }
 
 /*
@@ -54,33 +53,34 @@ static void	special_error(t_data *data, char *line, char *subline)
 		error : <<< >>> <<<< >>>> <<<<<< >>>>>> .....
 */
 
-static void	error_rafter(t_data *data, int nbr, t_token *current)
+static int	error_rafter(t_data *data, int nbr, t_token *current)
 {
 	if (current->status == 0 && current->token > OUTFILE)
 	{
 		nbr = rafter_nbr(current->line, nbr);
 		if (nbr < 3 && nbr >= 1)
-			token_error(data, "syntax error near unexpected token `newline'\n");
+			return (token_error(data, "syntax error near unexpected token `newline'\n"));
 		if (current->line[0] == '<')
 		{
 			if (nbr == 3)
-				token_error(data,
-					"syntax error near unexpected token `newline'\n");
+				return (token_error(data,
+					"syntax error near unexpected token `newline'\n"));
 			else if (nbr == 4)
-				token_error(data, "syntax error near unexpected token `<'\n");
+				return (token_error(data, "syntax error near unexpected token `<'\n"));
 			else if (nbr == 5)
-				token_error(data, "syntax error near unexpected token `<<'\n");
+				return (token_error(data, "syntax error near unexpected token `<<'\n"));
 			else if (nbr >= 6)
-				token_error(data, "syntax error near unexpected token `<<<'\n");
+				return (token_error(data, "syntax error near unexpected token `<<<'\n"));
 		}
 		else
 		{
 			if (nbr == 3)
-				token_error(data, "syntax error near unexpected token `>'\n");
+				return (token_error(data, "syntax error near unexpected token `>'\n"));
 			else if (nbr >= 4)
-				token_error(data, "syntax error near unexpected token `>>'\n");
+				return (token_error(data, "syntax error near unexpected token `>>'\n"));
 		}
 	}
+	return (0);
 }
 
 /*
@@ -92,7 +92,7 @@ static void	error_rafter(t_data *data, int nbr, t_token *current)
 	If the last token is a Rafter token, it is an error.
 */
 
-void	check_rafter(t_data *data)
+int	check_rafter(t_data *data)
 {
 	t_token	*current;
 	int		nbr;
@@ -101,19 +101,21 @@ void	check_rafter(t_data *data)
 	current = data->lst_token;
 	while (current != NULL)
 	{
-		error_rafter(data, nbr, current);
+		if (error_rafter(data, nbr, current) == -1)
+			return (-1);
 		if (current->token >= HEREDOC && current->token <= OUTFILE)
 		{
 			if (current->next != NULL)
 			{
 				if (current->next->token != ARG)
-					special_error(data, "syntax error near unexpected token ",
-						current->next->line);
+					return (special_error(data,
+						"syntax error near unexpected token ", current->next->line));
 			}
 			else
-				token_error(data,
-					"syntax error near unexpected token `newline'\n");
+				return (token_error(data,
+					"syntax error near unexpected token `newline'\n"));
 		}
 		current = current->next;
 	}
+	return (0);
 }

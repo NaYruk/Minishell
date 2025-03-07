@@ -27,6 +27,9 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)built-in/env.c \
 	  $(SRC_PATH)built-in/echo.c \
 	  $(SRC_PATH)built-in/exec_bt.c \
+	  $(SRC_PATH)exec/execution.c \
+	  $(SRC_PATH)exec/execute_command.c \
+	  $(SRC_PATH)exec/build_command.c \
 
 OBJ_DIR = ./tmp
 OBJ = $(SRC:$(SRC_PATH)%.c=$(OBJ_DIR)/%.o)
@@ -63,5 +66,6 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/init 
 	@mkdir -p $(OBJ_DIR)/parsing 
 	@mkdir -p $(OBJ_DIR)/built-in
+	@mkdir -p $(OBJ_DIR)/exec
 
 .PHONY: NAME all clean fclean re
