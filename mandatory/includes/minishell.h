@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 20:39:02 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:16:39 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,9 @@ void	token_error(t_data *data, char *line);
 int		ft_pwd(t_data *data);
 int		ft_exit(t_data *data);
 int		ft_cd(t_data *data);
+int		ft_env(t_data	*data);
+int		ft_echo(t_data *data);
+int	check_option(char *str);
 void	exec_builtin(t_data *data);
 
 #endif
