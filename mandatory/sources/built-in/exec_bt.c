@@ -6,11 +6,16 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:32:33 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/05 15:42:38 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/07 08:39:06 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* 
+	This function executes the builtin commands when
+	they are on the command line.
+*/
 
 void	exec_builtin(t_data *data)
 {
