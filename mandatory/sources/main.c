@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/11 00:21:31 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/11 01:24:31 by melvin           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	data = init_all(envp);
-	while (1)
+/* 	while (1)
 	{
 		sig_handler();
 		data->prompt = readline("SegfaultBros> ");
@@ -56,6 +56,6 @@ int	main(int argc, char **argv, char **envp)
 		free_token(data);
 	}
 	if (isatty(STDIN_FILENO))
-		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("exit\n", 2); */
 	return (free_garbage(data), 0);
 }

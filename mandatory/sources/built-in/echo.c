@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/10 15:06:30 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/08 13:02:15 by melvin           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../includes/minishell.h"
 
-static int	check_option(char *str)
+/* static int	check_option(char *str)
 {
 	int	i;
 	
@@ -97,5 +97,5 @@ int	ft_echo(t_data *data)
 	}
 	else
 		return (EXIT_FAILURE);
-}
+} */
 

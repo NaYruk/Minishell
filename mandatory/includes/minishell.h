@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 03:25:06 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/11 01:20:38 by melvin           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -118,7 +118,9 @@ int		ft_exit(t_data *data);
 int		ft_cd(t_data *data);
 int		ft_env(t_data	*data);
 int		ft_echo(t_data *data);
-char	*extract_value(t_data *data, char *name);
+char	*ft_getenv(t_data *data, char *name);
+void	ft_update_env(t_data *data, char *name, char *value);
+void	ft_add_env(t_data *data, char *name, char *value);
 int		exec_builtin(t_data *data);
 
 void	execution(t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/07 16:42:36 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:51:35 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*ft_get_home(t_data *data)
 } */
 
 
-static void ft_update_env(t_data *data, char *name, char *value)
+/* static void ft_update_env(t_data *data, char *name, char *value)
 {
 	int	i = 0;
 	int	len_total = ft_strlen(name) + ft_strlen(value);
@@ -73,7 +73,7 @@ static void ft_update_env(t_data *data, char *name, char *value)
 		i++;
 	}
 	return ;
-}
+} */
 
 
 int	ft_cd(t_data *data)
