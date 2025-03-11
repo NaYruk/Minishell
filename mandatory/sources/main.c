@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/11 03:58:30 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:32:17 by mcotonea         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	data = init_all(envp);
- 	while (1)
+	while (1)
 	{
 		sig_handler();
 		data->prompt = readline("SegfaultBros> ");
@@ -46,12 +46,13 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(data->prompt);
 			tokenization(data);
+			ft_add_env(data, "MARC", "IL a reussi");
 			if (data->exit_status == 0)
 			{
-				execution(data);
+				exec_builtin(data);
 			}
 		}
-		print_list(data);
+		//print_list(data);
 		free(data->prompt);
 		free_token(data);
 	}
