@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bt.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 13:12:19 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/11 01:24:52 by melvin           ###   ########.fr       */
+/*   Updated: 2025/03/11 16:29:37 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	ft_update_env(t_data *data, char *name, char *value)
 			data->env[i] = malloc(sizeof(char) * len_total + 2);
 			if (!data->env[i])
 				return ;
-			ft_strlcpy(data->env[i], name, ft_strlen(name) + 1);
+			ft_strncpy(data->env[i], name, ft_strlen(name) + 1);
 			data->env[i][ft_strlen(name)] = '=';
-			ft_strlcpy(data->env[i] + ft_strlen(name) + 1, value, ft_strlen(value) + 1);
+			ft_strncpy(data->env[i] + ft_strlen(name) + 1, value, ft_strlen(value) + 1);
 			return ;
 		}
 		i++;
@@ -71,7 +71,7 @@ void	ft_update_env(t_data *data, char *name, char *value)
 	return ;
 }
 
-/* static void	free_env(t_data *data)
+static void	free_env(t_data *data)
 {
 	int	i;
 
@@ -86,9 +86,9 @@ void	ft_update_env(t_data *data, char *name, char *value)
 	free (data->env);
 	data->env = NULL;
 	return ;
-} */
+}
 
-/* void	ft_realloc_env(t_data *data, size_t new_size)
+void	ft_realloc_env(t_data *data, size_t new_size)
 {
 	char	**new_env;
 	size_t	old_size;
@@ -121,7 +121,6 @@ void	ft_update_env(t_data *data, char *name, char *value)
 	}
 	free (data->env);
 	data->env = new_env;
-	add_g_c_node(data, &data->g_c, (void **)data->env, true);
 }
 
 void	ft_add_env(t_data *data, char *name, char *value)
@@ -138,10 +137,36 @@ void	ft_add_env(t_data *data, char *name, char *value)
 	new_var = malloc(sizeof(char) * (ft_strlen(name) + ft_strlen(value) + 2));
 	if (!new_var)
 		malloc_error(data);
-	ft_strlcpy(new_var, name, ft_strlen(name) + 1);
+	ft_strncpy(new_var, name, ft_strlen(name) + 1);
 	new_var[ft_strlen(name)] = '=';
-	ft_strlcpy(new_var + ft_strlen(name) + 1, value, ft_strlen(value) + 1);
+	ft_strncpy(new_var + ft_strlen(name) + 1, value, ft_strlen(value) + 1);
 	data->env[old_size] = new_var;
 	data->env[old_size + 1] = NULL; 
 }
- */
+
+void	ft_delete_env(t_data *data,char *name)
+{
+	int	i;
+	int	j;
+	
+	if (ft_getenv(data, name) == NULL)
+		return ;
+	i = 0;
+	while (data->env[i])
+	{
+		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0
+			&& data->env[i][ft_strlen(name)] == '=')
+		{
+			free (data->env[i]);
+			j = i;
+			while (data->env[j + 1])
+			{
+				data->env[j] = data->env[j + 1];
+				j++;				
+			}
+			data->env[j] = NULL;
+			return ;
+		}
+		i++;
+	}
+}

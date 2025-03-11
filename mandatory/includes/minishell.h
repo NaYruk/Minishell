@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 01:20:38 by melvin           ###   ########.fr       */
+/*   Updated: 2025/03/11 18:03:33 by mcotonea         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -121,6 +121,7 @@ int		ft_echo(t_data *data);
 char	*ft_getenv(t_data *data, char *name);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_add_env(t_data *data, char *name, char *value);
+void	ft_delete_env(t_data *data,char *name);
 int		exec_builtin(t_data *data);
 
 void	execution(t_data *data);
