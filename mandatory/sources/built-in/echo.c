@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/07 17:10:22 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:06:30 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -29,7 +29,7 @@ static int	check_option(char *str)
 	
 }
 
-static char	*extract_value(t_data *data, char *name)
+char	*extract_value(t_data *data, char *name)
 {
 	char	*value;
 	int		i;
@@ -50,7 +50,7 @@ static char	*extract_value(t_data *data, char *name)
 	return (NULL);
 }
 
-static int	check_dollar(char *str)
+int	check_dollar(char *str)
 {
 	int	i;
 

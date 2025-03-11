@@ -13,6 +13,11 @@
 			"cwd": "/home/mcotonea/Desktop/Minishell",
 			"binaryPath": "/home/mcotonea/Desktop/Minishell/minishell",
 			"binaryArgs": []
+		},
+		{
+			"cwd": "/home/nayruk/Minishell",
+			"binaryPath": "/home/nayruk/Minishell/minishell",
+			"binaryArgs": []
 		}
 	]
 }

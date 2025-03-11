@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 10:02:52 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/11 00:40:07 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -65,6 +65,8 @@ static void	attribute_cmd_or_arg(t_token *current)
 		|| current->prev->token == HEREDOC || current->prev->token == APPEND
 		|| current->prev->token == CMD)
 		current->token = ARG;
+	else if (current->prev->token == ARG && current->prev->prev->token == INFILE)
+		current->token = CMD;
 	else if (current->prev->token == ARG)
 		current->token = ARG;
 	else if (current->prev->token == PIPE)

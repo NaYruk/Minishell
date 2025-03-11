@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 18:25:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/11 03:25:06 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -27,6 +27,7 @@
 # include <stdbool.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 
 /* Libft Headers */
 # include "../../Libft/includes/ft_printf.h"
@@ -46,11 +47,10 @@ typedef struct s_garbage_collector
 
 typedef struct s_exec
 {
-	int	 *pid;
-	int	 nbr_of_command;
-	char **arg;
-	char **path_cmd_env;
-	char *cmd_path;
+	char			*infile;
+	char			*outfile;
+	char			**arg_cmd;
+	char			*cmd_path;
 }	t_exec;
 
 /* Struct data, she contain all struct / variable for Minishell */
@@ -61,6 +61,7 @@ typedef struct s_data
 	bool		operator;
 	char		*name_op;
 	int			exit_status;
+	int			nbr_of_command;
 	t_exec		*exec;
 	t_garb_c	*g_c;
 	t_token		*lst_token;
@@ -74,6 +75,7 @@ t_token	*last_node(t_token *lst);
 
 /* Function for write an error and return the program */
 void	malloc_error(t_data *data);
+void	error(t_data *data);
 
 /* 
 	Functions for manipulate the memory with a garbage collector
@@ -119,11 +121,13 @@ int		ft_echo(t_data *data);
 char	*extract_value(t_data *data, char *name);
 int		exec_builtin(t_data *data);
 
-int		execution(t_data *data);
+void	execution(t_data *data);
+void	set_exec_struct(t_data *data, t_token **current);
+void	init_exec(t_data *data);
 void	free_exec_struct(t_data *data);
-char	*find_command_path(t_data *data, t_token *current);
-void	find_path_env(t_data *data);
-int		execute_command(t_data *data, t_token *current);
-void	find_command_args(t_data *data, t_token *current);
+void	get_pids_and_pipes(t_data *data, pid_t **pids, int (**pipes)[2]);
+void	set_nbr_of_commands(t_data *data);
+void	get_args_cmd(t_data *data, t_token **current);
+void	get_cmd_path(t_data *data, t_token **current);
 
 #endif

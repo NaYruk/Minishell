@@ -1,105 +1,83 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/07 10:27:33 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 18:26:34 by mmilliot         ###   ########.fr       */
+/*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
+/*   Updated: 2025/03/11 03:54:47 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
-int	nbr_of_cmd(t_token *token)
+void	set_exec_struct(t_data *data, t_token **current)
 {
-	int		nbr;
-
-	nbr = 0;
-	while (token != NULL)
+	while (*current != NULL)
 	{
-		if (token->token == CMD)
-			nbr++;
-		token = token->next;
+		if ((*current)->token == PIPE)
+		{
+			*current = (*current)->next;
+			break ;
+		}
+		if ((*current)->token == CMD)
+		{
+			get_args_cmd(data, current);
+			get_cmd_path(data, current);
+		}
+		if ((*current)->token == INFILE && ((*current)->next->token) == ARG)
+			data->exec->infile = (*current)->next->line;
+		if ((*current)->token == APPEND && ((*current)->next->token) == ARG)
+			data->exec->infile = (*current)->next->line;
+		if ((*current)->token == OUTFILE && ((*current)->next->token) == ARG)
+			data->exec->outfile = (*current)->next->line;
+		*current = (*current)->next;
 	}
-	return (nbr);
 }
 
-/* 
-	Function for init the exec structure :
-	She contain :
-	- arg : Arguments of the cmd, give to execve
-	- cmd_path : path of the executable file.
-	- path_cmd_env : char **, 
-		he contain all path possible for a command exectable.
-*/
-
-void	init_exec_struct(t_data *data)
+/*int	setup_redirection(t_data *data, int i, int (*pipes)[2])
 {
-	data->exec = malloc(sizeof(t_exec));
-	if (!data->exec)
-		malloc_error(data);
-	data->exec->arg = NULL;
-	data->exec->cmd_path = NULL;
-	data->exec->path_cmd_env = NULL;
-	data->exec->nbr_of_command = nbr_of_cmd(data->lst_token);
-	data->exec->pid = malloc(sizeof(int) * data->exec->nbr_of_command);
-	if (!data->exec->pid)
-		malloc_error(data);
-	return ;	
+	//...
 }
 
-/* Function for free the exec struct */
-
-void	free_exec_struct(t_data *data)
+void	child_process(t_data *data, int i, int (*pipes)[2])
 {
-	int	i;
+	if (setup_redirection(data, i, pipes) == -1)
+		return ;
+}*/
 
-	if (data->exec->arg != NULL)
-	{
-		i = -1;
-		while (data->exec->arg[++i] != NULL)
-			free(data->exec->arg[i]);
-		free(data->exec->arg);
-	}
-	if (data->exec->cmd_path != NULL)
-		free(data->exec->cmd_path);
-	if (data->exec->path_cmd_env != NULL)
-	{
-		i = -1;
-		while (data->exec->path_cmd_env[++i] != NULL)
-			free(data->exec->path_cmd_env[i]);
-		free(data->exec->path_cmd_env);
-	}
-	free(data->exec->pid);
-	free(data->exec);
-}
-
-void	wait_command(t_data *data)
+void	exec(t_data *data, t_token *current, pid_t *pids, int (*pipes)[2])
 {
-	while ((waitpid(-1, &data->exit_status, 0) > 0))
-		continue ;
-}
-
-int	execution(t_data *data)
-{
-	t_token *current;
-
-	current = data->lst_token;
-	init_exec_struct(data);
+	(void)pids;
+	(void)pipes;
 	while (current != NULL)
 	{
-		if (current->token == CMD)
-		{
-			if (exec_builtin(data) == 0)
-			{
-				execute_command(data, current);
-			}
-		}
-		current = current->next;
+		set_exec_struct(data, &current);
+		/*int	i = -1;
+		while (data->exec->arg_cmd[++i])
+			printf("Arguments de la commande : %s\n", data->exec->arg_cmd[i]);
+		printf("Path de l'executable de la commande : %s\n", data->exec->cmd_path);
+		printf("Infile de la commande : %s\n", data->exec->infile);
+		printf("OUTFILE de la commande : %s\n", data->exec->outfile);*/ 
+		free_exec_struct(data);
 	}
-	wait_command(data);
-	free_exec_struct(data);
-	return (0);
+}
+
+void	execution(t_data *data)
+{
+	t_token *current;
+	pid_t	*pids;
+	int		(*pipes)[2];
+	
+	current = data->lst_token;
+	set_nbr_of_commands(data);
+	if (data->nbr_of_command == 0)
+		return ;
+	init_exec(data);
+	get_pids_and_pipes(data, &pids, &pipes);
+	exec(data, current, pids, pipes);
+	free(pipes);
+	free(pids);
+	free(data->exec);
 }

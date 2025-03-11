@@ -28,8 +28,8 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)built-in/echo.c \
 	  $(SRC_PATH)built-in/exec_bt.c \
 	  $(SRC_PATH)exec/execution.c \
-	  $(SRC_PATH)exec/execute_command.c \
-	  $(SRC_PATH)exec/build_command.c \
+	  $(SRC_PATH)exec/args_and_cmd_path.c \
+	  $(SRC_PATH)exec/exec_utils.c \
 
 OBJ_DIR = ./tmp
 OBJ = $(SRC:$(SRC_PATH)%.c=$(OBJ_DIR)/%.o)
