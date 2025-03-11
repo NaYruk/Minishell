@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 14:46:10 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/11 14:47:01 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	copy_envp(char **envp, t_data *data)
 	data->env = malloc(sizeof(char *) * (line_number + 1));
 	if (!data->env)
 		malloc_error(data);
-	add_g_c_node(data, &data->g_c, (void **)data->env, true);
+	//add_g_c_node(data, &data->g_c, (void **)data->env, true);
 	i = -1;
 	while (envp[++i] != NULL)
 		data->env[i] = ft_strdup(envp[i]);

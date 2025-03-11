@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_bt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:32:33 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/08 13:02:45 by melvin           ###   ########.fr       */
+/*   Updated: 2025/03/11 18:04:06 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	exec_builtin(t_data *data)
 	else if (ft_strcmp(data->lst_token->line, "exit") == 0)
 		return (ft_exit(data), 1);
 	else if (ft_strcmp(data->lst_token->line, "env") == 0)
-	  return (ft_env(data), 1);
-	// else if (ft_strcmp(data->lst_token->line, "echo") == 0)
-	// 	return (ft_echo(data), 1);
+		return (ft_env(data), 1);
+	else if (ft_strcmp(data->lst_token->line, "echo") == 0)
+		return (ft_echo(data), 1);
 	return (0);
 }
