@@ -26,6 +26,7 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)built-in/cd.c \
 	  $(SRC_PATH)built-in/env.c \
 	  $(SRC_PATH)built-in/echo.c \
+	  $(SRC_PATH)built-in/utils_bt.c \
 	  $(SRC_PATH)built-in/exec_bt.c \
 	  $(SRC_PATH)exec/execution.c \
 	  $(SRC_PATH)exec/execute_command.c \
