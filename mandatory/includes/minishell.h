@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 01:20:38 by melvin           ###   ########.fr       */
+/*   Updated: 2025/03/11 16:57:14 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -28,6 +28,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+#include <errno.h>
 
 /* Libft Headers */
 # include "../../Libft/includes/ft_printf.h"
@@ -131,5 +132,8 @@ void	get_pids_and_pipes(t_data *data, pid_t **pids, int (**pipes)[2]);
 void	set_nbr_of_commands(t_data *data);
 void	get_args_cmd(t_data *data, t_token **current);
 void	get_cmd_path(t_data *data, t_token **current);
+void	set_pipes(t_data *data, int (*pipes)[2]);
+void	close_pipes(t_data *data, int (*pipes)[2]);
+int		child_process(t_data *data, int i, int (*pipes)[2]);
 
 #endif
