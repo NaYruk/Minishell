@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 03:54:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/11 03:58:54 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -54,12 +54,12 @@ void	exec(t_data *data, t_token *current, pid_t *pids, int (*pipes)[2])
 	while (current != NULL)
 	{
 		set_exec_struct(data, &current);
-		/*int	i = -1;
+		int	i = -1;
 		while (data->exec->arg_cmd[++i])
 			printf("Arguments de la commande : %s\n", data->exec->arg_cmd[i]);
 		printf("Path de l'executable de la commande : %s\n", data->exec->cmd_path);
 		printf("Infile de la commande : %s\n", data->exec->infile);
-		printf("OUTFILE de la commande : %s\n", data->exec->outfile);*/ 
+		printf("OUTFILE de la commande : %s\n", data->exec->outfile);
 		free_exec_struct(data);
 	}
 }
