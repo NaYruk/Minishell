@@ -46,9 +46,9 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(data->prompt);
 			tokenization(data);
-			ft_add_env(data, "MARC", "IL a reussi");
 			if (data->exit_status == 0)
 			{
+        exec(data);
 				exec_builtin(data);
 			}
 		}

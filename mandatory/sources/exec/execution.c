@@ -1,15 +1,22 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 03:58:54 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:37:13 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
+/* 	i = -1;
+		while (data->exec->arg_cmd[++i])
+			printf("Arguments de la commande : %s\n", data->exec->arg_cmd[i]);
+		printf("Path de l'executable de la commande : %s\n", data->exec->cmd_path);
+		printf("Infile de la commande : %s\n", data->exec->infile);
+		printf("OUTFILE de la commande : %s\n", data->exec->outfile); */
+		
 #include "../../includes/minishell.h"
 
 void	set_exec_struct(t_data *data, t_token **current)
@@ -36,32 +43,55 @@ void	set_exec_struct(t_data *data, t_token **current)
 	}
 }
 
-/*int	setup_redirection(t_data *data, int i, int (*pipes)[2])
+void	wait_all(t_data *data, pid_t *pids)
 {
-	//...
-}
+	int	i;
+	int	status;
 
-void	child_process(t_data *data, int i, int (*pipes)[2])
-{
-	if (setup_redirection(data, i, pipes) == -1)
-		return ;
-}*/
+	i = -1;
+	status = 0;
+	while (++i < data->nbr_of_command)
+	{
+		if (waitpid(pids[i], NULL, 0) == -1)
+		{
+			perror("WAITPID");
+			error(data);
+		}
+	}
+}
 
 void	exec(t_data *data, t_token *current, pid_t *pids, int (*pipes)[2])
 {
-	(void)pids;
-	(void)pipes;
+	int	cmd_process;
+
+	cmd_process = 0;
+	set_pipes(data, pipes);
 	while (current != NULL)
 	{
+		if (exec_builtin(data) == 1)
+		{
+			while (current != NULL && current->token != PIPE)
+			{
+				if (current->token == PIPE)
+				{
+					current = current->next;
+					break ;
+				}
+				current = current->next;
+			}
+		}
 		set_exec_struct(data, &current);
-		int	i = -1;
-		while (data->exec->arg_cmd[++i])
-			printf("Arguments de la commande : %s\n", data->exec->arg_cmd[i]);
-		printf("Path de l'executable de la commande : %s\n", data->exec->cmd_path);
-		printf("Infile de la commande : %s\n", data->exec->infile);
-		printf("OUTFILE de la commande : %s\n", data->exec->outfile);
-		free_exec_struct(data);
+		pids[cmd_process] = fork();
+		if (pids[cmd_process] == 0)
+			child_process(data, cmd_process, pipes);
+		else
+		{
+			cmd_process++;
+			free_exec_struct(data);
+		}
 	}
+	wait_all(data, pids);
+	close_pipes(data, pipes);
 }
 
 void	execution(t_data *data)
