@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
@@ -8,7 +8,7 @@
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
 /*   Updated: 2025/03/08 13:02:15 by melvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -29,7 +29,7 @@
 	
 }
 
-static char	*extract_value(t_data *data, char *name)
+char	*extract_value(t_data *data, char *name)
 {
 	char	*value;
 	int		i;
@@ -50,7 +50,7 @@ static char	*extract_value(t_data *data, char *name)
 	return (NULL);
 }
 
-static int	check_dollar(char *str)
+int	check_dollar(char *str)
 {
 	int	i;
 
