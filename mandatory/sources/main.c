@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/11 18:32:17 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/12 08:58:11 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,10 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(data->prompt);
 			tokenization(data);
-			if (data->exit_status == 0)
-			{
-        exec(data);
-				exec_builtin(data);
-			}
+			// if (data->exit_status == 0)
+			// {
+			// }
+			execution(data);
 		}
 		//print_list(data);
 		free(data->prompt);

@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 13:12:19 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/11 16:29:37 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:55:41 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	ft_add_env(t_data *data, char *name, char *value)
 	data->env[old_size + 1] = NULL; 
 }
 
-void	ft_delete_env(t_data *data,char *name)
+void	ft_delete_env(t_data *data, char *name)
 {
 	int	i;
 	int	j;

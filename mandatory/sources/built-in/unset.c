@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 10:41:06 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/12 08:43:35 by mcotonea         ###   ########.fr       */
+/*   Created: 2025/03/12 10:52:03 by mcotonea          #+#    #+#             */
+/*   Updated: 2025/03/12 11:14:30 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/* 
-	The ft_pwd function is used to obtain the
-	process's current working directory.
-*/
-
-int	ft_pwd(t_data *data)
+int	ft_unset(t_data *data)
 {
-	char	*dir;
+	t_token	*tmp;
 
-	(void)data;
-	dir = getcwd(NULL, 0);
-	if (!dir)
-	{
-		perror("pwd");
-		data->exit_status = EXIT_FAILURE;
+	tmp = data->lst_token;
+	if (!tmp || !tmp->next)
 		return (EXIT_FAILURE);
+	tmp = tmp->next;
+	while (tmp)
+	{
+		if (tmp->token == ARG)
+			ft_delete_env(data, tmp->line);
+		tmp = tmp->next;
 	}
-	printf("%s\n", dir);
-	free(dir);
-	data->exit_status = EXIT_SUCCESS;
 	return (EXIT_SUCCESS);
 }
