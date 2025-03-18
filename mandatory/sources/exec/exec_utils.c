@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:04:47 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 17:30:51 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:03:12 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	get_pids_and_pipes(t_data *data, pid_t **pids, int (**pipes)[2])
 			malloc_error(data);
 		}
 	}
+	else
+		*pipes = NULL;
 }
 
 void	free_exec_struct(t_data *data)
@@ -56,10 +58,17 @@ void	free_exec_struct(t_data *data)
 	}
 	if (data->exec->cmd_path)
 		free(data->exec->cmd_path);
+	if (data->exec->infile != NULL)
+		free(data->exec->infile);
+	if (data->exec->outfile != NULL)
+		free(data->exec->outfile);
+	if (data->exec->append != NULL)
+		free(data->exec->append);
 	data->exec->infile = NULL;
 	data->exec->outfile = NULL;
 	data->exec->cmd_path = NULL;
 	data->exec->arg_cmd = NULL;
+	data->exec->append = NULL;
 }
 
 void	init_exec(t_data *data)
@@ -71,6 +80,7 @@ void	init_exec(t_data *data)
 	data->exec->cmd_path = NULL;
 	data->exec->infile = NULL;
 	data->exec->outfile = NULL;
+	data->exec->append = NULL;
 }
 
 void	set_pipes(t_data *data, int (*pipes)[2])

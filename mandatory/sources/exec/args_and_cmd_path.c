@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   args_and_cmd_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:36:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 02:46:09 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:47:25 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -102,10 +102,16 @@ void	get_cmd_path(t_data *data, t_token **current)
 	int		i;
 
 	i = -1;
+	test_cmd_path = NULL;
+	if (access((*current)->line, F_OK | X_OK) == 0)
+	{
+		test_cmd_path = ft_strdup((*current)->line);
+		data->exec->cmd_path = test_cmd_path;
+		return ;
+	}
 	all_cmd_paths = get_all_cmd_paths(data);
 	if (!all_cmd_paths)
 		return ;
-	test_cmd_path = NULL;
 	while (all_cmd_paths[++i] != NULL)
 	{
 		test_cmd_path = ft_strjoin(all_cmd_paths[i], (*current)->line);
