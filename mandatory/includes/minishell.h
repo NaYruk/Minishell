@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/12 11:09:15 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:13:11 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ typedef struct s_garbage_collector
 
 typedef struct s_exec
 {
-	char			*infile;
-	char			*outfile;
+	char			**infile;
+	char			**outfile;
+	char			**append;
 	char			**arg_cmd;
 	char			*cmd_path;
 }	t_exec;
@@ -127,7 +128,7 @@ void	ft_delete_env(t_data *data,char *name);
 int		exec_builtin(t_data *data);
 
 void	execution(t_data *data);
-void	set_exec_struct(t_data *data, t_token **current);
+int		set_exec_struct(t_data *data, t_token **current);
 void	init_exec(t_data *data);
 void	free_exec_struct(t_data *data);
 void	get_pids_and_pipes(t_data *data, pid_t **pids, int (**pipes)[2]);
@@ -137,5 +138,6 @@ void	get_cmd_path(t_data *data, t_token **current);
 void	set_pipes(t_data *data, int (*pipes)[2]);
 void	close_pipes(t_data *data, int (*pipes)[2]);
 int		child_process(t_data *data, int i, int (*pipes)[2]);
+int		setup_redirection(t_data *data, int cmd_process, int (*pipes)[2]);
 
 #endif
