@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 00:10:39 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/19 07:31:37 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ int	exec_build(char *line)
 	else if (ft_strcmp(line, "echo") == 0)
 		return (1);
 	else if (ft_strcmp(line, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(line, "export") == 0)
 		return (1);
 	return (0);
 }
