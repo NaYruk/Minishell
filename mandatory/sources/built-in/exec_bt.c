@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:32:33 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/12 11:08:54 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/19 07:18:26 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ int	exec_builtin(t_data *data)
 		return (ft_echo(data), 1);
 	else if (ft_strcmp(data->lst_token->line, "unset") == 0)
 		return (ft_unset(data), 1);
+	else if (ft_strcmp(data->lst_token->line, "export") == 0)
+		return (ft_export(data), 1);
 	return (0);
 }

@@ -6,11 +6,16 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:52:03 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/12 11:14:30 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/19 07:49:59 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* 
+	Function used to delete an environnement variable.
+	Works without the '=' sign in the variable name. 
+*/
 
 int	ft_unset(t_data *data)
 {
