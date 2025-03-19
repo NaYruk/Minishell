@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/12 10:25:40 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:46:15 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	ft_echo(t_data *data)
 	expand = NULL;
 	newline = 1;
 	if (!tmp->next)
-	return (printf("\n"), EXIT_SUCCESS);
-	while (tmp->next->token == ARG && check_option(tmp->next->line))
+		return (printf("\n"), EXIT_SUCCESS);
+	while (tmp->next && (tmp->next->token == ARG && check_option(tmp->next->line)))
 	{
 		newline = 0;
 		tmp = tmp->next;
@@ -93,7 +93,7 @@ int	ft_echo(t_data *data)
 		else
 			printf("%s", tmp->next->line);
 		tmp = tmp->next;
-		if (tmp->next && tmp->next->token == ARG)
+		if (tmp->next && tmp->next->token == ARG && tmp->next->line != NULL)
 			printf(" ");
 	}
 	if (newline)
