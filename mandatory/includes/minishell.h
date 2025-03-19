@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 16:42:57 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:37:44 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-#include <errno.h>
+# include <errno.h>
 
 /* Libft Headers */
 # include "../../Libft/includes/ft_printf.h"
@@ -60,10 +60,14 @@ typedef struct s_data
 {
 	char		*prompt;
 	char		**env;
+	pid_t		*pids;
 	bool		operator;
+	int			(*pipes)[2];
 	char		*name_op;
 	int			exit_status;
 	int			nbr_of_command;
+	int			stdout_backup;
+	int			stdin_backup;
 	t_exec		*exec;
 	t_garb_c	*g_c;
 	t_token		*lst_token;
@@ -111,10 +115,10 @@ void	free_token(t_data *data);
 /* Function for check any error after the tokenisation */
 int		check_rafter(t_data *data);
 int		check_pipes(t_data *data);
+void	check_dollars(t_data *data);
 int		token_error(t_data *data, char *line);
 
 /* Functions for built-in commands */
-
 int		ft_pwd(t_data *data);
 int		ft_exit(t_data *data);
 int		ft_cd(t_data *data);
@@ -124,21 +128,21 @@ int		ft_unset(t_data *data);
 int		ft_export(t_data *data);
 char	*ft_getenv(t_data *data, char *name);
 void	ft_update_env(t_data *data, char *name, char *value);
-void	ft_delete_env(t_data *data,char *name);
+void	ft_delete_env(t_data *data, char *name);
 int		exec_builtin(t_data *data);
 
+/* Function for the execution of commands */
 void	execution(t_data *data);
-int		set_exec_struct(t_data *data, t_token **current);
 void	init_exec(t_data *data);
 void	free_exec_struct(t_data *data);
-void	get_pids_and_pipes(t_data *data, pid_t **pids, int (**pipes)[2]);
+void	get_pids_and_pipes(t_data *data);
 void	set_nbr_of_commands(t_data *data);
 void	get_args_cmd(t_data *data, t_token **current);
 void	get_cmd_path(t_data *data, t_token **current);
-void	set_pipes(t_data *data, int (*pipes)[2]);
-void	close_pipes(t_data *data, int (*pipes)[2]);
-int		child_process(t_data *data, int i, int (*pipes)[2]);
-int		setup_redirection(t_data *data, int cmd_process, int (*pipes)[2]);
-void	check_dollars(t_data *data);
+void	set_pipes(t_data *data);
+void	close_pipes(t_data *data);
+int		child_process(t_data *data, int i);
+int		setup_redirection(t_data *data, int cmd_process);
+int		set_exec_struct(t_data *data, t_token **current);
 
 #endif

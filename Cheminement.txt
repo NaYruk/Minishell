@@ -26,3 +26,6 @@ GERER les signaux comme dit au dessus.
 
 COMMANDE VALGRIND POUR LES FD
 valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes
+
+COMMANDE VALGRIND POUR TOUT CHECK SUR LE PROJET !
+valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --suppressions=valgrind.supp --gen-suppressions=all --track-fds=yes ./minishel

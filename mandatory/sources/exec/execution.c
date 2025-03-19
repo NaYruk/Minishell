@@ -3,100 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 07:31:37 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/19 22:26:30 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* 	i = -1;
-		while (data->exec->arg_cmd[++i])
-			printf("Arguments de la commande : %s\n", data->exec->arg_cmd[i]);
-		printf("Path de l'executable de la commande : %s\n", data->exec->cmd_path);
-		printf("Infile de la commande : %s\n", data->exec->infile);
-		printf("OUTFILE de la commande : %s\n", data->exec->outfile); */
-		
 #include "../../includes/minishell.h"
 
-int	get_nbr_redir(t_data *data, t_token *current)
-{
-	int	nbr_infile;
-	int	nbr_outfile;
-	int	nbr_append;
-	
-	nbr_append = 0;
-	nbr_infile = 0;
-	nbr_outfile = 0;
-	while (current != NULL)
-	{
-		if (current->token == PIPE)
-			break ;
-		if (current->token == INFILE && current->next->token == ARG)
-			nbr_infile++;
-		if (current->token == APPEND && (current->next->token) == ARG)
-			nbr_append++;
-		if (current->token == OUTFILE && (current->next->token == ARG))
-			nbr_outfile++;
-		current = current->next;
-	}
-	data->exec->infile = malloc(sizeof(char *) * (nbr_infile + 1));
-	if (!data->exec->infile)
-		return (-1);
-	data->exec->outfile = malloc(sizeof(char *) * (nbr_outfile + 1));
-	if (!data->exec->outfile)
-		return (-1);
-	data->exec->append = malloc(sizeof(char *) * (nbr_append + 1));
-	if (!data->exec->append)
-		return (-1);
-	return (0);
-}
+/* WAIT_ALL = After the execution, we wait all child process. */
 
-int	set_exec_struct(t_data *data, t_token **current)
-{
-	int	i;
-	int	j;
-	int k;
-	
-	j = 0;
-	i = 0;
-	k = 0;
-	if (get_nbr_redir(data, *current) == -1)
-		return (-1);
-	while (*current != NULL)
-	{
-		if ((*current)->token == PIPE)
-		{
-			*current = (*current)->next;
-			break ;
-		}
-		if ((*current)->token == CMD)
-		{
-			get_args_cmd(data, current);
-			get_cmd_path(data, current);
-		}
-		if ((*current)->token == INFILE && ((*current)->next->token) == ARG)
-			data->exec->infile[i++] = (*current)->next->line;
-		if ((*current)->token == APPEND && ((*current)->next->token) == ARG)
-			data->exec->append[j++] = (*current)->next->line;
-		if ((*current)->token == OUTFILE && ((*current)->next->token) == ARG)
-			data->exec->outfile[k++] = (*current)->next->line;
-		*current = (*current)->next;
-	}
-	data->exec->infile[i] = NULL;
-	data->exec->outfile[k] = NULL;
-	data->exec->append[j] = NULL;
-	return (0);
-}
-
-void	wait_all(t_data *data, pid_t *pids, int	nbr_of_fork)
+void	wait_all(t_data *data, int nbr_of_fork)
 {
 	int	status;
-	
+
 	status = 0;
 	while (nbr_of_fork >= 0)
 	{
-		if (waitpid(pids[nbr_of_fork], NULL, 0) == -1)
+		if (waitpid(data->pids[nbr_of_fork], NULL, 0) == -1)
 		{
 			perror("WAITPID");
 			error(data);
@@ -105,6 +30,8 @@ void	wait_all(t_data *data, pid_t *pids, int	nbr_of_fork)
 		nbr_of_fork--;
 	}
 }
+
+/* Function for detected if a builtin is present */
 
 int	exec_build(char *line)
 {
@@ -125,61 +52,110 @@ int	exec_build(char *line)
 	return (0);
 }
 
-void	exec(t_data *data, t_token *current, pid_t *pids, int (*pipes)[2])
+/*
+	EXEC_BUILD_OR_CMD = Function for exec a builtin if the token is a builtin
+						exec other cmd if the token is not a builtin.
+	
+	In the case of a builtin, setup the redirections, and exec the builtin.
+	In the case of an other command, create a child process, setup the
+	redirections in the child, and exec the command with execve.
+*/
+
+void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
+{
+	if (exec_build(data->exec->arg_cmd[0]) == 1)
+	{
+		if (setup_redirection(data, *cmd_process) != -1)
+			exec_builtin(data);
+		dup2(data->stdout_backup, STDOUT_FILENO);
+	}
+	else
+	{
+		data->pids[++(*nbr_of_fork)] = fork();
+		if (data->pids[*nbr_of_fork] == 0)
+			child_process(data, *cmd_process);
+	}
+	(*cmd_process)++;
+}
+
+/*
+	EXEC = Function for the final execution :
+		Set all redirection, exec builtin if the token contain a builtin,
+		else exec a child process and use execve for execute the command.
+		
+	SET_EXEC_STRUCT = Function for set the exec structure. 
+		set a char ** infile, outfile and append in the case
+		of < infile1 < infile2 < infile3 etc... same for outfile and append.
+		set a char **arg_cmd and a char *cmd_path for execve function.
+		SET_EXEC_STRUCT is a setup for the final execution.
+		IN : 	./set_exec_struct.c
+				./get_args.c
+				./get_cmd_path.c
+		
+	EXEC_BUILD_OR_CMD = Function for exec a builtin if the token is a builtin
+						exec other cmd if the token is not a builtin.
+						
+	WAIT_ALL = After the execution of each command, we wait all child process.
+	we have a backup of STDIN and STDOUT because in the case of a builtin,
+	and redirect, we dup2 the STDIN or STDOUT in the parent process.
+	We need to restore at origin STDIN and STDOUT in the parent after the
+	redirection.
+*/	
+
+void	exec(t_data *data, t_token *current)
 {
 	int	cmd_process;
 	int	nbr_of_fork;
-	int	stdout_backup;
-	int	stdin_backup;
 
 	cmd_process = 0;
 	nbr_of_fork = -1;
-	set_pipes(data, pipes);
-	stdout_backup = dup(STDOUT_FILENO);
-	stdin_backup = dup(STDIN_FILENO);
+	set_pipes(data);
 	while (current != NULL)
 	{
 		if (set_exec_struct(data, &current) == -1)
-		{
-			free_exec_struct(data);
-			return ;
-		}
-		if (exec_build(data->exec->arg_cmd[0]) == 1)
-		{
-			if (setup_redirection(data, cmd_process, pipes) != -1)
-				exec_builtin(data);
-			dup2(stdout_backup, STDOUT_FILENO);
-		}
-		else
-		{
-			pids[++nbr_of_fork] = fork();
-			if (pids[nbr_of_fork] == 0)
-				child_process(data, cmd_process, pipes);
-		}
-		cmd_process++;
+			return (free_exec_struct(data));
+		exec_build_or_cmd(data, &cmd_process, &nbr_of_fork);
 		free_exec_struct(data);
 	}
-	close_pipes(data, pipes);
-	wait_all(data, pids, nbr_of_fork);
-	dup2(stdin_backup, STDIN_FILENO);
-	close(stdout_backup);
-	close(stdin_backup);
+	close_pipes(data);
+	wait_all(data, nbr_of_fork);
+	dup2(data->stdin_backup, STDIN_FILENO);
+	close(data->stdout_backup);
+	close(data->stdin_backup);
 }
+
+/*
+	Main Function for the execution :
+	set_nbr_of_commands = Function for check the nbr of command in token.
+	init_exec = Function for initialize the exec Struct
+	EXEC STRUCT :
+	typedef struct s_exec
+	{
+		char			**infile;
+		char			**outfile;
+		char			**append;
+		char			**arg_cmd;
+		char			*cmd_path;
+	}	t_exec;
+	GET_PIDS_AND_PIPES = Function for malloc pipes and pids variable in data
+						 for the final execution.
+	EXEC = Function for the final execution :
+		Set all redirection, exec builtin if the token contain a builtin,
+		else exec a child process and use execve for execute the command.
+*/
 
 void	execution(t_data *data)
 {
-	t_token *current;
-	pid_t	*pids;
-	int		(*pipes)[2];
-	
+	t_token	*current;
+
 	current = data->lst_token;
 	set_nbr_of_commands(data);
 	if (data->nbr_of_command == 0)
 		return ;
 	init_exec(data);
-	get_pids_and_pipes(data, &pids, &pipes);
-	exec(data, current, pids, pipes);
-	free(pipes);
-	free(pids);
+	get_pids_and_pipes(data);
+	exec(data, current);
+	free(data->pipes);
+	free(data->pids);
 	free(data->exec);
 }

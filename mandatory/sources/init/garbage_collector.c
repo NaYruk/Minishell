@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:50:41 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 14:50:05 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:13:49 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ static void	free_array(t_data *data)
 void	free_garbage(t_data *data)
 {
 	t_garb_c	*temp;
+	int			i;
 
+	i = -1;
 	while (data->g_c != NULL)
 	{
 		temp = data->g_c->next;
@@ -123,7 +125,6 @@ void	free_garbage(t_data *data)
 	}
 	if (data->env)
 	{
-		int	 i = -1;
 		while (data->env[++i])
 			free (data->env[i]);
 		free (data->env);
