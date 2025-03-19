@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/07 09:45:28 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:23:29 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	get_line(t_data *data, int *i, int *count, char *quote_char)
    and add this token to the chained list
    we skip the closing quote if it exists.
 */
-   
+
 static void	stock_the_line(t_data *data, char *line, int *i, char quote_char)
 {
 	if (line[0] != '\0')
@@ -118,7 +118,6 @@ int	cut_the_line(t_data *data)
 	count = 0;
 	i = 0;
 	quote_char = '\0';
-	line = NULL;
 	if (check_quotes(data, data->prompt) == -1)
 		return (-1);
 	while ((size_t)i < ft_strlen(data->prompt))

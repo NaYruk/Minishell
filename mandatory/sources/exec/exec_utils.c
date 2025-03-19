@@ -6,15 +6,17 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:04:47 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/18 18:03:12 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/19 22:30:22 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/* SET_NBR_OF_COMMAND = Function for find the nbr of command in token */
+
 void	set_nbr_of_commands(t_data *data)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = data->lst_token;
 	data->nbr_of_command = 0;
@@ -26,23 +28,30 @@ void	set_nbr_of_commands(t_data *data)
 	}
 }
 
-void	get_pids_and_pipes(t_data *data, pid_t **pids, int (**pipes)[2])
+/* 
+	GET_PIDS_AND_PIPES =
+		malloc pipes and pids based on the number of commands found 
+*/
+
+void	get_pids_and_pipes(t_data *data)
 {
 	if (data->nbr_of_command > 0)
 	{
-		*pids = malloc(sizeof(pid_t) * data->nbr_of_command);
-		if (!(*pids))
+		data->pids = malloc(sizeof(pid_t) * data->nbr_of_command);
+		if (!data->pids)
 			malloc_error(data);
-		*pipes = malloc(sizeof(int[2]) * (data->nbr_of_command - 1));
-		if (!(*pipes))
+		data->pipes = malloc(sizeof(int [2]) * (data->nbr_of_command - 1));
+		if (!data->pipes)
 		{
-			free((*pids));
+			free(data->pids);
 			malloc_error(data);
 		}
 	}
 	else
-		*pipes = NULL;
+		data->pipes = NULL;
 }
+
+/* FREE_EXEC_STRUCT = function for free the exec struct for the next command. */
 
 void	free_exec_struct(t_data *data)
 {
@@ -71,26 +80,16 @@ void	free_exec_struct(t_data *data)
 	data->exec->append = NULL;
 }
 
-void	init_exec(t_data *data)
-{
-	data->exec = malloc(sizeof(t_exec));
-	if (!data->exec)
-		malloc_error(data);
-	data->exec->arg_cmd = NULL;
-	data->exec->cmd_path = NULL;
-	data->exec->infile = NULL;
-	data->exec->outfile = NULL;
-	data->exec->append = NULL;
-}
+/* SET_PIPES = Function for use the pipes commands in the pipes variables */
 
-void	set_pipes(t_data *data, int (*pipes)[2])
+void	set_pipes(t_data *data)
 {
 	int	i;
-	
+
 	i = -1;
 	while (++i < data->nbr_of_command - 1)
 	{
-		if (pipe(pipes[i]) == -1)
+		if (pipe(data->pipes[i]) == -1)
 		{
 			perror("Pipes error !");
 			error(data);
@@ -99,15 +98,17 @@ void	set_pipes(t_data *data, int (*pipes)[2])
 	return ;
 }
 
-void	close_pipes(t_data *data, int (*pipes)[2])
+/* CLOSE_PIPES = Function for close all pipes at the end */
+
+void	close_pipes(t_data *data)
 {
 	int	i;
 
 	i = -1;
 	while (++i < data->nbr_of_command - 1)
 	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
+		close(data->pipes[i][0]);
+		close(data->pipes[i][1]);
 	}
 	return ;
 }

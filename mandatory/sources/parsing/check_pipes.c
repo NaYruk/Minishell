@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:21:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 10:06:19 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:18:25 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,25 @@ static int	check_first_and_last_node(t_token *token, t_data *data)
 	return (0);
 }
 
+int	check_potential_errors(t_data *data, int nbr, t_token *current)
+{
+	if (nbr > 1 && current->status == 0)
+	{
+		if (nbr == 2)
+			return (token_error(data, "2 Pipes, we don't do bonus !\n"));
+		if (nbr == 3)
+			return (token_error(data,
+					"syntax error near unexpected token `|'\n"));
+		if (nbr >= 4)
+			return (token_error(data,
+					"syntax error near unexpected token `||'\n"));
+	}
+	if (current->next->token == PIPE && current->token == PIPE)
+		return (token_error(data,
+				"syntax error near unexpected token `|'\n"));
+	return (0);
+}
+
 /* 
 	check_pipes = Verify the position of each | and find any error.
 	IF the first or last node is an | it is an error ! this is the function
@@ -79,17 +98,8 @@ int	check_pipes(t_data *data)
 	while (current->next != NULL)
 	{
 		nbr = pipes_nbr(current->line, nbr);
-		if (nbr > 1 && current->status == 0)
-		{
-			if (nbr == 2)
-				return (token_error(data, "2 Pipes, we don't do bonus !\n"));
-			if (nbr == 3)
-				return (token_error(data, "syntax error near unexpected token `|'\n"));
-			if (nbr >= 4)
-				return (token_error(data, "syntax error near unexpected token `||'\n"));
-		}
-		if (current->next->token == PIPE && current->token == PIPE)
-			return (token_error(data, "syntax error near unexpected token `|'\n"));
+		if (check_potential_errors(data, nbr, current) != 0)
+			return (-1);
 		current = current->next;
 	}
 	if (check_first_and_last_node(current, data) == -1)

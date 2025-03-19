@@ -1,56 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args_and_cmd_path.c                                :+:      :+:    :+:   */
+/*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:36:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/18 15:47:25 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:18:57 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static void	error_dup_arg(t_data *data, int *size)
-{
-	if (!data->exec->arg_cmd[*size])
-	{
-		while (--(*size) >= 0)
-			free(data->exec->arg_cmd[*size]);
-		free(data->exec->arg_cmd);
-		data->exec->arg_cmd = NULL;
-		malloc_error(data);
-	}
-}
-
-void	get_args_cmd(t_data *data, t_token **current)
-{
-	t_token	*start;
-	int		size;
-
-	start = *current;
-	size = 0;
-	while (*current && ((*current)->token == CMD || (*current)->token == ARG))
-	{
-		size++;
-		*current = (*current)->next;
-	}
-	data->exec->arg_cmd = malloc(sizeof(char *) * (size + 1));
-	if (!data->exec->arg_cmd)
-		malloc_error(data);
-	*current = start;
-	size = 0;
-	while (*current && ((*current)->token == CMD || (*current)->token == ARG))
-	{
-		data->exec->arg_cmd[size] = ft_strdup((*current)->line);
-		error_dup_arg(data, &size);
-		*current = (*current)->next;
-		size++;
-	}
-	*current = start;
-	data->exec->arg_cmd[size] = NULL;
-} 
 
 static void	add_slash(t_data *data, char **all_paths, char *path_line, int *i)
 {
@@ -95,6 +55,17 @@ static char	**get_all_cmd_paths(t_data *data)
 	return (all_paths);
 }
 
+int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path)
+{
+	if (access((*current)->line, F_OK | X_OK) == 0)
+	{
+		test_cmd_path = ft_strdup((*current)->line);
+		data->exec->cmd_path = test_cmd_path;
+		return (-1);
+	}
+	return (0);
+}
+
 void	get_cmd_path(t_data *data, t_token **current)
 {
 	char	**all_cmd_paths;
@@ -103,12 +74,8 @@ void	get_cmd_path(t_data *data, t_token **current)
 
 	i = -1;
 	test_cmd_path = NULL;
-	if (access((*current)->line, F_OK | X_OK) == 0)
-	{
-		test_cmd_path = ft_strdup((*current)->line);
-		data->exec->cmd_path = test_cmd_path;
+	if (check_absolute_cmd(data, current, test_cmd_path) == -1)
 		return ;
-	}
 	all_cmd_paths = get_all_cmd_paths(data);
 	if (!all_cmd_paths)
 		return ;

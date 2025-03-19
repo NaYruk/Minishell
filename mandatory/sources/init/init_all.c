@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/11 14:47:01 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:14:41 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	copy_envp(char **envp, t_data *data)
 	data->env = malloc(sizeof(char *) * (line_number + 1));
 	if (!data->env)
 		malloc_error(data);
-	//add_g_c_node(data, &data->g_c, (void **)data->env, true);
 	i = -1;
 	while (envp[++i] != NULL)
 		data->env[i] = ft_strdup(envp[i]);
@@ -61,6 +60,10 @@ t_data	*init_all(char **envp)
 	data->name_op = NULL;
 	data->exit_status = 0;
 	data->nbr_of_command = 0;
+	data->stdin_backup = dup(STDIN_FILENO);
+	data->stdout_backup = dup(STDOUT_FILENO);
+	data->pids = NULL;
+	data->pipes = NULL;
 	copy_envp(envp, data);
 	return (data);
 }
