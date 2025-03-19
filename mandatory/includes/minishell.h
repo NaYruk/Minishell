@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 07:18:55 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/19 16:42:57 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,6 @@ void	set_pipes(t_data *data, int (*pipes)[2]);
 void	close_pipes(t_data *data, int (*pipes)[2]);
 int		child_process(t_data *data, int i, int (*pipes)[2]);
 int		setup_redirection(t_data *data, int cmd_process, int (*pipes)[2]);
+void	check_dollars(t_data *data);
 
 #endif
