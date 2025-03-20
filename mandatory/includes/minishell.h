@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 21:37:44 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/20 23:53:48 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -51,6 +51,7 @@ typedef struct s_exec
 	char			**infile;
 	char			**outfile;
 	char			**append;
+	char			**heredoc;
 	char			**arg_cmd;
 	char			*cmd_path;
 }	t_exec;
@@ -106,7 +107,7 @@ int		outfile(t_data *data, int *i, int *count);
 int		infile(t_data *data, int *i, int *count);
 
 /* Main Function for the tokenization ! */
-void	tokenization(t_data *data);
+int		tokenization(t_data *data);
 
 /* Functions for add a new token in the chained list */
 void	add_new_token(t_data *data, t_token **lst, char *line, char qc);
@@ -137,7 +138,7 @@ void	init_exec(t_data *data);
 void	free_exec_struct(t_data *data);
 void	get_pids_and_pipes(t_data *data);
 void	set_nbr_of_commands(t_data *data);
-void	get_args_cmd(t_data *data, t_token **current);
+void	get_args_cmd(t_data *data, t_token *current);
 void	get_cmd_path(t_data *data, t_token **current);
 void	set_pipes(t_data *data);
 void	close_pipes(t_data *data);

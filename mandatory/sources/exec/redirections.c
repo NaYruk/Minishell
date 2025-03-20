@@ -1,20 +1,20 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 22:37:26 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:26:57 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
 /* REDIRECT_INFILE = In the case of we have a infile
 					  redirect STDIN in the infile */
-					  
+			  
 void	redirect_infile(t_data *data)
 {
 	int	fd_file;
@@ -63,7 +63,7 @@ void	redirect_outfile(t_data *data)
 
 /* REDIRECT_APPEND = In the case of we have a append
 					  redirect STDOUT in the append */
-					  
+				  
 void	redirect_append(t_data *data)
 {
 	int	fd_file;

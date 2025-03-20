@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/20 14:06:54 by melvin           ###   ########.fr       */
+/*   Updated: 2025/03/21 00:26:38 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -16,9 +16,6 @@
 
 void	wait_all(t_data *data, int nbr_of_fork)
 {
-/* 	int	status;
-
-	status = 0 */;
 	while (nbr_of_fork >= 0)
 	{
 		if (waitpid(data->pids[nbr_of_fork], NULL, 0) == -1)
@@ -110,6 +107,7 @@ void	exec(t_data *data, t_token *current)
 	cmd_process = 0;
 	nbr_of_fork = -1;
 	set_pipes(data);
+	// GET HEREDOC AND EXEC HEREDOC FOR THE FUTUR REDIRECTION ? 
 	while (current != NULL)
 	{
 		if (set_exec_struct(data, &current) == -1)

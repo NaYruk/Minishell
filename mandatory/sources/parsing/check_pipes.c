@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_pipes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:21:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 21:18:25 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/20 20:02:20 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -51,6 +51,8 @@ static int	check_first_and_last_node(t_token *token, t_data *data)
 	if (token->token == PIPE)
 		return (token_error(data, "syntax error near unexpected token `|'\n"));
 	nbr = pipes_nbr(token->line, nbr);
+	if (nbr == 2)
+			return (token_error(data, "2 Pipes, we don't do bonus !\n"));
 	if (nbr >= 2 && token->status == 0)
 		return (token_error(data, "syntax error near unexpected token `||'\n"));
 	return (0);
