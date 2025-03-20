@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   set_exec_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 21:55:22 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/21 00:18:10 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -65,7 +65,7 @@ static int	get_nbr_redir(t_data *data, t_token *current)
 	return (0);
 }
 
-int	pipes_and_cmd(t_data *data, t_token **current)
+int	args_and_cmd(t_data *data, t_token **current)
 {
 	if ((*current)->token == PIPE)
 	{
@@ -74,7 +74,7 @@ int	pipes_and_cmd(t_data *data, t_token **current)
 	}
 	if ((*current)->token == CMD)
 	{
-		get_args_cmd(data, current);
+		get_args_cmd(data, *current);
 		get_cmd_path(data, current);
 	}
 	return (0);
@@ -93,7 +93,7 @@ int	set_exec_struct(t_data *data, t_token **current)
 		return (-1);
 	while (*current != NULL)
 	{
-		if (pipes_and_cmd(data, current) == -1)
+		if (args_and_cmd(data, current) == -1)
 			break ;
 		if ((*current)->token == INFILE && ((*current)->next->token) == ARG)
 			data->exec->infile[i++] = (*current)->next->line;

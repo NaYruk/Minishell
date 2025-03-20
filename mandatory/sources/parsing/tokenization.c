@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 21:24:25 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/20 20:01:22 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -55,23 +55,30 @@ static void	ft_gettype(t_data *data)
 	- If the previous token is a PIPE, the next token is a CMD
 */
 
-static void	attribute_cmd_or_arg(t_token *current)
+static void	attribute_cmd_or_arg(t_token *current, bool *one_cmd_in_pipe)
 {
+	if (current->token == PIPE)
+		*one_cmd_in_pipe = false;
 	if (current->token != OTHER)
 		return ;
-	if (current->token == OTHER && current->prev == NULL)
+	if (current->prev == NULL)
+	{
 		current->token = CMD;
-	else if (current->prev->token == INFILE || current->prev->token == OUTFILE
-		|| current->prev->token == HEREDOC || current->prev->token == APPEND
-		|| current->prev->token == CMD)
+		*one_cmd_in_pipe = true;
+		return ;
+	}
+	if (*one_cmd_in_pipe == false && (current->prev->token < 1 || current->prev->token > 4))
+	{
+		current->token = CMD;
+		*one_cmd_in_pipe = true;
+		return ;
+	}
+	if ((current->prev->token >=1 && current->prev->token <= 4)
+		|| current->prev->token == CMD || current->prev->token == ARG)
+	{
 		current->token = ARG;
-	else if (current->prev->token == ARG
-		&& current->prev->prev->token == INFILE)
-		current->token = CMD;
-	else if (current->prev->token == ARG)
-		current->token = ARG;
-	else if (current->prev->token == PIPE)
-		current->token = CMD;
+		return ;
+	}
 	return ;
 }
 
@@ -83,11 +90,13 @@ static void	attribute_cmd_or_arg(t_token *current)
 static void	cmd_or_arg(t_data *data)
 {
 	t_token	*current;
-
+	bool	one_cmd_in_pipe;
+	
+	one_cmd_in_pipe = false;
 	current = data->lst_token;
 	while (current != NULL)
 	{
-		attribute_cmd_or_arg(current);
+		attribute_cmd_or_arg(current, &one_cmd_in_pipe);
 		current = current->next;
 	}
 	return ;
@@ -104,16 +113,17 @@ static void	cmd_or_arg(t_data *data)
 	- check_rafter =  Verify the position of each <,<<,>>,> and find any error.
 */
 
-void	tokenization(t_data *data)
+int	tokenization(t_data *data)
 {
 	data->exit_status = 0;
 	if (cut_the_line(data) == -1)
-		return ;
+		return (-1);
 	ft_gettype(data);
 	cmd_or_arg(data);
 	check_dollars(data);
 	if (check_pipes(data) == -1)
-		return ;
+		return (-1);
 	if (check_rafter(data) == -1)
-		return ;
+		return (-1);
+	return (0);
 }
