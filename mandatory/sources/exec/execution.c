@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 22:26:30 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:06:54 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 void	wait_all(t_data *data, int nbr_of_fork)
 {
-	int	status;
+/* 	int	status;
 
-	status = 0;
+	status = 0 */;
 	while (nbr_of_fork >= 0)
 	{
 		if (waitpid(data->pids[nbr_of_fork], NULL, 0) == -1)
