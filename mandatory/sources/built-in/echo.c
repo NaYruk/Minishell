@@ -3,22 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/19 17:46:15 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:28:53 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/* 
+	Function that checks whether the -n option is present in the first
+	arguments of the echo command.
+	The function returns 1 if the valid option is present.
+*/
+
 static int	check_option(char *str)
 {
 	int	i;
-	
-	i = 0;
-	if (str[i] == '-')
-		i++;
+
+	if (!str || str[0] != '-')
+		return (0);
+	i = 1;
+	if (!str[i])
+		return (0);
 	while (str[i])
 	{
 		if (str[i] != 'n')
@@ -26,78 +34,55 @@ static int	check_option(char *str)
 		i++;
 	}
 	return (1);
-	
 }
 
-static int	check_dollar(char *str)
-{
-	int	i;
+/* 
+	Function that prints all arguments of the echo command. 
+	If the line of argument = '\0', it is no printed. 
+	The variable first_arg is used to determine if a first argument
+	has been arleady printed, to avoid to put a 
+	" " (space) before the first argument
+*/
 
-	i = 0;
-	while (str[i])
+static	void	print_args(t_token *tmp)
+{
+	int	first_arg;
+
+	first_arg = 1;
+	while (tmp->next && tmp->next->token == ARG)
 	{
-		if (str[i] == '$')
-			return (1);
-		i++;
+		if (tmp->next->line && tmp->next->line[0] != '\0')
+		{
+			if (!first_arg)
+				printf(" ");
+			printf("%s", tmp->next->line);
+			first_arg = 0;
+		}
+		tmp = tmp->next;
 	}
-	return (0);
 }
 
-static char	*expand_var(t_data *data, char *str)
-{
-	int		len_var;
-	char	*var;
-	char	*value;
-	char	*result;
-
-	len_var = 0;
-	var = ft_strchr(str, '$');
-	if (!var)
-		return (NULL);
-	var = var + 1;
-	while (var[len_var] && (ft_isalnum(var[len_var]) || var[len_var] == '_'))
-		len_var++;
-	value = ft_strndup(var, len_var);
-	if (!value)
-		return (NULL);
-	result = ft_getenv(data, value);
-	if (!result)
-		return (free(value), NULL);
-	return (free(value), result);
-}
+/* 
+	Function that reproduces the behavior of the echo command in bash.
+*/
 
 int	ft_echo(t_data *data)
 {
-	t_token *tmp;
-	char	*expand;
-	int		newline;
+	t_token	*tmp;
+	int		new_line;
 
 	tmp = data->lst_token;
-	expand = NULL;
-	newline = 1;
+	new_line = 1;
 	if (!tmp->next)
 		return (printf("\n"), EXIT_SUCCESS);
-	while (tmp->next && (tmp->next->token == ARG && check_option(tmp->next->line)))
+	while (tmp->next &&
+		(tmp->next->token == ARG && check_option(tmp->next->line)))
 	{
-		newline = 0;
+		new_line = 0;
 		tmp = tmp->next;
 	}
-	while (tmp->next && tmp->next->token == ARG)
-	{
-		if (check_dollar(tmp->next->line))
-		{
-			expand = expand_var(data, tmp->next->line);
-			if (expand)
-				printf("%s", expand);
-		}
-		else
-			printf("%s", tmp->next->line);
-		tmp = tmp->next;
-		if (tmp->next && tmp->next->token == ARG && tmp->next->line != NULL)
-			printf(" ");
-	}
-	if (newline)
+	print_args(tmp);
+	if (new_line)
 		printf("\n");
 	return (EXIT_SUCCESS);
 }
-

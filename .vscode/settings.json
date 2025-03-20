@@ -21,6 +21,11 @@
 			"cwd": "/home/nayruk/Minishell",
 			"binaryPath": "/home/nayruk/Minishell/minishell",
 			"binaryArgs": []
+		},
+		{
+			"cwd": "/home/melvin/Minishell",
+			"binaryPath": "/home/melvin/Minishell/minishell",
+			"binaryArgs": []
 		}
 	]
 }
