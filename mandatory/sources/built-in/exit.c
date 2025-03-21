@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/12 07:54:56 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:05:10 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ static int	exit_value(char *line)
 
 	value = ft_atoll(line);
 	if (value >= 0 && value <= 255)
-		return (value);
-	return (value % 256);
+		return ((int)value);
+	return ((int)value % 256);
 }
 
 int	ft_exit(t_data *data)

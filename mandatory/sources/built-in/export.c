@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 07:02:12 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/19 07:48:04 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/21 09:38:50 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static void	ft_add_env(t_data *data, char *env)
 	value = ft_strdup(equal_pos + 1);
 	if (ft_getenv(data, name) != NULL)
 	{
+		ft_update_env(data, name, value);
 		free (name);
 		free (value);
 		return ;

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/21 00:26:38 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/21 17:15:48 by mcotonea         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -18,7 +18,7 @@ void	wait_all(t_data *data, int nbr_of_fork)
 {
 	while (nbr_of_fork >= 0)
 	{
-		if (waitpid(data->pids[nbr_of_fork], NULL, 0) == -1)
+		if (waitpid(data->pids[nbr_of_fork], &data->exit_status, 0) == -1)
 		{
 			perror("WAITPID");
 			error(data);

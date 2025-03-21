@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:41:06 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/12 08:43:35 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:43:00 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,9 @@ int	ft_pwd(t_data *data)
 	if (!dir)
 	{
 		perror("pwd");
-		data->exit_status = EXIT_FAILURE;
-		return (EXIT_FAILURE);
+		return (data->exit_status = 256, EXIT_FAILURE);
 	}
 	printf("%s\n", dir);
 	free(dir);
-	data->exit_status = EXIT_SUCCESS;
-	return (EXIT_SUCCESS);
+	return (data->exit_status = 0, EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_dollars.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:56:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 18:55:32 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/21 17:10:37 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,13 @@ char	*parse_line(t_data *data, char *line)
 	char	*name;
 	char	*final_line;
 	char	*value;
+	char	*exit_status;
 	
 	i = 0;
 	final_line = ft_strdup("");
 	add_g_c_node(data, &data->g_c, (void **)final_line, false);
 	value = NULL;
+	exit_status = NULL;
 	while(line[i] != '\0')
 	{
 		if (line[i] == '$')
@@ -76,23 +78,34 @@ char	*parse_line(t_data *data, char *line)
 				dollar_count++;
 				i++;
 			}
-			name = get_expand_name(line, &i);
-			if (dollar_count % 2 == 1)
+			if (line[i] == '?' && dollar_count == 1)
 			{
-				value = ft_getenv(data, name);
-				if (value)
-					final_line = ft_strjoin(final_line, value);
+				exit_status = ft_itoa(data->exit_status / 256);
+				final_line = ft_strjoin(final_line, exit_status);
+				free (exit_status);
+				i++;
 			}
 			else
-				final_line = ft_strjoin(final_line, name);
+			{
+				name = get_expand_name(line, &i);
+				if (dollar_count % 2 == 1)
+				{
+					value = ft_getenv(data, name);
+					if (value)
+						final_line = ft_strjoin(final_line, value);
+				}
+				else
+					final_line = ft_strjoin(final_line, name);
+				free (name);
+			}
 		}
 		else
 		{
 			name = get_name(line, &i);
 			final_line = ft_strjoin(final_line, name);
+			free(name);
 		}
-		free(name);
-		name = NULL;
+
 	}
 	return (final_line);
 }
