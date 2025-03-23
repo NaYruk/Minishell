@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/21 16:42:30 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/24 00:23:59 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int	ft_cd(t_data *data)
 	old_pwd = getcwd(NULL, 0);
 	path = get_cd_path(data, tmp);
 	if (!path)
-		return (free (old_pwd), data->exit_status = 256, EXIT_FAILURE);
+		return (free (old_pwd), data->exit_status = 1, EXIT_FAILURE);
 	if (chdir(path) == -1)
-		return (free(old_pwd), data->exit_status = 256, cd_error(path));
+		return (free(old_pwd), data->exit_status = 1, cd_error(path));
 	ft_update_env(data, "OLDPWD", old_pwd);
 	free (old_pwd);
 	current_dir = getcwd(NULL, 0);

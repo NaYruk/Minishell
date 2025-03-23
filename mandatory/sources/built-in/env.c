@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 08:56:15 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/21 16:42:40 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/24 00:24:13 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_env(t_data *data)
 	i = 0;
 	if (!data || !data->env || data->lst_token->next)
 	{
-		return (data->exit_status = 256, EXIT_FAILURE);
+		return (data->exit_status = 1, EXIT_FAILURE);
 	}
 	while (data->env[i])
 	{

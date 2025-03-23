@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_dollars.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:56:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/21 17:10:37 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/24 00:23:28 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*parse_line(t_data *data, char *line)
 			}
 			if (line[i] == '?' && dollar_count == 1)
 			{
-				exit_status = ft_itoa(data->exit_status / 256);
+				exit_status = ft_itoa(data->exit_status);
 				final_line = ft_strjoin(final_line, exit_status);
 				free (exit_status);
 				i++;
