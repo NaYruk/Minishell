@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/21 14:39:54 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/23 02:05:22 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -67,13 +67,14 @@ static void	attribute_cmd_or_arg(t_token *current, bool *one_cmd_in_pipe)
 		*one_cmd_in_pipe = true;
 		return ;
 	}
-	if (*one_cmd_in_pipe == false && (current->prev->token < 1 || current->prev->token > 4))
+	if (*one_cmd_in_pipe == false
+		&& (current->prev->token < 1 || current->prev->token > 4))
 	{
 		current->token = CMD;
 		*one_cmd_in_pipe = true;
 		return ;
 	}
-	if ((current->prev->token >=1 && current->prev->token <= 4)
+	if ((current->prev->token >= 1 && current->prev->token <= 4)
 		|| current->prev->token == CMD || current->prev->token == ARG)
 	{
 		current->token = ARG;
@@ -91,7 +92,7 @@ static void	cmd_or_arg(t_data *data)
 {
 	t_token	*current;
 	bool	one_cmd_in_pipe;
-	
+
 	one_cmd_in_pipe = false;
 	current = data->lst_token;
 	while (current != NULL)
@@ -115,7 +116,9 @@ static void	cmd_or_arg(t_data *data)
 
 int	tokenization(t_data *data)
 {
-	if (cut_the_line(data) == -1)
+	if (check_quotes(data, data->prompt) == -1)
+		return (-1);
+	if (cut_the_line(data) == -1 || data->lst_token == NULL)
 		return (-1);
 	ft_gettype(data);
 	cmd_or_arg(data);

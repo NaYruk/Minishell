@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/07 15:04:34 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/22 23:51:07 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -71,7 +71,7 @@ static void	add_node_back(t_token **lst, t_token *new)
 	- a pointer in the next token
 */
 
-void	add_new_token(t_data *data, t_token **lst, char *line, char qc)
+void	add_new_token(t_data *data, t_token **lst, char *line)
 {
 	t_token	*new;
 
@@ -83,12 +83,6 @@ void	add_new_token(t_data *data, t_token **lst, char *line, char qc)
 	new->next = NULL;
 	new->prev = NULL;
 	new->token = -1;
-	if (qc == SIMPLE_QUOTES)
-		new->status = 1;
-	else if (qc == DOUBLE_QUOTES)
-		new->status = 2;
-	else
-		new->status = 0;
 	add_node_back(lst, new);
 	return ;
 }

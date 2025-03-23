@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:21:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/20 20:02:20 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/23 02:04:19 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -52,15 +52,15 @@ static int	check_first_and_last_node(t_token *token, t_data *data)
 		return (token_error(data, "syntax error near unexpected token `|'\n"));
 	nbr = pipes_nbr(token->line, nbr);
 	if (nbr == 2)
-			return (token_error(data, "2 Pipes, we don't do bonus !\n"));
-	if (nbr >= 2 && token->status == 0)
+		return (token_error(data, "2 Pipes, we don't do bonus !\n"));
+	if (nbr >= 2)
 		return (token_error(data, "syntax error near unexpected token `||'\n"));
 	return (0);
 }
 
 int	check_potential_errors(t_data *data, int nbr, t_token *current)
 {
-	if (nbr > 1 && current->status == 0)
+	if (nbr > 1)
 	{
 		if (nbr == 2)
 			return (token_error(data, "2 Pipes, we don't do bonus !\n"));

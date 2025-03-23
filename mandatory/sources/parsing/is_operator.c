@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   is_operator.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:37:32 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/05 22:39:29 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/23 00:24:57 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -20,7 +20,7 @@
 	- Malloc the operator token
 */
 
-int	infile(t_data *data, int *i, int *count)
+int	infile(t_data *data, int *i, int *count, char **line)
 {
 	while (data->prompt[*i] == '<')
 	{
@@ -29,8 +29,8 @@ int	infile(t_data *data, int *i, int *count)
 	}
 	(*i) -= *count;
 	data->operator = true;
-	data->name_op = ft_strndup(&data->prompt[*i], *count);
-	if (!data->name_op)
+	*line = ft_strndup(&data->prompt[*i], *count);
+	if (!(*line))
 		malloc_error(data);
 	(*i) += *count;
 	return (1);
@@ -44,7 +44,7 @@ int	infile(t_data *data, int *i, int *count)
 	- Malloc the operator token
 */
 
-int	outfile(t_data *data, int *i, int *count)
+int	outfile(t_data *data, int *i, int *count, char **line)
 {
 	while (data->prompt[*i] == '>')
 	{
@@ -53,8 +53,8 @@ int	outfile(t_data *data, int *i, int *count)
 	}
 	(*i) -= *count;
 	data->operator = true;
-	data->name_op = ft_strndup(&data->prompt[*i], *count);
-	if (!data->name_op)
+	*line = ft_strndup(&data->prompt[*i], *count);
+	if (!(*line))
 		malloc_error(data);
 	(*i) += *count;
 	return (1);
@@ -68,7 +68,7 @@ int	outfile(t_data *data, int *i, int *count)
 	- Malloc the operator token
 */
 
-int	pipes(t_data *data, int *i, int *count)
+int	pipes(t_data *data, int *i, int *count, char **line)
 {
 	while (data->prompt[*i] == '|')
 	{
@@ -77,8 +77,8 @@ int	pipes(t_data *data, int *i, int *count)
 	}
 	(*i) -= *count;
 	data->operator = true;
-	data->name_op = ft_strndup(&data->prompt[*i], *count);
-	if (!data->name_op)
+	*line = ft_strndup(&data->prompt[*i], *count);
+	if (!(*line))
 		malloc_error(data);
 	(*i) += *count;
 	return (1);
@@ -108,16 +108,16 @@ bool	operator(char c)
 	in a token.
 */
 
-int	is_operator(t_data *data, int *i)
+int	is_operator(t_data *data, int *i, char **line)
 {
 	int	count;
 
 	count = 0;
 	if (ft_strncmp(&data->prompt[*i], "<", 1) == 0)
-		return (infile(data, i, &count));
+		return (infile(data, i, &count, line));
 	else if (ft_strncmp(&data->prompt[*i], ">", 1) == 0)
-		return (outfile(data, i, &count));
+		return (outfile(data, i, &count, line));
 	else if (ft_strncmp(&data->prompt[*i], "|", 1) == 0)
-		return (pipes(data, i, &count));
+		return (pipes(data, i, &count, line));
 	return (0);
 }

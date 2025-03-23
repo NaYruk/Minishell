@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_rafter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:23:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 21:22:39 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/23 00:15:31 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -84,7 +84,7 @@ static int	check_errors(t_data *data, int nbr, t_token *current)
 
 static int	error_rafter(t_data *data, int nbr, t_token *current)
 {
-	if (current->status == 0 && current->token > OUTFILE)
+	if (current->token > OUTFILE)
 	{
 		nbr = rafter_nbr(current->line, nbr);
 		if (nbr < 3 && nbr >= 1)
