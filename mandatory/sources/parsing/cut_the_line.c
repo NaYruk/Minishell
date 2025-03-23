@@ -1,92 +1,112 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cut_the_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/21 15:14:39 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/23 02:07:13 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
-/* save_quotes : function for saves the value of the opening quote " or ' */
-
-static void	save_quotes(t_data *data, int *i, int *quote, char *quote_char)
+static int	quotes(char c)
 {
-	if (data->prompt[*i] == SIMPLE_QUOTES || data->prompt[*i] == DOUBLE_QUOTES)
-	{
-		*quote_char = data->prompt[*i];
-		*quote = 1;
-		(*i)++;
-	}
+	if (c == SIMPLE_QUOTES || c == DOUBLE_QUOTES)
+		return (1);
+	return (0);
 }
 
-/* 
-	get_line : Function for separate each token and
-				 stock each token node in a chained list.
-	quote variable is for indicate if a open quote is detected.
-	- Skip the Whitespaces.
-	- if an operator is detected,return for execute if (data->operator == true)
-	- save_quotes : function for saves the value of the opening quote " or '
-	- As long as there is no Whitespace or there is in the " " or ' '
-		- if an operator is detected and !quote, break for execute
-			if (data->operator == true)
-		- if the closing quote is find, quote = 0 for marking
-			the end of the quote
-		- Just count the number of character to stock in the token node.
-	- if the last char is the quote char, we need to i-- for get the
-		exact number for the token line malloc
-*/
-
-static void	get_line(t_data *data, int *i, int *count, char *quote_char)
+static void	get_interior_of_quotes(t_data *data, int *i, int *count)
 {
-	int	quote;
+	char	type_quote;
 
-	quote = 0;
-	while ((ft_is_white_spaces(data->prompt[*i]) && data->prompt[*i]) && !quote)
-		(*i)++;
-	if ((data->prompt[*i]) && !quote)
-		if (is_operator(data, i))
-			return ;
-	save_quotes(data, i, &quote, quote_char);
-	*count = 0;
-	while (data->prompt[*i]
-		&& (quote || !ft_is_white_spaces(data->prompt[*i])))
+	type_quote = '\0';
+	if (quotes(data->prompt[*i]))
 	{
-		if (operator(data->prompt[*i]) && !quote)
-			break ;
-		if (*quote_char == data->prompt[*i] && quote)
-			quote = 0;
-		(*i)++;
+		if (data->prompt[*i] == SIMPLE_QUOTES)
+			type_quote = SIMPLE_QUOTES;
+		else
+			type_quote = DOUBLE_QUOTES;
+	}
+	(*i)++;
+	while (data->prompt[*i] && data->prompt[*i] != type_quote)
+	{
 		(*count)++;
-	}
-	if (data->prompt[*i - 1] == *quote_char)
-	{
-		(*count)--;
-		(*i)--;
+		(*i)++;
 	}
 }
 
-/* 
-   Function for stock the line cut in a new token node
-   and add this token to the chained list
-   we skip the closing quote if it exists.
-*/
-
-static void	stock_the_line(t_data *data, char *line, int *i, char quote_char)
+static void	get_nbr_char_line(t_data *data, int *i, int *count, char **line)
 {
-	if (line[0] != '\0')
+	*count = 0;
+	while (data->prompt[*i] && ft_is_white_spaces(data->prompt[*i])
+		&& !quotes(data->prompt[*i]))
+		(*i)++;
+	if (data->prompt[*i] && !quotes(data->prompt[*i]))
+		if (is_operator(data, i, line))
+			return ;
+	while (data->prompt[*i] && !ft_is_white_spaces(data->prompt[*i]))
 	{
-		if (data->prompt[*i] == quote_char)
-			(*i)++;
-		if (!line)
-			malloc_error(data);
-		add_new_token(data, &data->lst_token, line, quote_char);
+		if (quotes(data->prompt[*i]))
+			get_interior_of_quotes(data, i, count);
+		else
+		{
+			if (operator(data->prompt[*i]))
+				break ;
+			(*count)++;
+		}
+		(*i)++;
 	}
-	return ;
+}
+
+static void	stock_quotes(t_data *data, int *i, char *line, int *line_index)
+{
+	char	type_quote;
+
+	type_quote = '\0';
+	if (quotes(data->prompt[*i]))
+	{
+		if (data->prompt[*i] == SIMPLE_QUOTES)
+			type_quote = SIMPLE_QUOTES;
+		else
+			type_quote = DOUBLE_QUOTES;
+	}
+	(*i)++;
+	while (data->prompt[*i] && data->prompt[*i] != type_quote)
+	{
+		line[(*line_index)++] = data->prompt[*i];
+		(*i)++;
+	}
+}
+
+static void	stock_line_in_token(t_data *data, int *i, int *count, char *line)
+{
+	int	line_index;
+
+	line_index = 0;
+	line = malloc(sizeof(char) * (*count + 1));
+	if (!line)
+		malloc_error(data);
+	while (data->prompt[*i] && ft_is_white_spaces(data->prompt[*i])
+		&& !quotes(data->prompt[*i]))
+		(*i)++;
+	while (data->prompt[*i] && !ft_is_white_spaces(data->prompt[*i]))
+	{
+		if (quotes(data->prompt[*i]))
+			stock_quotes(data, i, line, &line_index);
+		else
+		{
+			if (operator(data->prompt[*i]))
+				break ;
+			line[line_index++] = data->prompt[*i];
+		}
+		(*i)++;
+	}
+	line[line_index] = '\0';
+	add_new_token(data, &data->lst_token, line);
 }
 
 /*
@@ -111,27 +131,26 @@ static void	stock_the_line(t_data *data, char *line, int *i, char quote_char)
 int	cut_the_line(t_data *data)
 {
 	char	*line;
-	char	quote_char;
 	int		i;
 	int		count;
+	int		i_start;
 
 	count = 0;
 	i = 0;
-	quote_char = '\0';
-	if (check_quotes(data, data->prompt) == -1)
-		return (-1);
+	line = NULL;
 	while ((size_t)i < ft_strlen(data->prompt))
 	{
-		get_line(data, &i, &count, &quote_char);
-		if (data->operator == false)
+		i_start = i;
+		get_nbr_char_line(data, &i, &count, &line);
+		if (data->operator == false && count != 0)
 		{
-			line = ft_strndup(&data->prompt[i - count], count);
-			stock_the_line(data, line, &i, quote_char);
+			i = i_start;
+			stock_line_in_token(data, &i, &count, line);
 		}
 		if (data->operator == true)
 		{
 			data->operator = false;
-			add_new_token(data, &data->lst_token, data->name_op, quote_char);
+			add_new_token(data, &data->lst_token, line);
 		}
 	}
 	return (0);

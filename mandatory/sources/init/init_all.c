@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 21:14:41 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/23 00:35:23 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -57,7 +57,6 @@ t_data	*init_all(char **envp)
 	data->lst_token = NULL;
 	data->exec = NULL;
 	data->operator = false;
-	data->name_op = NULL;
 	data->exit_status = 0;
 	data->nbr_of_command = 0;
 	data->stdin_backup = dup(STDIN_FILENO);
