@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/23 00:35:08 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/23 19:08:14 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -29,6 +29,7 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <sys/stat.h>
 
 /* Libft Headers */
 # include "../../Libft/includes/ft_printf.h"
