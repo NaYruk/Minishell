@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:36:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/19 21:18:57 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/23 19:41:25 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -89,6 +89,8 @@ void	get_cmd_path(t_data *data, t_token **current)
 		}
 		free(test_cmd_path);
 	}
+	if (data->exec->cmd_path == NULL)
+		data->exec->cmd_path = (*current)->line;
 	i = -1;
 	while (all_cmd_paths[++i] != NULL)
 		free(all_cmd_paths[i]);

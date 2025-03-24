@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
@@ -8,7 +8,7 @@
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
 /*   Updated: 2025/03/24 00:23:19 by melvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -67,6 +67,7 @@ void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 		if (setup_redirection(data, *cmd_process) != -1)
 			exec_builtin(data);
 		dup2(data->stdout_backup, STDOUT_FILENO);
+		dup2(data->stdin_backup, STDIN_FILENO);
 	}
 	else
 	{
@@ -113,15 +114,17 @@ void	exec(t_data *data, t_token *current)
 	while (current != NULL)
 	{
 		if (set_exec_struct(data, &current) == -1)
-			return (free_exec_struct(data));
+		{
+			free_exec_struct(data);
+			break ;
+		}
 		exec_build_or_cmd(data, &cmd_process, &nbr_of_fork);
 		free_exec_struct(data);
 	}
 	close_pipes(data);
-	wait_all(data, nbr_of_fork);
-	dup2(data->stdin_backup, STDIN_FILENO);
 	close(data->stdout_backup);
 	close(data->stdin_backup);
+	wait_all(data, nbr_of_fork);
 }
 
 /*
