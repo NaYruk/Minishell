@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:41:06 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/21 16:43:00 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/24 00:24:56 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_pwd(t_data *data)
 	if (!dir)
 	{
 		perror("pwd");
-		return (data->exit_status = 256, EXIT_FAILURE);
+		return (data->exit_status = 1, EXIT_FAILURE);
 	}
 	printf("%s\n", dir);
 	free(dir);
