@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:09:46 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 03:07:59 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/25 23:42:40 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -33,10 +33,16 @@ int	child_process(t_data *data, int i)
 	i = 3;
 	while (i < 1024)
 		close(i++);
-	if (execve(data->exec->cmd_path, data->exec->arg_cmd, data->env) == -1)
+	if (!data->exec->cmd_path)
 	{
 		ft_putstr_fd(data->exec->arg_cmd[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
+		data->exit_status = 127;
+		exit(EXIT_FAILURE);
+	}
+	if (execve(data->exec->cmd_path, data->exec->arg_cmd, data->env) == -1)
+	{
+		perror("Execve :");
 		exit(EXIT_FAILURE);
 	}
 	exit(0);

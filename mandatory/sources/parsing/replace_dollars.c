@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   replace_dollars.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:24:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 03:25:58 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/25 19:15:59 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -20,7 +20,7 @@
 
 void	if_quotes(char c, bool *simple_q, bool *double_q)
 {
-	if (c == DOUBLE_QUOTES | c == SIMPLE_QUOTES)
+	if (c == DOUBLE_QUOTES || c == SIMPLE_QUOTES)
 	{
 		if (c == SIMPLE_QUOTES && !(*simple_q))
 			(*simple_q) = true;
