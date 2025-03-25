@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   set_exec_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/23 19:55:07 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:46:23 by melvin           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -116,8 +116,8 @@ int	set_exec_struct(t_data *data, t_token **current)
 	{
 		if (args_and_cmd(data, current) == -1)
 			break ;
-		if (check_dir(data) == -1)
-			return (-1);
+/* 		if (check_dir(data) == -1)
+			return (-1); */
 		if ((*current)->token == INFILE && ((*current)->next->token) == ARG)
 			data->exec->infile[i++] = (*current)->next->line;
 		if ((*current)->token == APPEND && ((*current)->next->token) == ARG)
