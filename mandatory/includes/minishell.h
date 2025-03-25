@@ -1,25 +1,17 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 15:50:10 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/25 23:31:16 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-/*Library already used
-# include <stdarg.h>
-# include <stdlib.h>
-# include <limits.h>
-# include <unistd.h>
-# include <stddef.h>
-# include <stdint.h> */
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -47,8 +39,14 @@ typedef struct s_garbage_collector
 	struct s_garbage_collector	*next;
 }	t_garb_c;
 
+/* Struct for the execution of each command */
 typedef struct s_exec
 {
+	int				nbr_infile;
+	int				nbr_outfile;
+	int				nbr_append;
+	int				nbr_heredoc;
+	int				last_heredoc_fd;
 	char			**infile;
 	char			**outfile;
 	char			**append;
@@ -142,8 +140,12 @@ void	get_pids_and_pipes(t_data *data);
 void	set_nbr_of_commands(t_data *data);
 void	get_args_cmd(t_data *data, t_token *current);
 void	get_cmd_path(t_data *data, t_token **current);
+int		get_nbr_redir(t_data *data, t_token *current);
+void	set_outfile_heredoc_array(t_data *data, t_token *current, int *k, int *l);
+void	set_infile_append_array(t_data *data, t_token *current, int *i, int *j);
 void	set_pipes(t_data *data);
 void	close_pipes(t_data *data);
+int		exec_heredoc(t_data *data);
 int		child_process(t_data *data, int i);
 int		setup_redirection(t_data *data, int cmd_process);
 int		set_exec_struct(t_data *data, t_token **current);

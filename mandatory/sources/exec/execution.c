@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 02:58:34 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/25 23:44:48 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -63,7 +63,8 @@ int	check_dir(t_data *data)
 {
 	struct stat	stat_file;
 
-	stat(data->exec->cmd_path, &stat_file);
+	if (stat(data->exec->cmd_path, &stat_file) == -1)
+        return (0);
 	if (S_ISDIR(stat_file.st_mode))
 	{
 		ft_putstr_fd(data->exec->cmd_path, 2);
@@ -77,7 +78,7 @@ int	check_dir(t_data *data)
 /*
 	EXEC_BUILD_OR_CMD = Function for exec a builtin if the token is a builtin
 						exec other cmd if the token is not a builtin.
-	
+	In the case of a Heredoc, exec_heredoc before the rest of execution.
 	In the case of a builtin, setup the redirections, and exec the builtin.
 	In the case of an other command, create a child process, setup the
 	redirections in the child, and exec the command with execve.
@@ -85,6 +86,10 @@ int	check_dir(t_data *data)
 
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 {
+	if (exec_heredoc(data) == -1)
+		return ;
+	if (data->nbr_of_command == 0)
+		return ;
 	if (exec_build(data->exec->arg_cmd[0]) == 1)
 	{
 		if (setup_redirection(data, *cmd_process) != -1)
@@ -137,7 +142,6 @@ void	exec(t_data *data, t_token *current)
 	set_pipes(data);
 	data->stdin_backup = dup(STDIN_FILENO);
 	data->stdout_backup = dup(STDOUT_FILENO);
-	// GET HEREDOC AND EXEC HEREDOC FOR THE FUTUR REDIRECTION ? 
 	while (current != NULL)
 	{
 		if (set_exec_struct(data, &current) == -1)
@@ -180,8 +184,6 @@ void	execution(t_data *data)
 
 	current = data->lst_token;
 	set_nbr_of_commands(data);
-	if (data->nbr_of_command == 0)
-		return ;
 	init_exec(data);
 	get_pids_and_pipes(data);
 	exec(data, current);

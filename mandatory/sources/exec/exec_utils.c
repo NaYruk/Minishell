@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:04:47 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/21 15:08:42 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/25 22:44:40 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -73,11 +73,16 @@ void	free_exec_struct(t_data *data)
 		free(data->exec->outfile);
 	if (data->exec->append != NULL)
 		free(data->exec->append);
+	if (data->exec->heredoc != NULL)
+		free(data->exec->heredoc);
+	data->exec->heredoc = NULL;
 	data->exec->infile = NULL;
 	data->exec->outfile = NULL;
 	data->exec->cmd_path = NULL;
 	data->exec->arg_cmd = NULL;
 	data->exec->append = NULL;
+	if (data->exec->last_heredoc_fd != -1)
+		close(data->exec->last_heredoc_fd);
 }
 
 /* SET_PIPES = Function for use the pipes commands in the pipes variables */

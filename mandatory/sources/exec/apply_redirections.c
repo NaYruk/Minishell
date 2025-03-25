@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/21 00:26:57 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/25 23:21:57 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -86,6 +86,18 @@ void	redirect_append(t_data *data)
 	}
 }
 
+/* REDIRECT_HEREDOC = In the case of we have a heredoc
+					  redirect STDIN is last pipe heredoc */
+					  
+void	redirect_heredoc(t_data *data)
+{
+	if (data->exec->last_heredoc_fd != -1)
+	{
+		dup2(data->exec->last_heredoc_fd, STDIN_FILENO);
+		close(data->exec->last_heredoc_fd);
+	}
+}
+
 /* 
 	SETUP_REDIRECTION = Function for setup each redirection
 					   before the execution of a command 
@@ -109,5 +121,6 @@ int	setup_redirection(t_data *data, int cmd_process)
 	redirect_infile(data);
 	redirect_outfile(data);
 	redirect_append(data);
+	redirect_heredoc(data);
 	return (0);
 }
