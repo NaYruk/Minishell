@@ -1,42 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/19 07:02:12 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/21 09:38:50 by mcotonea         ###   ########.fr       */
+/*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
+/*   Updated: 2025/03/25 00:27:45 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/* 
-	Function to free the old data->env.
-*/
-
-static void	free_env(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	if (!data->env)
-		return ;
-	while (data->env[i])
-	{
-		free(data->env[i]);
-		i++;
-	}
-	free (data->env);
-	data->env = NULL;
-	return ;
-}
-
-/* 
-	Function similar to realloc.
-	Resizes an array of array to a larger size.
-*/
 
 void	ft_realloc_env(t_data *data, size_t new_size)
 {
@@ -47,9 +21,8 @@ void	ft_realloc_env(t_data *data, size_t new_size)
 	old_size = 0;
 	while (data->env && data->env[old_size])
 		old_size++;
-	
-	if (new_size == 0)
-		free_env(data);
+/* 	if (new_size == 0)
+		free_env(data); */
 	new_env = malloc(sizeof(char *) * (new_size + 1));
 	if (!new_env)
 		malloc_error(data);
@@ -73,58 +46,76 @@ void	ft_realloc_env(t_data *data, size_t new_size)
 	data->env = new_env;
 }
 
-/* 
-	Function used to add a new environnement variable.
-	The new variable can be composed of name only (NAME=) 
-	or name+value(NAME=VALUE).
-	The presence of an '=' sign is mandatory.
-*/
-
-static void	ft_add_env(t_data *data, char *env)
+static void	ft_add_new_env(t_data *data, char *name, char *value)
 {
-	size_t	old_size;
-	char	*equal_pos;
-	char	*name;
-	char	*value;
-	char	*result;
-	
-	equal_pos = ft_strchr(env, '=');
-	if (!equal_pos)
-		return ;
-	name = ft_strndup(env, equal_pos - env);
-	value = ft_strdup(equal_pos + 1);
-	if (ft_getenv(data, name) != NULL)
-	{
-		ft_update_env(data, name, value);
-		free (name);
-		free (value);
-		return ;
-	}
-	if (!name || !value)
-		malloc_error(data);
+	int		old_size;
+	char	*new_entry;
+	size_t 	size;
+	size_t 	name_len;
+	size_t	value_len;
+
 	old_size = 0;
 	while (data->env && data->env[old_size])
 		old_size++;
 	ft_realloc_env(data, old_size + 1);
-	result = malloc(sizeof(char) * (ft_strlen(name) + ft_strlen(value) + 2));
-	if (!result)
+	name_len = ft_strlen(name);
+	if (value)
+		value_len = ft_strlen(value);
+	else 
+		value_len = 0;
+	size = name_len + 1;
+	if (value_len > 0)
+		size += value_len + 1;
+	new_entry = malloc(sizeof(char) * size);
+	if (!new_entry)
 		malloc_error(data);
-	ft_strncpy(result, name, ft_strlen(name) + 1);
-	result[ft_strlen(name)] = '=';
-	ft_strncpy(result + ft_strlen(name) + 1, value, ft_strlen(value) + 1);
-	data->env[old_size] = result;
+	ft_strncpy(new_entry, name, name_len);
+	new_entry[name_len] = '\0';
+	if (value)
+	{
+		new_entry[name_len] = '=';
+		ft_strncpy(new_entry + name_len + 1, value, value_len);
+		new_entry[name_len + value_len + 1] = '\0';
+	}
+	data->env[old_size] = new_entry;
 	data->env[old_size + 1] = NULL;
-	free (name);
-	free (value);
 }
 
-int	ft_export(t_data *data)
+static void	ft_add_env(t_data *data, char *env)
+{
+	char	*name;
+	char	*value;
+	char	*equal_pos;
+
+	equal_pos = ft_strchr(env, '=');
+	if (!equal_pos)
+	{
+		name = ft_strdup(env);
+		value = NULL;
+	}
+	else
+	{
+		name = ft_strndup(env, equal_pos - env);
+		value = ft_strdup(equal_pos + 1);
+	}
+	if (!name || (equal_pos && !value))
+		malloc_error(data);
+	if (ft_getenv(data, name))
+		ft_update_env(data, name, value);
+	else
+		ft_add_new_env(data, name, value);
+	free (name);
+	free (value);
+	return ;
+}
+
+void	ft_process_export(t_data *data)
 {
 	t_token *tmp;
 
 	tmp = data->lst_token;
 	if (!tmp || !tmp->next)
-		return (EXIT_FAILURE);
+		return;
 	tmp = tmp->next;
 	while (tmp)
 	{
@@ -132,5 +123,104 @@ int	ft_export(t_data *data)
 			ft_add_env(data, tmp->line);
 		tmp = tmp->next;
 	}
-	return (EXIT_SUCCESS);
+	return ;
+}
+
+char	**ft_duplicate_env(t_data *data)
+{
+	size_t 	i;
+	size_t 	env_size;
+	char	**tmp;
+
+	env_size = 0;
+	while (data->env && data->env[env_size])
+		env_size++;
+	tmp = malloc(sizeof(char *) * (env_size + 1));
+	if (!tmp)
+		malloc_error(data);
+	i = 0;
+	while (i < env_size)
+	{
+		tmp[i] = ft_strdup(data->env[i]);
+		if (!tmp[i])
+			malloc_error(data);
+		i++;	
+	}
+	tmp[i] = NULL;
+	return (tmp);
+}
+
+void	ft_sort_env(char **env)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	while (env[i])
+	{
+		j = i + 1;
+		while (env[j])
+		{
+			if (ft_strcmp(env[i], env[j]) > 0)
+			{
+				tmp = env[i];
+				env[i] = env[j];
+				env[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void	ft_display_env(char **tmp)
+{
+	int		i;
+	char	*equal_pos;
+
+	ft_sort_env(tmp);
+	i = 0;
+	while (tmp[i])
+	{
+		equal_pos = ft_strchr(tmp[i], '=');
+		if (equal_pos)
+		{
+			*equal_pos = '\0';
+			printf("declare -x %s=\"%s\"\n", tmp[i], equal_pos + 1);
+			*equal_pos = '=';
+		}
+		else
+			printf("declare -x %s=\n", tmp[i]);
+		i++;
+	}
+}
+
+void	ft_free_tmp(char **tmp)
+{
+	int i;
+
+	i = 0;
+	while (tmp[i])
+	{
+		free (tmp[i]);
+		i++;
+	}
+	free (tmp);
+	return ;
+}
+
+int	ft_export(t_data *data)
+{
+	char **tmp;
+	
+	if (data->lst_token->next)
+	{
+		ft_process_export(data);
+		return (data->exit_status = 0, EXIT_SUCCESS);
+	}
+	tmp = ft_duplicate_env(data);
+	ft_display_env(tmp);
+	ft_free_tmp(tmp);
+	return (data->exit_status = 0, EXIT_SUCCESS);
 }
