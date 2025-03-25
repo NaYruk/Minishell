@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/23 00:35:23 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/25 02:10:33 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -43,7 +43,6 @@ t_data	*init_all(char **envp)
 {
 	t_data	*data;
 
-	(void)envp;
 	data = NULL;
 	data = malloc(sizeof(t_data));
 	if (!data)
@@ -59,8 +58,10 @@ t_data	*init_all(char **envp)
 	data->operator = false;
 	data->exit_status = 0;
 	data->nbr_of_command = 0;
-	data->stdin_backup = dup(STDIN_FILENO);
-	data->stdout_backup = dup(STDOUT_FILENO);
+	data->stdin_backup = 0;
+	data->stdout_backup = 0;
+	data->simple_q = false;
+	data->double_q = false;
 	data->pids = NULL;
 	data->pipes = NULL;
 	copy_envp(envp, data);
