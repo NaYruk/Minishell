@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export2.c                                          :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/25 00:27:45 by melvin           ###   ########.fr       */
+/*   Updated: 2025/03/25 15:58:23 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	ft_add_new_env(t_data *data, char *name, char *value)
 	data->env[old_size + 1] = NULL;
 }
 
-static void	ft_add_env(t_data *data, char *env)
+static int	ft_add_env(t_data *data, char *env)
 {
 	char	*name;
 	char	*value;
@@ -100,19 +100,27 @@ static void	ft_add_env(t_data *data, char *env)
 	}
 	if (!name || (equal_pos && !value))
 		malloc_error(data);
+	if (ft_verif_name(name) == 1)
+	{
+		free(name);
+		free (value);
+		return (1);
+	}
 	if (ft_getenv(data, name))
 		ft_update_env(data, name, value);
 	else
 		ft_add_new_env(data, name, value);
 	free (name);
 	free (value);
-	return ;
+	return (0);
 }
 
-void	ft_process_export(t_data *data)
+void	ft_process_export(t_data *data, int *error)
 {
 	t_token *tmp;
+	char	*env_var;
 
+	env_var = NULL;
 	tmp = data->lst_token;
 	if (!tmp || !tmp->next)
 		return;
@@ -120,7 +128,16 @@ void	ft_process_export(t_data *data)
 	while (tmp)
 	{
 		if (tmp->token == ARG)
+		{
+			env_var = tmp->line;
+			if (ft_verif_name(env_var) == 1)
+			{
+				*error = 1;
+				tmp = tmp->next;
+				continue ;
+			}
 			ft_add_env(data, tmp->line);
+		}
 		tmp = tmp->next;
 	}
 	return ;
@@ -212,11 +229,15 @@ void	ft_free_tmp(char **tmp)
 
 int	ft_export(t_data *data)
 {
-	char **tmp;
-	
+	char 	**tmp;
+	int		error;
+
+	error = 0;
 	if (data->lst_token->next)
 	{
-		ft_process_export(data);
+		ft_process_export(data, &error);
+		if (error == 1)
+			return (data->exit_status = 1, EXIT_SUCCESS);
 		return (data->exit_status = 0, EXIT_SUCCESS);
 	}
 	tmp = ft_duplicate_env(data);
@@ -224,3 +245,31 @@ int	ft_export(t_data *data)
 	ft_free_tmp(tmp);
 	return (data->exit_status = 0, EXIT_SUCCESS);
 }
+
+int	ft_verif_name(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isalpha(str[i]) || str[i] == '_')
+		i++;
+	else
+	{
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
+		return (1);
+	}
+	while (str[i])
+	{
+		if (ft_isalnum(str[i]) || str[i] == '=')
+			i++;
+		else
+		{
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
+			return (1);
+		}
+	}
+	return (0);
+}
+ 
