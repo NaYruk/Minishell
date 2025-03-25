@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:52:03 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/21 12:09:04 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:14:14 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_unset(t_data *data)
 
 	tmp = data->lst_token;
 	if (!tmp || !tmp->next)
-		return (EXIT_FAILURE);
+		return (data->exit_status = 0, EXIT_SUCCESS);
 	tmp = tmp->next;
 	while (tmp)
 	{
@@ -31,5 +31,5 @@ int	ft_unset(t_data *data)
 			ft_delete_env(data, tmp->line);
 		tmp = tmp->next;
 	}
-	return (EXIT_SUCCESS);
+	return (data->exit_status = 0, EXIT_SUCCESS);
 }
