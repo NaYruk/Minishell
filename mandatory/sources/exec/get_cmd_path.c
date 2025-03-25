@@ -1,16 +1,24 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:36:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/23 19:41:25 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/25 03:12:58 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/*
+	add_slash :
+	Appends a slash ('/') to each path in the all_paths array.
+	Iterates through the all_paths array, adding a slash to each path.
+	Frees the original path and replaces it with the new path containing the slash.
+	If memory allocation fails, frees all previously allocated paths and calls malloc_error.
+*/
 
 static void	add_slash(t_data *data, char **all_paths, char *path_line, int *i)
 {
@@ -29,6 +37,17 @@ static void	add_slash(t_data *data, char **all_paths, char *path_line, int *i)
 		}
 	}
 }
+
+/*
+	get_all_cmd_paths :
+	Extracts and processes the PATH environment variable to obtain all command paths.
+	Searches the environment variables for the PATH variable.
+	Extracts the value of the PATH variable and splits it into individual paths.
+	Appends a slash ('/') to each path using the add_slash function.
+	Returns an array of all command paths or NULL if the PATH variable is not found.
+	Handles memory allocation errors by calling malloc_error if allocation fails.
+*/
+
 
 static char	**get_all_cmd_paths(t_data *data)
 {
@@ -55,6 +74,15 @@ static char	**get_all_cmd_paths(t_data *data)
 	return (all_paths);
 }
 
+/*
+	check_absolute_cmd :
+	Checks if the command in the current token is an executable file.
+	Uses the access function to determine if the file exists and is executable.
+	If the file is executable, duplicates the command path and assigns it to data->exec->cmd_path.
+	Returns -1 if the command is executable, otherwise returns 0.
+*/
+
+
 int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path)
 {
 	if (access((*current)->line, F_OK | X_OK) == 0)
@@ -65,6 +93,16 @@ int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path)
 	}
 	return (0);
 }
+
+/*
+	get_cmd_path :
+	Determines the full path of a command specified in the current token.
+	First, checks if the command is an absolute path and executable using check_absolute_cmd.
+	If not, retrieves all command paths from the PATH environment variable using get_all_cmd_paths.
+	Iterates through each path, appending the command name and checking if the resulting path is executable.
+	Sets data->exec->cmd_path to the first executable path found.
+	Frees allocated memory for paths and the command path array.
+*/
 
 void	get_cmd_path(t_data *data, t_token **current)
 {
@@ -89,8 +127,6 @@ void	get_cmd_path(t_data *data, t_token **current)
 		}
 		free(test_cmd_path);
 	}
-	if (data->exec->cmd_path == NULL)
-		data->exec->cmd_path = (*current)->line;
 	i = -1;
 	while (all_cmd_paths[++i] != NULL)
 		free(all_cmd_paths[i]);

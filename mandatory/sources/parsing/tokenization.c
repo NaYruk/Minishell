@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/23 02:05:22 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:49:01 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -118,11 +118,11 @@ int	tokenization(t_data *data)
 {
 	if (check_quotes(data, data->prompt) == -1)
 		return (-1);
+	replace_dollars(data, &data->prompt);
 	if (cut_the_line(data) == -1 || data->lst_token == NULL)
 		return (-1);
 	ft_gettype(data);
 	cmd_or_arg(data);
-	check_dollars(data);
 	if (check_pipes(data) == -1)
 		return (-1);
 	if (check_rafter(data) == -1)

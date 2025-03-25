@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   set_exec_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/23 19:55:07 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/25 03:14:59 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -80,27 +80,6 @@ int	args_and_cmd(t_data *data, t_token **current)
 	return (0);
 }
 
-int	check_dir(t_data *data)
-{
-	struct stat	stat_file;
-
-	if (access(data->exec->cmd_path, F_OK | X_OK) == -1)
-	{
-		ft_putstr_fd(data->exec->cmd_path, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		data->exec->cmd_path = NULL;
-		return (-1);
-	}
-	stat(data->exec->cmd_path, &stat_file);
-	if (S_ISDIR(stat_file.st_mode))
-	{
-		ft_putstr_fd(data->exec->cmd_path, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
-		return (-1);
-	}
-	return (0);
-}
-
 int	set_exec_struct(t_data *data, t_token **current)
 {
 	int	i;
@@ -116,8 +95,6 @@ int	set_exec_struct(t_data *data, t_token **current)
 	{
 		if (args_and_cmd(data, current) == -1)
 			break ;
-		if (check_dir(data) == -1)
-			return (-1);
 		if ((*current)->token == INFILE && ((*current)->next->token) == ARG)
 			data->exec->infile[i++] = (*current)->next->line;
 		if ((*current)->token == APPEND && ((*current)->next->token) == ARG)

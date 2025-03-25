@@ -38,3 +38,10 @@ echo "Bonjour $name"
 2. Tokenization:
 	a. avance tant que espaces || white spaces et stockage dans t_token data->token
 	b. association des defines a chaque token
+
+
+
+IL FAUT :
+
+SI ON EST DANS UN SIMPLE QUOTE ET QUE $ EST DETECTER : GARDER SANS EXPANDRE TEL QUEL
+SI ON EST DANS UN DOUBLE QUOTE ET QUE $ EST DETECTER : IL FAUT EXPANDRE CE QUI EST DEDANS.

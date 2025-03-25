@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/23 19:08:14 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/25 02:09:06 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -65,6 +65,8 @@ typedef struct s_data
 	pid_t		*pids;
 	int			(*pipes)[2];
 	bool		operator;
+	bool		simple_q;
+	bool		double_q;
 	int			exit_status;
 	int			nbr_of_command;
 	int			stdout_backup;
@@ -114,7 +116,8 @@ void	free_token(t_data *data);
 /* Function for check any error after the tokenisation */
 int		check_rafter(t_data *data);
 int		check_pipes(t_data *data);
-void	check_dollars(t_data *data);
+void	replace_dollars(t_data *data, char **line);
+void	if_dollar(t_data *data, char **new_line, char *prompt, int *i);
 int		token_error(t_data *data, char *line);
 
 /* Functions for built-in commands */
