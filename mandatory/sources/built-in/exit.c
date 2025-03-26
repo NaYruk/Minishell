@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/21 12:05:10 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:11:17 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	ft_str_is_digit(char *str)
 	i = 0;
 	while (str[i])
 	{
+		if (str[0] == '+' || str[0] == '-')
+			i++;
 		if (str[i] < '0' || str[i] > '9')
 			return (1);
 		i++;
@@ -55,17 +57,39 @@ static void	print_exit_error(char *message, int status)
 	ft_putstr_fd("\n", 2);
 }
 
-static void	clean_and_exit(t_data *data, int status)
+static void	clean_and_exit(t_data *data, int status, int *too_large)
 {
+	if (too_large == 0)
+		printf("exit\n");
 	free_garbage(data);
 	free_token(data);
 	exit (status);
 }
 
-static int	exit_value(char *line)
+static int	number_too_large(char *line)
+{
+	if (ft_strlen(line) > 19)
+		return (1);
+	if (ft_strlen(line) == 19)
+	{
+		if (ft_strcmp(line, "-9223372036854775808") > 0
+			|| ft_strcmp(line, "9223372036854775807") > 0)
+			return (1);
+	}
+	return (0);
+}
+
+
+static int	exit_value(char *line, int *too_large)
 {
 	long long	value;
 
+	if (number_too_large(line))
+	{
+		print_exit_error(line, 2);
+		*too_large = 1;
+		return (2);
+	}
 	value = ft_atoll(line);
 	if (value >= 0 && value <= 255)
 		return ((int)value);
@@ -76,6 +100,7 @@ int	ft_exit(t_data *data)
 {
 	t_token		*tmp;
 	int			status;
+	int			too_large;
 
 	status = 0;
 	tmp = data->lst_token;
@@ -85,7 +110,7 @@ int	ft_exit(t_data *data)
 	{
 		print_exit_error("too many arguments", 1);
 		status = 1;
-		return (status);
+		return (data->exit_status = status);
 	}
 	else if (tmp->next && ft_str_is_digit(tmp->next->line) == 1)
 	{
@@ -94,7 +119,7 @@ int	ft_exit(t_data *data)
 		exit(status);
 	}
 	else if (tmp->next)
-		status = exit_value(tmp->next->line);
-	clean_and_exit(data, status);
+		status = exit_value(tmp->next->line, &too_large);
+	clean_and_exit(data, status, &too_large);
 	return (status);
 }
