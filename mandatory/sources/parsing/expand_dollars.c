@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 02:07:37 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 02:08:12 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:21:01 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,24 @@ char	*get_expand_line(char *line, int *i)
 	Used to determine if expansion should occur (odd count) or not (even count)
 */
 
-void	count_dollars(char *prompt, int *i, int *dollar_count)
+void	count_dollars(t_data *data, char *prompt, char **new_line, int *i, int *dollar_count)
 {
 	while (prompt[*i] == '$')
 	{
 		(*dollar_count)++;
 		(*i)++;
+	}
+	if (data->classic_or_hd_expand == 1)
+	{
+		if (*dollar_count % 2 == 1)
+		{
+		if(prompt[*i - *dollar_count] == '$'
+			&& (prompt[*i + 1 - *dollar_count] == SIMPLE_QUOTES
+				|| prompt[*i + 1 - *dollar_count] == DOUBLE_QUOTES
+				|| prompt[*i + 1 - *dollar_count] == '\0'))
+			*new_line = ft_strjoin(*new_line, "$");
+		}
+		data->classic_or_hd_expand = 0;
 	}
 }
 
@@ -95,8 +107,6 @@ void	dollar_ever_or_odd(t_data *data, char **new_line,
 		after_expand = ft_getenv(data, line_to_expand);
 		if (after_expand)
 			*new_line = ft_strjoin(*new_line, after_expand);
-		else
-			*new_line = ft_strjoin(*new_line, "\n");
 	}
 	else
 		*new_line = ft_strjoin(*new_line, line_to_expand);
@@ -122,7 +132,7 @@ void	if_dollar(t_data *data, char **new_line, char *prompt, int *i)
 		old_line = *new_line;
 		if (check_dollar_interrogation(data, new_line, old_line, i) == 1)
 			return ;
-		count_dollars(prompt, i, &dollar_count);
+		count_dollars(data, prompt, new_line, i, &dollar_count);
 		line_to_expand = get_expand_line(prompt, i);
 		dollar_ever_or_odd(data, new_line, line_to_expand, dollar_count);
 		if (after_expand)

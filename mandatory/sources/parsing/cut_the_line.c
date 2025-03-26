@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/25 02:09:46 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:38:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,15 @@ static void	stock_quotes(t_data *data, int *i, char *line, int *line_index)
 	if (quotes(data->prompt[*i]))
 	{
 		if (data->prompt[*i] == SIMPLE_QUOTES)
+		{
 			type_quote = SIMPLE_QUOTES;
+			data->quotes_char = SIMPLE_QUOTES;
+		}
 		else
+		{
 			type_quote = DOUBLE_QUOTES;
+			data->quotes_char = DOUBLE_QUOTES;	
+		}
 	}
 	(*i)++;
 	while (data->prompt[*i] && data->prompt[*i] != type_quote)
@@ -107,6 +113,7 @@ static void	stock_line_in_token(t_data *data, int *i, int *count, char *line)
 	}
 	line[line_index] = '\0';
 	add_new_token(data, &data->lst_token, line);
+	data->quotes_char = '\0';
 }
 
 /*
