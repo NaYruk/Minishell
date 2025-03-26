@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 23:31:16 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:37:16 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -65,6 +65,8 @@ typedef struct s_data
 	bool		operator;
 	bool		simple_q;
 	bool		double_q;
+	char		quotes_char;
+	int			classic_or_hd_expand;
 	int			exit_status;
 	int			nbr_of_command;
 	int			stdout_backup;

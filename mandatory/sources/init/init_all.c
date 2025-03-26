@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 02:10:33 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:37:39 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,10 @@ t_data	*init_all(char **envp)
 	data->nbr_of_command = 0;
 	data->stdin_backup = 0;
 	data->stdout_backup = 0;
+	data->classic_or_hd_expand = 0;
 	data->simple_q = false;
 	data->double_q = false;
+	data->quotes_char = '\0';
 	data->pids = NULL;
 	data->pipes = NULL;
 	copy_envp(envp, data);

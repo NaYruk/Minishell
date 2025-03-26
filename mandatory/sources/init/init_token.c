@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 02:10:10 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:08:18 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ void	add_new_token(t_data *data, t_token **lst, char *line)
 	new->next = NULL;
 	new->prev = NULL;
 	new->token = -1;
+	if (data->quotes_char == SIMPLE_QUOTES)
+		new->quote_char = SIMPLE_QUOTES;
+	else if (data->quotes_char == DOUBLE_QUOTES)
+		new->quote_char = DOUBLE_QUOTES;
+	else
+		new->quote_char = '\0';
 	add_node_back(lst, new);
 	return ;
 }

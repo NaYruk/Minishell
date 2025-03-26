@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 23:20:22 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:03:25 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -17,16 +17,44 @@
 	and writes it to the given pipe.
 */
 
-void	read_heredoc_to_pipe(int write_pipe, char *delimiter)
+t_token	*find_heredoc_token(t_data *data, int position)
+{
+	t_token *current;
+	int		count;
+	
+	current = data->lst_token;
+	count = 0;
+	while (current)
+	{
+		if (count == position + 1)
+			return (current);
+		if (current->token == HEREDOC && current->next->token == ARG)
+			count++;
+		current = current->next;
+	}
+	return (NULL);
+}
+
+void	read_heredoc_to_pipe(t_data *data, int write_pipe, int i)
 {
 	char	*line;
+	char	*delimiter;
+	t_token	*heredoc_token;
 	
 	line = NULL;
+	delimiter = data->exec->heredoc[i];
 	while (1)
 	{
 		line = readline("> ");
 		if (!line || ft_strcmp(line, delimiter) == 0)
 			break ;
+		data->classic_or_hd_expand = 1;
+		heredoc_token = find_heredoc_token(data, i);
+		if (heredoc_token)
+		{
+			if (heredoc_token->quote_char == '\0')
+				replace_dollars(data, &line);
+		}
 		ft_putstr_fd(line, write_pipe);
 		ft_putstr_fd("\n", write_pipe);
 	}
@@ -54,7 +82,7 @@ int	exec_heredoc(t_data *data)
 			perror("Pipe");
 			return (-1);
 		}
-		read_heredoc_to_pipe(pipefd[1], data->exec->heredoc[i]);
+		read_heredoc_to_pipe(data, pipefd[1], i);
 		close(pipefd[1]);
 		if (data->exec->last_heredoc_fd != -1)
 			close(data->exec->last_heredoc_fd);
