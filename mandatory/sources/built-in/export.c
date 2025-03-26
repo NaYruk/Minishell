@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/25 15:58:23 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:19:08 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ void	ft_display_env(char **tmp)
 			*equal_pos = '=';
 		}
 		else
-			printf("declare -x %s=\n", tmp[i]);
+			printf("declare -x %s\n", tmp[i]);
 		i++;
 	}
 }
@@ -246,10 +246,26 @@ int	ft_export(t_data *data)
 	return (data->exit_status = 0, EXIT_SUCCESS);
 }
 
-int	ft_verif_name(char *str)
+static int	search_egal(char *str)
 {
 	int	i;
 
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
+int	ft_verif_name(char *str)
+{
+	int	i;
+	int	j;
+	
+	j = search_egal(str);
 	i = 0;
 	if (ft_isalpha(str[i]) || str[i] == '_')
 		i++;
@@ -261,7 +277,7 @@ int	ft_verif_name(char *str)
 	}
 	while (str[i])
 	{
-		if (ft_isalnum(str[i]) || str[i] == '=')
+		if (ft_isalnum(str[i]) || str[i] == '=' || str[i] == ' ' || (str[i] == '-' && i > j && j != 0))
 			i++;
 		else
 		{
