@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/24 00:23:59 by melvin           ###   ########.fr       */
+/*   Updated: 2025/03/26 12:51:14 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,19 @@
 	Function to display an error message when using cd.
 */
 
-static int	cd_error(char *path)
+static int	cd_error(char *path, int many_args)
 {
-	ft_putstr_fd("cd: ", 2);
-	ft_putstr_fd(path, 2);
-	ft_putstr_fd(": ", 2);
-	perror("");
+	if (many_args)
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+	}
+	else
+	{
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");		
+	}
 	return (EXIT_FAILURE);
 }
 
@@ -69,12 +76,14 @@ int	ft_cd(t_data *data)
 	t_token	*tmp;
 
 	tmp = data->lst_token;
+	if (tmp && tmp->next && tmp->next->next)
+		return (data->exit_status = 1, cd_error(NULL, 1));
 	old_pwd = getcwd(NULL, 0);
 	path = get_cd_path(data, tmp);
 	if (!path)
 		return (free (old_pwd), data->exit_status = 1, EXIT_FAILURE);
 	if (chdir(path) == -1)
-		return (free(old_pwd), data->exit_status = 1, cd_error(path));
+		return (free(old_pwd), data->exit_status = 1, cd_error(path, 0));
 	ft_update_env(data, "OLDPWD", old_pwd);
 	free (old_pwd);
 	current_dir = getcwd(NULL, 0);
