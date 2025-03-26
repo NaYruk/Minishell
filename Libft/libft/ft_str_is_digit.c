@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_str_is_digit.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 18:57:17 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/26 15:41:40 by mcotonea         ###   ########.fr       */
+/*   Created: 2025/03/26 16:05:19 by mcotonea          #+#    #+#             */
+/*   Updated: 2025/03/26 16:06:05 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/libft.h"
 
-static void	sig_sigint(int signum)
+int	ft_str_is_digit(char *str)
 {
-	(void)signum;
-	ft_putstr_fd("\n", STDOUT_FILENO);
-	rl_replace_line("", STDIN_FILENO);
-	rl_on_new_line();
-	rl_redisplay();
-}
+	int	i;
 
-void	sig_handler(void)
-{
-	signal(SIGINT, &sig_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	i = 0;
+	while (str[i])
+	{
+		if (str[0] == '+' || str[0] == '-')
+			i++;
+		if (str[i] < '0' || str[i] > '9')
+			return (1);
+		i++;
+	}
+	return (0);
 }

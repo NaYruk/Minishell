@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/26 14:11:17 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:07:04 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 	
 */
 
-static int	ft_str_is_digit(char *str)
+/* static int	ft_str_is_digit(char *str)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ static int	ft_str_is_digit(char *str)
 		i++;
 	}
 	return (0);
-}
+} */
 
 static void	print_exit_error(char *message, int status)
 {
@@ -78,7 +78,6 @@ static int	number_too_large(char *line)
 	}
 	return (0);
 }
-
 
 static int	exit_value(char *line, int *too_large)
 {
