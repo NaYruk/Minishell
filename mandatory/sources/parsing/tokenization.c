@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/24 18:49:01 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 01:47:59 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -25,20 +25,25 @@ static void	ft_gettype(t_data *data)
 	current = data->lst_token;
 	while (current)
 	{
-		if (ft_strcmp(current->line, "|") == 0)
-			current->token = PIPE;
-		else if (ft_strcmp(current->line, "<") == 0)
-			current->token = INFILE;
-		else if (ft_strcmp(current->line, ">") == 0)
-			current->token = OUTFILE;
-		else if (ft_strcmp(current->line, "<<") == 0)
-			current->token = HEREDOC;
-		else if (ft_strcmp(current->line, ">>") == 0)
-			current->token = APPEND;
-		else if (ft_strcmp(current->line, "&&") == 0)
-			current->token = AND;
-		else if (ft_strcmp(current->line, "||") == 0)
-			current->token = OR;
+		if (current->quote_char == '\0')
+		{
+			if (ft_strcmp(current->line, "|") == 0)
+				current->token = PIPE;
+			else if (ft_strcmp(current->line, "<") == 0)
+				current->token = INFILE;
+			else if (ft_strcmp(current->line, ">") == 0)
+				current->token = OUTFILE;
+			else if (ft_strcmp(current->line, "<<") == 0)
+				current->token = HEREDOC;
+			else if (ft_strcmp(current->line, ">>") == 0)
+				current->token = APPEND;
+			else if (ft_strcmp(current->line, "&&") == 0)
+				current->token = AND;
+			else if (ft_strcmp(current->line, "||") == 0)
+				current->token = OR;
+			else
+			current->token = OTHER;
+		}
 		else
 			current->token = OTHER;
 		current = current->next;

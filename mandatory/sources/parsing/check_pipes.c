@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_pipes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:21:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 02:10:03 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 01:40:14 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -48,13 +48,16 @@ static int	check_first_and_last_node(t_token *token, t_data *data)
 	int		nbr;
 
 	nbr = 0;
-	if (token->token == PIPE)
-		return (token_error(data, "syntax error near unexpected token `|'\n"));
-	nbr = pipes_nbr(token->line, nbr);
-	if (nbr == 2)
-		return (token_error(data, "2 Pipes, we don't do bonus !\n"));
-	if (nbr >= 2)
-		return (token_error(data, "syntax error near unexpected token `||'\n"));
+	if (token->quote_char == '\0')
+	{
+		if (token->token == PIPE)
+			return (token_error(data, "syntax error near unexpected token `|'\n"));
+		nbr = pipes_nbr(token->line, nbr);
+		if (nbr == 2)
+			return (token_error(data, "2 Pipes, we don't do bonus !\n"));
+		if (nbr >= 2)
+			return (token_error(data, "syntax error near unexpected token `||'\n"));
+	}
 	return (0);
 }
 
@@ -99,9 +102,12 @@ int	check_pipes(t_data *data)
 		return (-1);
 	while (current->next != NULL)
 	{
-		nbr = pipes_nbr(current->line, nbr);
-		if (check_potential_errors(data, nbr, current) != 0)
-			return (-1);
+		if (current->quote_char == '\0')
+		{
+			nbr = pipes_nbr(current->line, nbr);
+			if (check_potential_errors(data, nbr, current) != 0)
+				return (-1);
+		}
 		current = current->next;
 	}
 	if (check_first_and_last_node(current, data) == -1)
