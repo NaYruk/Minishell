@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/26 14:40:54 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 04:49:04 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -86,8 +86,6 @@ int	check_dir(t_data *data)
 
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 {
-	if (exec_heredoc(data) == -1)
-		return ;
 	if (data->nbr_of_command == 0)
 		return ;
 	if (exec_build(data->exec->arg_cmd[0]) == 1)
@@ -106,6 +104,15 @@ void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 			child_process(data, *cmd_process);
 	}
 	(*cmd_process)++;
+}
+
+bool	get_next_pipe_or_null(t_token **current)
+{
+	while (*current && (*current)->token != PIPE)
+		*current = (*current)->next;
+	if (*current && (*current)->token == PIPE)
+		return (true);
+	return (false);
 }
 
 /*
@@ -146,10 +153,15 @@ void	exec(t_data *data, t_token *current)
 	{
 		if (set_exec_struct(data, &current) == -1)
 		{
-			free_exec_struct(data);
-			break ;
+			if (get_next_pipe_or_null(&current) == false)
+			{
+				free_exec_struct(data);
+				break ;
+			}
+			cmd_process++;
 		}
-		exec_build_or_cmd(data, &cmd_process, &nbr_of_fork);
+		else
+			exec_build_or_cmd(data, &cmd_process, &nbr_of_fork);
 		free_exec_struct(data);
 	}
 	close_pipes(data);

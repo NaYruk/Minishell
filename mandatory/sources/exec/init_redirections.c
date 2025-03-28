@@ -1,33 +1,63 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:23:42 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/26 15:49:50 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/28 03:33:31 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
-void	set_infile_append_array(t_data *data, t_token *current, int *i, int *j)
+int	set_infile_append_array(t_data *data, t_token *current, int *i, int *j)
 {
 	if (current->token == INFILE && (current->next->token) == ARG)
+	{
 		data->exec->infile[(*i)++] = current->next->line;
+		if (access(current->next->line, F_OK | R_OK) == - 1)
+		{
+			perror(current->next->line);
+			data->exit_status = 1;
+			return (-1);
+		}
+	}
 	if (current->token == APPEND && (current->next->token) == ARG)
+	{
 		data->exec->append[(*j)++] = current->next->line;
-	return ;
+		if (access(current->next->line, F_OK) == 0)
+		{
+			if (access(current->next->line, W_OK) == -1)
+			{
+				perror(current->next->line);
+				data->exit_status = 1;
+				return (-1);
+			}
+		}
+	}
+	return (0);
 }
 
-void	set_outfile_heredoc_array(t_data *data, t_token *current, int *k, int *l)
+int	set_outfile_heredoc_array(t_data *data, t_token *current, int *k, int *l)
 {
 	if (current->token == OUTFILE && (current->next->token) == ARG)
+	{
 		data->exec->outfile[(*k)++] = current->next->line;
+		if (access(current->next->line, F_OK) == 0)
+		{
+			if (access(current->next->line, W_OK) == -1)
+			{
+				perror(current->next->line);
+				data->exit_status = 1;
+				return (-1);
+			}
+		}
+	}
 	if (current->token == HEREDOC && (current->next->token) == ARG)
 		data->exec->heredoc[(*l)++] = current->next->line;
-	return ;
+	return (0);
 }
 
 static int	malloc_redir_exec(t_data *data)

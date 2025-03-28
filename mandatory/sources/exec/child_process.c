@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:09:46 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/26 14:41:00 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 02:14:05 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -37,8 +37,13 @@ int	child_process(t_data *data, int i)
 	{
 		ft_putstr_fd(data->exec->arg_cmd[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
-		data->exit_status = 127;
-		exit(EXIT_FAILURE);
+		exit(127);
+	}
+	if (access(data->exec->cmd_path, X_OK) == -1)
+	{
+		ft_putstr_fd(data->exec->cmd_path, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		exit(126);
 	}
 	if (execve(data->exec->cmd_path, data->exec->arg_cmd, data->env) == -1)
 	{

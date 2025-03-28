@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 23:24:17 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 04:46:49 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -58,17 +58,24 @@ int	set_exec_struct(t_data *data, t_token **current)
 	l = 0;
 	if (get_nbr_redir(data, *current) == -1)
 		return (-1);
+	data->exec->heredoc[0] = NULL;
+	if ((*current)->token == PIPE)
+		*current = (*current)->next;
 	while (*current != NULL)
 	{
 		if (args_and_cmd(data, current) == -1)
 			break ;
-		set_infile_append_array(data, *current, &i, &j);
-		set_outfile_heredoc_array(data, *current, &k, &l);
+		if (set_infile_append_array(data, *current, &i, &j) == -1)
+			return (-1);
+		if (set_outfile_heredoc_array(data, *current, &k, &l) == -1)
+			return (-1);
+		if (data->exec->heredoc[0] != NULL)
+			if (exec_heredoc(data) == -1)
+				return (-1);
 		*current = (*current)->next;
 	}
 	data->exec->infile[i] = NULL;
 	data->exec->outfile[k] = NULL;
 	data->exec->append[j] = NULL;
-	data->exec->heredoc[l] = NULL;
 	return (0);
 }

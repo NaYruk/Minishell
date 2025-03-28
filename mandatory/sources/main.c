@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/25 22:33:25 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 01:55:05 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -20,7 +20,7 @@ void	print_list(t_data *data)
 	
 	while (current != NULL)
 	{
-		printf("%s, %d\n", current->line, current->token);
+		printf("%s, %d, %c\n", current->line, current->token, current->quote_char);
 		current = current->next;
 	}
 }
@@ -47,6 +47,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(data->prompt);
 			if (tokenization(data) == 0)
 				execution(data);
+			//tokenization(data);
 		}
 		//print_list(data);
 		free(data->prompt);

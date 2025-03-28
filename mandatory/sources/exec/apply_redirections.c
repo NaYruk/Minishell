@@ -1,12 +1,12 @@
 /******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                     :+:      :+:    :+:   */
+/*   apply_redirections.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 23:21:57 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 02:52:10 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -28,6 +28,7 @@ void	redirect_infile(t_data *data)
 		if (fd_file == -1)
 		{
 			perror(data->exec->infile[i]);
+			data->exit_status = 1;
 			exit(EXIT_FAILURE);
 		}
 		dup2(fd_file, STDIN_FILENO);
@@ -53,6 +54,7 @@ void	redirect_outfile(t_data *data)
 		if (fd_file == -1)
 		{
 			perror(data->exec->outfile[i]);
+			data->exit_status = 1;
 			exit(EXIT_FAILURE);
 		}
 		dup2(fd_file, STDOUT_FILENO);
@@ -78,6 +80,7 @@ void	redirect_append(t_data *data)
 		if (fd_file == -1)
 		{
 			perror(data->exec->append[i]);
+			data->exit_status = 1;
 			exit(EXIT_FAILURE);
 		}
 		dup2(fd_file, STDOUT_FILENO);

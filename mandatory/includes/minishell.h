@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/26 13:37:16 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 03:06:27 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -143,8 +143,8 @@ void	set_nbr_of_commands(t_data *data);
 void	get_args_cmd(t_data *data, t_token *current);
 void	get_cmd_path(t_data *data, t_token **current);
 int		get_nbr_redir(t_data *data, t_token *current);
-void	set_outfile_heredoc_array(t_data *data, t_token *current, int *k, int *l);
-void	set_infile_append_array(t_data *data, t_token *current, int *i, int *j);
+int		set_outfile_heredoc_array(t_data *data, t_token *current, int *k, int *l);
+int		set_infile_append_array(t_data *data, t_token *current, int *i, int *j);
 void	set_pipes(t_data *data);
 void	close_pipes(t_data *data);
 int		exec_heredoc(t_data *data);

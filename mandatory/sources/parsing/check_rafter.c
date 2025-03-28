@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_rafter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:23:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/25 02:09:58 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/28 01:37:40 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -114,20 +114,24 @@ int	check_rafter(t_data *data)
 	current = data->lst_token;
 	while (current != NULL)
 	{
-		if (error_rafter(data, nbr, current) == -1)
-			return (-1);
-		if (current->token >= HEREDOC && current->token <= OUTFILE)
+		if (current->quote_char == '\0')
 		{
-			if (current->next != NULL)
+			if (error_rafter(data, nbr, current) == -1)
+				return (-1);
+			if (current->token >= HEREDOC && current->token <= OUTFILE)
 			{
-				if (current->next->token != ARG)
-					return (special_error(data,
-							"syntax error near unexpected token ",
-							current->next->line));
-			}
-			else
-				return (token_error(data,
+				if (current->next != NULL)
+				{
+					if (current->next->token != ARG)
+						return (special_error(data,
+								"syntax error near unexpected token ",
+								current->next->line));
+				}
+				else
+					return (token_error(data,
 						"syntax error near unexpected token `newline'\n"));
+			}
+			
 		}
 		current = current->next;
 	}
