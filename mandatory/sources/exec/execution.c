@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/28 04:49:04 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/29 08:13:56 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -16,9 +16,14 @@
 
 void	wait_all(t_data *data, int nbr_of_fork)
 {
-	while (nbr_of_fork >= 0)
+	int	i;
+
+	if (data->is_builtin_cmd[data->nbr_of_command - 1] == true)
+		return ;
+	i = 0;
+	while (i <= nbr_of_fork)
 	{
-		if (waitpid(data->pids[nbr_of_fork], &data->exit_status, 0) == -1)
+		if (waitpid(data->pids[i], &data->exit_status, 0) == -1)
 		{
 			perror("WAITPID");
 			error(data);
@@ -26,7 +31,7 @@ void	wait_all(t_data *data, int nbr_of_fork)
 		}
 		if (WIFEXITED(data->exit_status))
 			data->exit_status = WEXITSTATUS(data->exit_status);
-		nbr_of_fork--;
+		i++;
 	}
 }
 
@@ -86,15 +91,13 @@ int	check_dir(t_data *data)
 
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 {
-	if (data->nbr_of_command == 0)
-		return ;
-	if (exec_build(data->exec->arg_cmd[0]) == 1)
+	if (*cmd_process < data->nbr_of_command - 1)
 	{
-		if (setup_redirection(data, *cmd_process) != -1)
-			exec_builtin(data);
-		dup2(data->stdout_backup, STDOUT_FILENO);
-		dup2(data->stdin_backup, STDIN_FILENO);
+		if (pipe(data->current_pipe) == -1)
+			malloc_error(data);
 	}
+	if (exec_build(data->exec->arg_cmd[0]) == 1)
+		exec_builtin(data, data->exec->arg_cmd, *cmd_process);
 	else
 	{
 		if (check_dir(data) == -1)
@@ -102,7 +105,16 @@ void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 		data->pids[++(*nbr_of_fork)] = fork();
 		if (data->pids[*nbr_of_fork] == 0)
 			child_process(data, *cmd_process);
+		else
+		{
+			if (*cmd_process > 0)
+				close(data->old_pipe[0]);
+			if (*cmd_process < data->nbr_of_command - 1)
+				close(data->current_pipe[1]);
+		}
 	}
+	data->old_pipe[0] = data->current_pipe[0];
+	data->old_pipe[1] = data->current_pipe[1];
 	(*cmd_process)++;
 }
 
@@ -139,6 +151,17 @@ bool	get_next_pipe_or_null(t_token **current)
 	redirection.
 */	
 
+void	allocate_status_command(t_data *data)
+{
+	if (data->nbr_of_command > 0)
+	{
+		data->is_builtin_cmd = ft_calloc(data->nbr_of_command, sizeof(bool));
+		if (!data->is_builtin_cmd)
+			malloc_error(data);
+		add_g_c_node(data, &data->g_c, (void **)data->is_builtin_cmd, false);
+	}
+}
+
 void	exec(t_data *data, t_token *current)
 {
 	int	cmd_process;
@@ -146,9 +169,9 @@ void	exec(t_data *data, t_token *current)
 
 	cmd_process = 0;
 	nbr_of_fork = -1;
-	set_pipes(data);
 	data->stdin_backup = dup(STDIN_FILENO);
 	data->stdout_backup = dup(STDOUT_FILENO);
+	allocate_status_command(data);
 	while (current != NULL)
 	{
 		if (set_exec_struct(data, &current) == -1)
@@ -161,10 +184,11 @@ void	exec(t_data *data, t_token *current)
 			cmd_process++;
 		}
 		else
+		{
 			exec_build_or_cmd(data, &cmd_process, &nbr_of_fork);
+		}
 		free_exec_struct(data);
 	}
-	close_pipes(data);
 	close(data->stdout_backup);
 	close(data->stdin_backup);
 	wait_all(data, nbr_of_fork);
@@ -197,9 +221,6 @@ void	execution(t_data *data)
 	current = data->lst_token;
 	set_nbr_of_commands(data);
 	init_exec(data);
-	get_pids_and_pipes(data);
+	get_pids(data);
 	exec(data, current);
-	free(data->pipes);
-	free(data->pids);
-	free(data->exec);
 }

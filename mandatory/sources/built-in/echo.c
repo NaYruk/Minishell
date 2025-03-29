@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/21 12:07:02 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/29 02:25:07 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,21 @@ static int	check_option(char *str)
 	" " (space) before the first argument
 */
 
-static	void	print_args(t_token *tmp)
+static	void	print_args(char **cmd_args, int *index)
 {
 	int	first_arg;
 
 	first_arg = 1;
-	while (tmp->next && tmp->next->token == ARG)
+	while (cmd_args[*index + 1])
 	{
-		if (tmp->next->line && tmp->next->line[0] != '\0')
+		if (cmd_args[*index + 1] && cmd_args[*index + 1][0] != '\0')
 		{
 			if (!first_arg)
 				printf(" ");
-			printf("%s", tmp->next->line);
+			printf("%s", cmd_args[*index + 1]);
 			first_arg = 0;
 		}
-		tmp = tmp->next;
+		(*index)++;
 	}
 }
 
@@ -66,22 +66,21 @@ static	void	print_args(t_token *tmp)
 	Function that reproduces the behavior of the echo command in bash.
 */
 
-int	ft_echo(t_data *data)
+int	ft_echo(t_data *data, char **args_cmd)
 {
-	t_token	*tmp;
+	int 	i;
 	int		new_line;
 
-	tmp = data->lst_token;
 	new_line = 1;
-	if (!tmp->next)
+	i = 0;
+	if (!args_cmd[i + 1])
 		return (printf("\n"), data->exit_status = 0, EXIT_SUCCESS);
-	while (tmp->next && (tmp->next->token == ARG
-			&& check_option(tmp->next->line)))
+	while (args_cmd[i + 1] && check_option(args_cmd[i + 1]))
 	{
 		new_line = 0;
-		tmp = tmp->next;
+		i++;
 	}
-	print_args(tmp);
+	print_args(args_cmd, &i);
 	if (new_line)
 		printf("\n");
 	return (data->exit_status = 0, EXIT_SUCCESS);

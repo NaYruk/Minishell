@@ -1,21 +1,21 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   apply_redirections.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/28 02:52:10 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/29 04:49:05 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /* REDIRECT_INFILE = In the case of we have a infile
 					  redirect STDIN in the infile */
 			  
-void	redirect_infile(t_data *data)
+int	redirect_infile(t_data *data, bool builtin)
 {
 	int	fd_file;
 	int	i;
@@ -29,18 +29,22 @@ void	redirect_infile(t_data *data)
 		{
 			perror(data->exec->infile[i]);
 			data->exit_status = 1;
-			exit(EXIT_FAILURE);
+			if (builtin == true)
+				return (-1);
+			else
+				exit(EXIT_FAILURE);
 		}
 		dup2(fd_file, STDIN_FILENO);
 		close (fd_file);
 		i++;
 	}
+	return (0);
 }
 
 /* REDIRECT_OUTFILE = In the case of we have a outfile
 					   redirect STDOUT in the outfile */
 
-void	redirect_outfile(t_data *data)
+int	redirect_outfile(t_data *data, bool builtin)
 {
 	int	fd_file;
 	int	i;
@@ -55,18 +59,22 @@ void	redirect_outfile(t_data *data)
 		{
 			perror(data->exec->outfile[i]);
 			data->exit_status = 1;
-			exit(EXIT_FAILURE);
+			if (builtin == true)
+				return (-1);
+			else
+				exit(EXIT_FAILURE);
 		}
 		dup2(fd_file, STDOUT_FILENO);
 		close(fd_file);
 		i++;
 	}
+	return (0);
 }
 
 /* REDIRECT_APPEND = In the case of we have a append
 					  redirect STDOUT in the append */
 				  
-void	redirect_append(t_data *data)
+int	redirect_append(t_data *data, bool builtin)
 {
 	int	fd_file;
 	int	i;
@@ -81,12 +89,16 @@ void	redirect_append(t_data *data)
 		{
 			perror(data->exec->append[i]);
 			data->exit_status = 1;
-			exit(EXIT_FAILURE);
+			if (builtin == true)
+				return (-1);
+			else
+				exit(EXIT_FAILURE);
 		}
 		dup2(fd_file, STDOUT_FILENO);
 		close(fd_file);
 		i++;
 	}
+	return (0);
 }
 
 /* REDIRECT_HEREDOC = In the case of we have a heredoc
@@ -115,15 +127,29 @@ void	redirect_heredoc(t_data *data)
 					  redirect STDOUT in the append
 */
 
-int	setup_redirection(t_data *data, int cmd_process)
+int	setup_redirection(t_data *data, int cmd_process, bool builtin)
 {
-	if (cmd_process > 0)
-		dup2(data->pipes[cmd_process - 1][0], STDIN_FILENO);
+	if (cmd_process > 0 && data->old_pipe[0] != -1)
+	{
+		dup2(data->old_pipe[0], STDIN_FILENO);
+		close(data->old_pipe[0]);
+        close(data->old_pipe[1]);
+	}
 	if (cmd_process < data->nbr_of_command - 1)
-		dup2(data->pipes[cmd_process][1], STDOUT_FILENO);
-	redirect_infile(data);
-	redirect_outfile(data);
-	redirect_append(data);
+	{
+		dup2(data->current_pipe[1], STDOUT_FILENO);
+		if (builtin == false)
+		{
+			close(data->current_pipe[0]);
+        	close(data->current_pipe[1]);
+		}
+	}
+	if (redirect_infile(data, builtin) == -1)
+		return (-1);
+	if (redirect_outfile(data, builtin) == -1)
+		return (-1);
+	if (redirect_append(data, builtin) == -1)
+		return (-1);
 	redirect_heredoc(data);
 	return (0);
 }

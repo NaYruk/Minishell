@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/26 16:07:04 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/29 02:17:01 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,9 @@ static void	print_exit_error(char *message, int status)
 	ft_putstr_fd("\n", 2);
 }
 
-static void	clean_and_exit(t_data *data, int status, int *too_large)
+static void	clean_and_exit(t_data *data, int status)
 {
-	if (too_large == 0)
-		printf("exit\n");
+	printf("exit\n");
 	free_garbage(data);
 	free_token(data);
 	exit (status);
@@ -95,30 +94,29 @@ static int	exit_value(char *line, int *too_large)
 	return ((int)value % 256);
 }
 
-int	ft_exit(t_data *data)
+int	ft_exit(t_data *data, char **args_cmd)
 {
-	t_token		*tmp;
 	int			status;
 	int			too_large;
 
 	status = 0;
-	tmp = data->lst_token;
-	if (!tmp->next)
+	too_large = 0;
+	if (!args_cmd[1])
 		status = 0;
-	else if (tmp->next && tmp->next->next)
+	else if (args_cmd[1] && args_cmd[2])
 	{
 		print_exit_error("too many arguments", 1);
 		status = 1;
 		return (data->exit_status = status);
 	}
-	else if (tmp->next && ft_str_is_digit(tmp->next->line) == 1)
+	else if (args_cmd[1] && ft_str_is_digit(args_cmd[1]) == 1)
 	{
-		print_exit_error(tmp->next->line, 2);
+		print_exit_error(args_cmd[1], 2);
 		status = 2;
 		exit(status);
 	}
-	else if (tmp->next)
-		status = exit_value(tmp->next->line, &too_large);
-	clean_and_exit(data, status, &too_large);
+	else if (args_cmd[1])
+		status = exit_value(args_cmd[1], &too_large);
+	clean_and_exit(data, status);
 	return (status);
 }

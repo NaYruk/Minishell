@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_dollars.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:24:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/26 15:49:23 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/29 08:25:17 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	stock_rest(t_data *data, char *prompt, char **new_line, int *i)
 
 	count = 0;
 	i_start = *i;
-	tmp = NULL;
 	while (prompt[*i] != '\0' && (prompt[*i] != '$' || data->simple_q))
 	{
 		count++;
@@ -60,7 +59,9 @@ void	stock_rest(t_data *data, char *prompt, char **new_line, int *i)
 	*i = i_start;
 	old_line = *new_line;
 	tmp = ft_strndup(&prompt[*i], count);
-	*new_line = ft_strjoin(*new_line, tmp);
+	if (!tmp)
+		return ;
+	*new_line = ft_strjoin(old_line, tmp);
 	free(old_line);
 	free(tmp);
 	*i += count;
@@ -88,6 +89,7 @@ void	replace_dollars(t_data *data, char **line)
 		if_dollar(data, &new_line, *line, &i);
 		stock_rest(data, *line, &new_line, &i);
 	}
+	free(*line);
 	*line = new_line;
 	return ;
 }

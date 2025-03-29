@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/26 14:03:25 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/29 05:59:29 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, int i)
 	{
 		line = readline("> ");
 		if (!line || ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
 			break ;
+		}
 		data->classic_or_hd_expand = 1;
 		heredoc_token = find_heredoc_token(data, i);
 		if (heredoc_token)
@@ -57,10 +60,8 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, int i)
 		}
 		ft_putstr_fd(line, write_pipe);
 		ft_putstr_fd("\n", write_pipe);
-	}
-	if (line)
 		free(line);
-	return ;
+	}
 }
 
 /*
