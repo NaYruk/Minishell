@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/26 15:19:08 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/29 02:39:59 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,30 +115,27 @@ static int	ft_add_env(t_data *data, char *env)
 	return (0);
 }
 
-void	ft_process_export(t_data *data, int *error)
+void	ft_process_export(t_data *data, int *error, char **args_cmd)
 {
-	t_token *tmp;
+	int		i;
 	char	*env_var;
 
+	i = 0;
 	env_var = NULL;
-	tmp = data->lst_token;
-	if (!tmp || !tmp->next)
+	if (!args_cmd[i] || !args_cmd[i + 1])
 		return;
-	tmp = tmp->next;
-	while (tmp)
+	i++;
+	while (args_cmd[i] && ft_strcmp(args_cmd[i], "|") != 0)
 	{
-		if (tmp->token == ARG)
+		env_var = args_cmd[i];
+		if (ft_verif_name(env_var) == 1)
 		{
-			env_var = tmp->line;
-			if (ft_verif_name(env_var) == 1)
-			{
-				*error = 1;
-				tmp = tmp->next;
-				continue ;
-			}
-			ft_add_env(data, tmp->line);
+			*error = 1;
+			i++;
+			continue ;
 		}
-		tmp = tmp->next;
+		ft_add_env(data, args_cmd[i]);
+		i++;
 	}
 	return ;
 }
@@ -227,15 +224,15 @@ void	ft_free_tmp(char **tmp)
 	return ;
 }
 
-int	ft_export(t_data *data)
+int	ft_export(t_data *data, char **args_cmd)
 {
 	char 	**tmp;
 	int		error;
 
 	error = 0;
-	if (data->lst_token->next)
+	if (args_cmd[1])
 	{
-		ft_process_export(data, &error);
+		ft_process_export(data, &error, args_cmd);
 		if (error == 1)
 			return (data->exit_status = 1, EXIT_SUCCESS);
 		return (data->exit_status = 0, EXIT_SUCCESS);

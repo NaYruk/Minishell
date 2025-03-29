@@ -29,7 +29,7 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)built-in/unset.c \
 	  $(SRC_PATH)built-in/export.c \
 	  $(SRC_PATH)built-in/utils_bt.c \
-	  $(SRC_PATH)built-in/exec_bt.c \
+	  $(SRC_PATH)exec/exec_bt.c \
 	  $(SRC_PATH)exec/execution.c \
 	  $(SRC_PATH)exec/get_cmd_path.c \
 	  $(SRC_PATH)exec/get_args.c \

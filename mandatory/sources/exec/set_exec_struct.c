@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   set_exec_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/28 04:46:49 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/29 08:13:47 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -17,6 +17,7 @@ void	init_exec(t_data *data)
 	data->exec = malloc(sizeof(t_exec));
 	if (!data->exec)
 		malloc_error(data);
+	add_g_c_node(data, &data->g_c, (void **)data->exec, false);
 	data->exec->arg_cmd = NULL;
 	data->exec->cmd_path = NULL;
 	data->exec->infile = NULL;
@@ -69,7 +70,7 @@ int	set_exec_struct(t_data *data, t_token **current)
 			return (-1);
 		if (set_outfile_heredoc_array(data, *current, &k, &l) == -1)
 			return (-1);
-		if (data->exec->heredoc[0] != NULL)
+		if (data->exec->heredoc[0] != NULL && (*current)->token == HEREDOC)
 			if (exec_heredoc(data) == -1)
 				return (-1);
 		*current = (*current)->next;

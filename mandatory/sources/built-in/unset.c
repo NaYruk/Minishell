@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:52:03 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/25 16:14:14 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/29 02:30:32 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,18 @@
 	Works without the '=' sign in the variable name. 
 */
 
-int	ft_unset(t_data *data)
+int	ft_unset(t_data *data, char **args_cmd)
 {
-	t_token	*tmp;
+	int	i;
 
-	tmp = data->lst_token;
-	if (!tmp || !tmp->next)
+	i = 0;
+	if (!args_cmd[0] || !args_cmd[i + 1])
 		return (data->exit_status = 0, EXIT_SUCCESS);
-	tmp = tmp->next;
-	while (tmp)
+	i++;
+	while (args_cmd[i])
 	{
-		if (tmp->token == ARG)
-			ft_delete_env(data, tmp->line);
-		tmp = tmp->next;
+		ft_delete_env(data, args_cmd[i]);
+		i++;
 	}
 	return (data->exit_status = 0, EXIT_SUCCESS);
 }

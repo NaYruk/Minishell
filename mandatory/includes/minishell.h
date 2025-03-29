@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/28 03:06:27 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/29 06:47:00 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -61,7 +61,9 @@ typedef struct s_data
 	char		*prompt;
 	char		**env;
 	pid_t		*pids;
-	int			(*pipes)[2];
+	int			old_pipe[2];
+	int			current_pipe[2];
+	bool		*is_builtin_cmd;
 	bool		operator;
 	bool		simple_q;
 	bool		double_q;
@@ -122,34 +124,32 @@ int		token_error(t_data *data, char *line);
 
 /* Functions for built-in commands */
 int		ft_pwd(t_data *data);
-int		ft_exit(t_data *data);
+int		ft_exit(t_data *data, char **args_cmd);
 int		ft_cd(t_data *data);
 int		ft_env(t_data *data);
-int		ft_echo(t_data *data);
-int		ft_unset(t_data *data);
-int		ft_export(t_data *data);
+int		ft_echo(t_data *data, char **args_cmd);
+int		ft_unset(t_data *data, char **args_cmd);
+int		ft_export(t_data *data, char **args_cmd);
 char	*ft_getenv(t_data *data, char *name);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
 int		ft_verif_name(char *str);
-int		exec_builtin(t_data *data);
+int		exec_builtin(t_data *data, char **args_cmd, int cmd_process);
 
 /* Function for the execution of commands */
 void	execution(t_data *data);
 void	init_exec(t_data *data);
 void	free_exec_struct(t_data *data);
-void	get_pids_and_pipes(t_data *data);
+void	get_pids(t_data *data);
 void	set_nbr_of_commands(t_data *data);
 void	get_args_cmd(t_data *data, t_token *current);
 void	get_cmd_path(t_data *data, t_token **current);
 int		get_nbr_redir(t_data *data, t_token *current);
 int		set_outfile_heredoc_array(t_data *data, t_token *current, int *k, int *l);
 int		set_infile_append_array(t_data *data, t_token *current, int *i, int *j);
-void	set_pipes(t_data *data);
-void	close_pipes(t_data *data);
 int		exec_heredoc(t_data *data);
 int		child_process(t_data *data, int i);
-int		setup_redirection(t_data *data, int cmd_process);
+int		setup_redirection(t_data *data, int cmd_process, bool builtin);
 int		set_exec_struct(t_data *data, t_token **current);
 
 #endif

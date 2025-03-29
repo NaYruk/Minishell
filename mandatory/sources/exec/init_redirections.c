@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:23:42 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/28 03:33:31 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/29 05:34:50 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -62,16 +62,16 @@ int	set_outfile_heredoc_array(t_data *data, t_token *current, int *k, int *l)
 
 static int	malloc_redir_exec(t_data *data)
 {
-	data->exec->infile = malloc(sizeof(char *) * (data->exec->nbr_infile + 1));
+	data->exec->infile = ft_calloc((data->exec->nbr_infile + 1), sizeof(char *));
 	if (!data->exec->infile)
 		return (-1);
-	data->exec->outfile = malloc(sizeof(char *) * (data->exec->nbr_outfile + 1));
+	data->exec->outfile = ft_calloc((data->exec->nbr_outfile + 1), sizeof(char *));
 	if (!data->exec->outfile)
 		return (-1);
-	data->exec->append = malloc(sizeof(char *) * (data->exec->nbr_append + 1));
+	data->exec->append = ft_calloc(data->exec->nbr_append + 1, sizeof(char *));
 	if (!data->exec->append)
 		return (-1);
-	data->exec->heredoc = malloc(sizeof(char *) * (data->exec->nbr_heredoc + 1));
+	data->exec->heredoc = ft_calloc(data->exec->nbr_heredoc + 1, sizeof(char *));
 	if (!data->exec->heredoc)
 		return (-1);
 	return (0);
