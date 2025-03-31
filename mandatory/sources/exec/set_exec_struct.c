@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/29 08:13:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:27:59 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,11 @@ void	init_exec(t_data *data)
 
 int	args_and_cmd(t_data *data, t_token **current)
 {
-	if ((*current)->token == PIPE)
-	{
-		*current = (*current)->next;
-		return (-1);
-	}
 	if ((*current)->token == CMD)
 	{
 		get_args_cmd(data, *current);
-		get_cmd_path(data, current);
+		if (get_cmd_path(data, current) == -1)
+			return (-1);
 	}
 	return (0);
 }
@@ -64,11 +60,18 @@ int	set_exec_struct(t_data *data, t_token **current)
 		*current = (*current)->next;
 	while (*current != NULL)
 	{
-		if (args_and_cmd(data, current) == -1)
+		if ((*current)->token == PIPE)
+		{
+			*current = (*current)->next;
 			break ;
-		if (set_infile_append_array(data, *current, &i, &j) == -1)
+		}
+		if (args_and_cmd(data, current) == -1)
 			return (-1);
-		if (set_outfile_heredoc_array(data, *current, &k, &l) == -1)
+		if (set_infile_heredoc_array(data, *current, &i, &j) == -1)
+			return (-1);
+		if (set_outfile_array(data, *current, &k) == -1)
+			return (-1);
+		if (set_append_array(data, *current, &j) == -1)
 			return (-1);
 		if (data->exec->heredoc[0] != NULL && (*current)->token == HEREDOC)
 			if (exec_heredoc(data) == -1)

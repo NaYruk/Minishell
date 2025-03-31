@@ -20,7 +20,6 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)parsing/check_pipes.c \
 	  $(SRC_PATH)parsing/is_operator.c \
 	  $(SRC_PATH)parsing/replace_dollars.c \
-	  $(SRC_PATH)parsing/expand_dollars.c \
 	  $(SRC_PATH)built-in/pwd.c \
 	  $(SRC_PATH)built-in/exit.c \
 	  $(SRC_PATH)built-in/cd.c \

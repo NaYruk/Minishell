@@ -6,65 +6,72 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:24:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/29 08:25:17 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:59:36 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*
-	IF_QUOTES :
-	Tracks quote state when processing characters
-	Toggles single/double quote flags when quote characters are encountered
-*/
-
-void	if_quotes(char c, bool *simple_q, bool *double_q)
-{
-	if (c == DOUBLE_QUOTES || c == SIMPLE_QUOTES)
-	{
-		if (c == SIMPLE_QUOTES && !(*simple_q))
-			(*simple_q) = true;
-		else if (c == SIMPLE_QUOTES && (*simple_q))
-			(*simple_q) = false;
-		else if (c == DOUBLE_QUOTES && !(*double_q))
-			(*double_q) = true;
-		else if (c == DOUBLE_QUOTES && (*double_q))
-			(*double_q) = false;
-	}
-}
-
-/*
-	STOCK_REST :
-	Copies characters from input to output until next $ or end of string
-	Handles literal $ inside single quotes without expansion
-*/
-
-void	stock_rest(t_data *data, char *prompt, char **new_line, int *i)
+char	*get_expand_line(char *line, int *i)
 {
 	int		count;
-	int		i_start;
-	char	*tmp;
-	char	*old_line;
+	char	*line_expand;
 
-	count = 0;
-	i_start = *i;
-	while (prompt[*i] != '\0' && (prompt[*i] != '$' || data->simple_q))
+	line_expand = NULL;
+	count = *i;
+	while (line[count] && (line[count] == '_' || ft_isalnum(line[count])))
+		count++;
+	line_expand = ft_strndup(&(line[*i]), count - *i);
+	*i = count;
+	return (line_expand);
+}
+
+int	check_dollar_interrogation(t_data *data, char **new_line, int *i)
+{
+	char	*after_expand;
+
+	after_expand = NULL;
+	if (data->prompt[*i] == '?')
 	{
-		count++;
-		(*i)++;
-		if_quotes(prompt[*i], &data->simple_q, &data->double_q);
+		after_expand = ft_itoa(data->exit_status);
+		*new_line = ft_strjoin(*new_line, after_expand);
+		free(after_expand);
+		return (1);
 	}
-	if (prompt[*i] == '$' && (prompt[*i + 1] == '\0'))
-		count++;
-	*i = i_start;
-	old_line = *new_line;
-	tmp = ft_strndup(&prompt[*i], count);
-	if (!tmp)
+	return (0);
+}
+
+
+void	stock_char(char **new_line, char c)
+{
+	char character[2];
+
+	character[0] = c;
+	character[1] = '\0';
+	*new_line = ft_strjoin(*new_line, character);
+}
+
+void	extand_dollar(t_data *data, char **new_line, char *prompt, int *i)
+{
+	char	*var_name;
+	char	*after_expand;
+
+	var_name = NULL;
+	after_expand = NULL;
+	(*i)++;
+	if (check_dollar_interrogation(data, new_line, i) == 1)
 		return ;
-	*new_line = ft_strjoin(old_line, tmp);
-	free(old_line);
-	free(tmp);
-	*i += count;
+	else if ((ft_isalnum(prompt[*i]) || prompt[*i] == '_'))
+	{
+		var_name = get_expand_line(prompt, i);
+		after_expand = ft_getenv(data, var_name);
+		if (after_expand)
+			*new_line = ft_strjoin(*new_line, after_expand);
+		free(var_name);
+	}
+	else
+		stock_char(new_line, '$');
+	(*i)--;
 }
 
 /*
@@ -78,18 +85,28 @@ void	replace_dollars(t_data *data, char **line)
 	char	*new_line;
 	int		i;
 
-	new_line = NULL;
 	i = 0;
 	new_line = ft_strdup("");
 	data->simple_q = false;
 	data->double_q = false;
 	while ((*line)[i] != '\0')
 	{
-		if_quotes((*line)[i], &data->simple_q, &data->double_q);
-		if_dollar(data, &new_line, *line, &i);
-		stock_rest(data, *line, &new_line, &i);
+		if ((*line)[i] == SIMPLE_QUOTES && !data->double_q)
+		{
+			data->simple_q = !data->simple_q;
+			stock_char(&new_line, SIMPLE_QUOTES);
+		}
+		else if ((*line)[i] == DOUBLE_QUOTES && !data->simple_q)
+		{
+			data->double_q = !data->double_q;
+			stock_char(&new_line, DOUBLE_QUOTES);
+		}	
+		else if ((*line)[i] == '$' && !data->simple_q)
+			extand_dollar(data, &new_line, *line, &i);
+		else
+			stock_char(&new_line, (*line)[i]);
+		i++;
 	}
-	free(*line);
+	free (*line);
 	*line = new_line;
-	return ;
 }

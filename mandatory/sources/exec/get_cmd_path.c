@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:36:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/28 02:12:10 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/31 15:15:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -75,6 +75,33 @@ static char	**get_all_cmd_paths(t_data *data)
 }
 
 /*
+	CHECK_DIR = Function to verify if a command path is a directory.
+
+	This function checks if the command path specified in data->exec->cmd_path is a
+	directory. If the path is a directory, it prints an error message and sets the
+	exit status to 126. If the path is not a directory, the function returns 0.
+*/
+
+int	check_dir(t_data *data, t_token *current, int mode)
+{
+	struct stat	stat_file;
+
+	if (stat(current->line, &stat_file) == -1)
+        return (0);
+	if (mode == 1)
+		if (S_ISDIR(stat_file.st_mode))
+			return (1);
+	if (S_ISDIR(stat_file.st_mode) && strchr(current->line, '/'))
+	{
+		ft_putstr_fd(current->line, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		data->exit_status = 126;
+		return (-1);
+	}
+	return (0);
+}
+
+/*
 	check_absolute_cmd :
 	Checks if the command in the current token is an executable file.
 	Uses the access function to determine if the file exists and is executable.
@@ -82,14 +109,39 @@ static char	**get_all_cmd_paths(t_data *data)
 	Returns -1 if the command is executable, otherwise returns 0.
 */
 
-
 int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path)
 {
-	if (access((*current)->line, F_OK | X_OK) == 0)
+	if (check_dir(data, *current, 0) == -1)
+		return (-2);
+	else if (access((*current)->line, F_OK) == 0 && !check_dir(data, *current, 1))
 	{
-		test_cmd_path = ft_strdup((*current)->line);
-		data->exec->cmd_path = test_cmd_path;
-		return (-1);
+		if (access((*current)->line, X_OK) == -1 && (ft_strncmp((*current)->line, "./", 2) == 0 || ft_strncmp((*current)->line, "/", 1) == 0))
+		{
+			ft_putstr_fd((*current)->line, 2);
+			ft_putstr_fd(": Permission denied\n", 2);
+			data->exit_status = 126;
+			return (-2);
+		}
+		else if (access((*current)->line, X_OK) == 0)
+		{
+			test_cmd_path = ft_strdup((*current)->line);
+			data->exec->cmd_path = test_cmd_path;
+			return (-1);
+		}
+	}
+	if (!data->exec->cmd_path && !exec_build((*current)->line) && (ft_strncmp((*current)->line, "./", 2) == 0 || ft_strncmp((*current)->line, "/", 1) == 0))
+	{
+		ft_putstr_fd((*current)->line, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		data->exit_status = 127;
+		return (-2);
+	}
+	else if (!data->exec->cmd_path && !exec_build((*current)->line))
+	{
+		ft_putstr_fd((*current)->line, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		data->exit_status = 127;
+		return (-2);
 	}
 	return (0);
 }
@@ -104,7 +156,7 @@ int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path)
 	Frees allocated memory for paths and the command path array.
 */
 
-void	get_cmd_path(t_data *data, t_token **current)
+int	get_cmd_path(t_data *data, t_token **current)
 {
 	char	**all_cmd_paths;
 	char	*test_cmd_path;
@@ -112,14 +164,14 @@ void	get_cmd_path(t_data *data, t_token **current)
 
 	i = -1;
 	test_cmd_path = NULL;
-	if (check_absolute_cmd(data, current, test_cmd_path) == -1)
-		return ;
 	all_cmd_paths = get_all_cmd_paths(data);
 	if (!all_cmd_paths)
-		return ;
+		return (-1);
 	while (all_cmd_paths[++i] != NULL)
 	{
 		test_cmd_path = ft_strjoin(all_cmd_paths[i], (*current)->line);
+		if (!test_cmd_path)
+            malloc_error(data);
 		if (access(test_cmd_path, F_OK) == 0)
 		{
 			data->exec->cmd_path = test_cmd_path;
@@ -131,4 +183,7 @@ void	get_cmd_path(t_data *data, t_token **current)
 	while (all_cmd_paths[++i] != NULL)
 		free(all_cmd_paths[i]);
 	free(all_cmd_paths);
+	if (check_absolute_cmd(data, current, test_cmd_path) == -2)
+		return (-1);
+	return (0);
 }

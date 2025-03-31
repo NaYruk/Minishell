@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/29 08:13:56 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/31 13:06:45 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ void	wait_all(t_data *data, int nbr_of_fork)
 {
 	int	i;
 
-	if (data->is_builtin_cmd[data->nbr_of_command - 1] == true)
-		return ;
+	if (data->is_builtin_cmd)
+	{
+		if (data->is_builtin_cmd[data->nbr_of_command - 1] == true)
+			return ;
+	}
 	i = 0;
 	while (i <= nbr_of_fork)
 	{
@@ -57,30 +60,6 @@ int	exec_build(char *line)
 }
 
 /*
-	CHECK_DIR = Function to verify if a command path is a directory.
-
-	This function checks if the command path specified in data->exec->cmd_path is a
-	directory. If the path is a directory, it prints an error message and sets the
-	exit status to 126. If the path is not a directory, the function returns 0.
-*/
-
-int	check_dir(t_data *data)
-{
-	struct stat	stat_file;
-
-	if (stat(data->exec->cmd_path, &stat_file) == -1)
-        return (0);
-	if (S_ISDIR(stat_file.st_mode))
-	{
-		ft_putstr_fd(data->exec->cmd_path, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
-		data->exit_status = 126;
-		return (-1);
-	}
-	return (0);
-}
-
-/*
 	EXEC_BUILD_OR_CMD = Function for exec a builtin if the token is a builtin
 						exec other cmd if the token is not a builtin.
 	In the case of a Heredoc, exec_heredoc before the rest of execution.
@@ -100,8 +79,6 @@ void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 		exec_builtin(data, data->exec->arg_cmd, *cmd_process);
 	else
 	{
-		if (check_dir(data) == -1)
-			return ;
 		data->pids[++(*nbr_of_fork)] = fork();
 		if (data->pids[*nbr_of_fork] == 0)
 			child_process(data, *cmd_process);
@@ -185,7 +162,8 @@ void	exec(t_data *data, t_token *current)
 		}
 		else
 		{
-			exec_build_or_cmd(data, &cmd_process, &nbr_of_fork);
+			if (data->nbr_of_command > 0)	
+				exec_build_or_cmd(data, &cmd_process, &nbr_of_fork);
 		}
 		free_exec_struct(data);
 	}

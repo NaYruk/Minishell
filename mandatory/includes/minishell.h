@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/29 06:47:00 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:17:20 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ typedef struct s_data
 	bool		simple_q;
 	bool		double_q;
 	char		quotes_char;
-	int			classic_or_hd_expand;
 	int			exit_status;
 	int			nbr_of_command;
 	int			stdout_backup;
@@ -143,10 +142,12 @@ void	free_exec_struct(t_data *data);
 void	get_pids(t_data *data);
 void	set_nbr_of_commands(t_data *data);
 void	get_args_cmd(t_data *data, t_token *current);
-void	get_cmd_path(t_data *data, t_token **current);
+int		exec_build(char *line);
+int		get_cmd_path(t_data *data, t_token **current);
 int		get_nbr_redir(t_data *data, t_token *current);
-int		set_outfile_heredoc_array(t_data *data, t_token *current, int *k, int *l);
-int		set_infile_append_array(t_data *data, t_token *current, int *i, int *j);
+int		set_outfile_array(t_data *data, t_token *current, int *k);
+int		set_append_array(t_data *data, t_token *current, int *j);
+int		set_infile_heredoc_array(t_data *data, t_token *current, int *i, int *l);
 int		exec_heredoc(t_data *data);
 int		child_process(t_data *data, int i);
 int		setup_redirection(t_data *data, int cmd_process, bool builtin);
