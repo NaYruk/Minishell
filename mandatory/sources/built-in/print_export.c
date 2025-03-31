@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export2.c                                          :+:      :+:    :+:   */
+/*   print_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:51:52 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/31 20:53:31 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:44:55 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**ft_duplicate_env(t_data *data)
 	if (!tmp)
 		malloc_error(data);
 	i = 0;
-	while (i < env_size)
+	while (data->env[i] && i < env_size)
 	{
 		tmp[i] = ft_strdup(data->env[i]);
 		if (!tmp[i])

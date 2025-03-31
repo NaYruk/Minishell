@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/31 21:08:09 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:53:39 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ static int	ft_add_env(t_data *data, char *env)
 	char	*value = NULL;
 	char	*plus_equal_pos = NULL;
 	char	*equal_pos = NULL;
+	char	*old_value = NULL;
+	char	*new_value = NULL;
 	int		available = 0;
 
 	plus_equal_pos = ft_strnstr(env, "+=", ft_strlen(env));
@@ -121,8 +123,14 @@ static int	ft_add_env(t_data *data, char *env)
 	{
 		if (plus_equal_pos)
 		{
-			char	*old_value = ft_getenv(data, name, NULL);
-			char	*new_value = ft_strjoin(old_value, value);
+			old_value = ft_getenv(data, name, NULL);
+			if (!old_value)
+				old_value = "";
+			if (!value)
+				value = "";
+			new_value = ft_strjoin(old_value, value);
+			if (!new_value)
+				malloc_error(data);
 			ft_update_env(data, name, new_value);
 			free (new_value);
 		}
