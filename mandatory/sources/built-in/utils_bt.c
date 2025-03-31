@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 13:12:19 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/19 07:36:18 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:43:04 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,32 @@
 	name is the name of the variable without '='.
 */
 
-char	*ft_getenv(t_data *data, char *name)
+char	*ft_getenv(t_data *data, char *name, int *available)
 {
 	int		i;
 	int		len;
 
 	i = 0;
+	if (available)
+		*available = 0;
 	len = ft_strlen(name);
 	if (!data || !data->env)
 		return (NULL);
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], name, len) == 0
+		if (ft_strncmp(data->env[i], name, len) == 0 && data->env[i][len] == '\0')
+		{
+			if (available)
+				*available = 1;
+			return (NULL);	
+		}
+		else if (ft_strncmp(data->env[i], name, len) == 0
 			&& data->env[i][len] == '=')
-			return (data->env[i] + len + 1);
+			{
+				if (available)
+					*available = 2;
+				return (data->env[i] + len + 1);
+			}
 		i++;
 	}
 	return (NULL);
@@ -54,18 +66,20 @@ void	ft_update_env(t_data *data, char *name, char *value)
 		return ;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0
-			&& data->env[i][ft_strlen(name)] == '=')
+		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0)
 		{
-			free(data->env[i]);
-			data->env[i] = malloc(sizeof(char) * len_total + 2);
-			if (!data->env[i])
+			if (value)
+			{
+				free(data->env[i]);
+				data->env[i] = malloc(sizeof(char) * len_total + 2);
+				if (!data->env[i])
+					return ;
+				ft_strncpy(data->env[i], name, ft_strlen(name) + 1);
+				data->env[i][ft_strlen(name)] = '=';
+				ft_strncpy(data->env[i] + ft_strlen(name) + 1,
+					value, ft_strlen(value) + 1);
 				return ;
-			ft_strncpy(data->env[i], name, ft_strlen(name) + 1);
-			data->env[i][ft_strlen(name)] = '=';
-			ft_strncpy(data->env[i] + ft_strlen(name) + 1,
-				value, ft_strlen(value) + 1);
-			return ;
+			}
 		}
 		i++;
 	}
@@ -82,13 +96,12 @@ void	ft_delete_env(t_data *data, char *name)
 	int	i;
 	int	j;
 
-	if (ft_getenv(data, name) == NULL)
-		return ;
+	// if (ft_getenv(data, name) == NULL)
+	// 	return ;
 	i = 0;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0
-			&& data->env[i][ft_strlen(name)] == '=')
+		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0)
 		{
 			free (data->env[i]);
 			j = i;

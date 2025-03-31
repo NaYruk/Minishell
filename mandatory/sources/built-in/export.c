@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/29 02:39:59 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:33:58 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static int	ft_add_env(t_data *data, char *env)
 	char	*name;
 	char	*value;
 	char	*equal_pos;
+	int		available;
 
 	equal_pos = ft_strchr(env, '=');
 	if (!equal_pos)
@@ -106,7 +107,7 @@ static int	ft_add_env(t_data *data, char *env)
 		free (value);
 		return (1);
 	}
-	if (ft_getenv(data, name))
+	if (ft_getenv(data, name, &available) || available == 1)
 		ft_update_env(data, name, value);
 	else
 		ft_add_new_env(data, name, value);
@@ -272,9 +273,20 @@ int	ft_verif_name(char *str)
 		ft_putstr_fd(": not a valid identifier\n", 2);
 		return (1);
 	}
-	while (str[i])
+	while (str[i] && i < j)
 	{
-		if (ft_isalnum(str[i]) || str[i] == '=' || str[i] == ' ' || (str[i] == '-' && i > j && j != 0))
+		if (ft_isalnum(str[i]) || str[i] == '_' )
+			i++;
+		else
+		{
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
+			return (1);
+		}
+	}
+	while (str[i] && i >= j && j != 0)
+	{		
+		if (ft_isascii(str[i]))
 			i++;
 		else
 		{
@@ -285,4 +297,3 @@ int	ft_verif_name(char *str)
 	}
 	return (0);
 }
- 

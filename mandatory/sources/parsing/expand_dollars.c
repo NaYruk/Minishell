@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 02:07:37 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/26 13:21:01 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/31 18:17:36 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	dollar_ever_or_odd(t_data *data, char **new_line,
 	after_expand = NULL;
 	if (dollar_count % 2 == 1)
 	{
-		after_expand = ft_getenv(data, line_to_expand);
+		after_expand = ft_getenv(data, line_to_expand, NULL);
 		if (after_expand)
 			*new_line = ft_strjoin(*new_line, after_expand);
 	}
