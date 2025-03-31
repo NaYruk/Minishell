@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 20:33:25 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:55:53 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,11 @@ char	*ft_getenv(t_data *data, char *name, int *available);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
 int		ft_verif_name(char *str);
+char	**ft_duplicate_env(t_data *data);
+void	ft_sort_env(char **env);
+void	ft_display_env(char **tmp);
+void	ft_free_tmp(char **tmp);
+
 int		exec_builtin(t_data *data, char **args_cmd, int cmd_process);
 
 /* Function for the execution of commands */
