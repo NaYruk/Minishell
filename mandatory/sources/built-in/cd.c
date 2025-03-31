@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/26 16:03:27 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/31 18:17:27 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*get_cd_path(t_data *data, t_token *tmp)
 
 	if (!tmp || !tmp->next || ft_strcmp(tmp->next->line, "~") == 0)
 	{
-		home = ft_getenv(data, "HOME");
+		home = ft_getenv(data, "HOME", NULL);
 		if (!home)
 		{
 			perror("cd: HOME not set");
@@ -56,7 +56,7 @@ static char	*get_cd_path(t_data *data, t_token *tmp)
 	}
 	else if (ft_strcmp(tmp->next->line, "-") == 0)
 	{
-		path = ft_getenv(data, "OLDPWD");
+		path = ft_getenv(data, "OLDPWD", NULL);
 		if (!path)
 		{
 			perror("cd: OLDPWD not set");
