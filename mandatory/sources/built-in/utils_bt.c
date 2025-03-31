@@ -6,28 +6,11 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 13:12:19 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/31 21:32:57 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/03/19 07:36:18 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static int	ft_check_env(char *env, char *name, int	len, int *available)
-{
-	if (ft_strncmp(env, name, len) == 0 && env[len] == '\0')
-	{
-		if (available)
-			*available = 1;
-		return (1);
-	}
-	if (ft_strncmp(env, name, len) == 0 && env[len] == '=')
-	{
-		if (available)
-			*available = 2;
-		return (2);
-	}
-	return (0);
-}
 
 /* 
 	Function that obtains a value of an environnement variable if it exists
@@ -35,44 +18,23 @@ static int	ft_check_env(char *env, char *name, int	len, int *available)
 	name is the name of the variable without '='.
 */
 
-char	*ft_getenv(t_data *data, char *name, int *available)
+char	*ft_getenv(t_data *data, char *name)
 {
 	int		i;
 	int		len;
-	int		find_var;
 
-	if (available)
-		*available = 0;
-	if (!data || !data->env)
-		return (NULL);
 	i = 0;
 	len = ft_strlen(name);
+	if (!data || !data->env)
+		return (NULL);
 	while (data->env[i])
 	{
-		find_var = ft_check_env(data->env[i], name, len, available);
-		if (find_var == 1)
-			return (NULL);
-		if (find_var == 2)
+		if (ft_strncmp(data->env[i], name, len) == 0
+			&& data->env[i][len] == '=')
 			return (data->env[i] + len + 1);
 		i++;
 	}
 	return (NULL);
-}
-
-
-static char	*ft_create_env_variable(char *name, char *value)
-{
-	char 	*result;
-	int		len_total;
-
-	len_total = ft_strlen(name) + ft_strlen(value) + 2;
-	result = malloc(sizeof(char) * len_total);
-	if (!result)
-		return (NULL);
-	ft_strncpy(result, name, ft_strlen(name));
-	result[ft_strlen(name)] = '=';
-	ft_strncpy(result + ft_strlen(name) + 1, value, ft_strlen(value));
-	return (result);
 }
 
 /* 
@@ -92,14 +54,18 @@ void	ft_update_env(t_data *data, char *name, char *value)
 		return ;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0)
+		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0
+			&& data->env[i][ft_strlen(name)] == '=')
 		{
-			if (value)
-			{
-				free(data->env[i]);
-				data->env[i] = ft_create_env_variable(name,value);
+			free(data->env[i]);
+			data->env[i] = malloc(sizeof(char) * len_total + 2);
+			if (!data->env[i])
 				return ;
-			}
+			ft_strncpy(data->env[i], name, ft_strlen(name) + 1);
+			data->env[i][ft_strlen(name)] = '=';
+			ft_strncpy(data->env[i] + ft_strlen(name) + 1,
+				value, ft_strlen(value) + 1);
+			return ;
 		}
 		i++;
 	}
@@ -116,10 +82,13 @@ void	ft_delete_env(t_data *data, char *name)
 	int	i;
 	int	j;
 
+	if (ft_getenv(data, name) == NULL)
+		return ;
 	i = 0;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0)
+		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0
+			&& data->env[i][ft_strlen(name)] == '=')
 		{
 			free (data->env[i]);
 			j = i;
