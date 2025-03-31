@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 16:17:20 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/03/31 22:35:39 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void	free_token(t_data *data);
 int		check_rafter(t_data *data);
 int		check_pipes(t_data *data);
 void	replace_dollars(t_data *data, char **line);
-void	if_dollar(t_data *data, char **new_line, char *prompt, int *i);
 int		token_error(t_data *data, char *line);
 
 /* Functions for built-in commands */
@@ -129,11 +128,16 @@ int		ft_env(t_data *data);
 int		ft_echo(t_data *data, char **args_cmd);
 int		ft_unset(t_data *data, char **args_cmd);
 int		ft_export(t_data *data, char **args_cmd);
-char	*ft_getenv(t_data *data, char *name);
+char	*ft_getenv(t_data *data, char *name, int *available);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
 int		ft_verif_name(char *str);
 int		exec_builtin(t_data *data, char **args_cmd, int cmd_process);
+
+char	**ft_duplicate_env(t_data *data);
+void	ft_sort_env(char **env);
+void	ft_display_env(char **tmp);
+void	ft_free_tmp(char **tmp);
 
 /* Function for the execution of commands */
 void	execution(t_data *data);
