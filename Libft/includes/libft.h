@@ -72,5 +72,6 @@ char		*ft_strndup(const char *src, size_t n);
 int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_strncpy(char *dest, char *src, size_t n);
 int			ft_str_is_digit(char *str);
+char		*ft_strcpy(char *dest, char *src);
 
 #endif

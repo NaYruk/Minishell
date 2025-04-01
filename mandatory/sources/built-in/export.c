@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/01 10:52:13 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/02 01:35:04 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,89 +46,90 @@ void	ft_realloc_env(t_data *data, size_t new_size)
 	data->env = new_env;
 }
 
-static void	ft_add_new_env(t_data *data, char *name, char *value)
+void	ft_add_new_env(t_data *data, char *name, char *value)
 {
 	int		old_size;
+	int		len_total;
 	char	*new_entry;
-	size_t 	size;
-	size_t 	name_len;
-	size_t	value_len;
 
+	new_entry = NULL;
 	old_size = 0;
 	while (data->env && data->env[old_size])
 		old_size++;
 	ft_realloc_env(data, old_size + 1);
-	name_len = ft_strlen(name);
-	if (value)
-		value_len = ft_strlen(value);
-	else 
-		value_len = 0;
-	size = name_len + 1;
-	if (value_len > 0)
-		size += value_len + 1;
-	new_entry = malloc(sizeof(char) * size);
+	len_total = (ft_strlen(name) + 1) + (ft_strlen(value) + 1);
+	new_entry = malloc(sizeof(char) * len_total);
 	if (!new_entry)
 		malloc_error(data);
-	ft_strncpy(new_entry, name, name_len);
-	new_entry[name_len] = '\0';
+	ft_strcpy(new_entry, name);
 	if (value)
 	{
-		new_entry[name_len] = '=';
-		ft_strncpy(new_entry + name_len + 1, value, value_len);
-		new_entry[name_len + value_len + 1] = '\0';
+		new_entry[ft_strlen(name)] = '=';
+		ft_strcpy(new_entry + ft_strlen(name) + 1, value);
 	}
 	data->env[old_size] = new_entry;
 	data->env[old_size + 1] = NULL;
 }
 
-static int	ft_add_env(t_data *data, char *env)
+void	ft_extract_name_value(char *str, char **name, char **value)
 {
-	char	*name = NULL;
-	char	*value = NULL;
-	char	*plus_equal_pos = NULL;
-	char	*equal_pos = NULL;
-	char	*old_value = NULL;
-	char	*new_value = NULL;
-	int		available = 0;
+	char	*plus_equal_pos;
+	char	*equal_pos;
 
-	plus_equal_pos = ft_strnstr(env, "+=", ft_strlen(env));
+	*name = NULL;
+	*value = NULL;
+	equal_pos = NULL;
+	plus_equal_pos = NULL;
+	plus_equal_pos = ft_strnstr(str, "+=", ft_strlen(str));
 	if (plus_equal_pos)
 	{
-		name = ft_strndup(env, plus_equal_pos - env);
-		value = ft_strdup(plus_equal_pos + 2);
+		*name = ft_strndup(str, plus_equal_pos - str);
+		*value = ft_strdup(plus_equal_pos + 2);
 	}
 	else
 	{
-		equal_pos = ft_strchr(env, '=');
-		if (!equal_pos)
+		equal_pos = ft_strchr(str, '=');
+		if (equal_pos)
 		{
-			name = ft_strdup(env);
-			value = NULL;
+			*name = ft_strndup(str, equal_pos - str);
+			*value = ft_strdup(equal_pos + 1);
 		}
 		else
 		{
-			name = ft_strndup(env, equal_pos - env);
-			value = ft_strdup(equal_pos + 1);
+			*name = ft_strdup(str);
+			*value = NULL;
 		}
 	}
-	if (!name || (equal_pos && !value))
-		malloc_error(data);
+}
+
+static int	ft_add_env(t_data *data, char *str)
+{
+	char	*name;
+	char	*value;
+	char	*new_value;
+	char	*existing_value;
+	int		available;
+
+	name = NULL;
+	value = NULL;
+	new_value = NULL;
+	existing_value = NULL;
+	available = 0;
+
+	ft_extract_name_value(str, &name, &value);
 	if (ft_verif_name(name) == 1)
+		return (free (name), free (value), 1);
+	existing_value = ft_getenv(data, name, &available);
+	if (available == 0)
+		ft_add_new_env(data, name, value);
+	else if (available == 1 || available == 2)
 	{
-		free(name);
-		free (value);
-		return (1);
-	}
-	if (ft_getenv(data, name, &available) || available == 1)
-	{
-		if (plus_equal_pos)
+		if (ft_strnstr(str, "+=", ft_strlen(str)))
 		{
-			old_value = ft_getenv(data, name, NULL);
-			if (!old_value)
-				old_value = "";
-			if (!value)
-				value = "";
-			new_value = ft_strjoin(old_value, value);
+			if (existing_value)
+				new_value = ft_strjoin(existing_value, value);
+			else
+				new_value = ft_strdup(value);
 			if (!new_value)
 				malloc_error(data);
 			ft_update_env(data, name, new_value);
@@ -137,11 +138,7 @@ static int	ft_add_env(t_data *data, char *env)
 		else
 			ft_update_env(data, name, value);
 	}
-	else
-		ft_add_new_env(data, name, value);
-	free (name);
-	free (value);
-	return (0);
+	return (free(name), free (value), 0);
 }
 
 void	ft_process_export(t_data *data, int *error, char **args_cmd)
@@ -202,45 +199,42 @@ static int	search_egal(char *str)
 	return (-1);
 }
 
+void	ft_error_name(char *str)
+{
+	ft_putstr_fd("'", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("'", 2);
+	ft_putstr_fd(": not a valid identifier\n", 2);
+}
+
 int	ft_verif_name(char *str)
 {
 	int	i;
 	int	j;
-	
-	j = search_egal(str);
+
 	i = 0;
+	j = search_egal(str);
 	if (ft_isalpha(str[i]) || str[i] == '_')
 		i++;
 	else
-	{
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": not a valid identifier\n", 2);
-		return (1);
-	}
-	while (str[i] && (j == -1 || i < j))
+		return (ft_error_name(str), 1);
+	while (str[i] && (i < j || j == -1))
 	{
 		if (ft_isalnum(str[i]) || str[i] == '_' || (str[i] == '+' && str[i + 1] == '='))
 			i++;
 		else
-		{
-			ft_putstr_fd(str, 2);
-			ft_putstr_fd(": not a valid identifier\n", 2);
-			return (1);
-		}
+			return (ft_error_name(str), 1);
 	}
 	if (j != -1)
 	{
-		while (str[i] && i >= j)
-		{		
+		while (str[i])
+		{
 			if (ft_isascii(str[i]))
 				i++;
 			else
-			{
-				ft_putstr_fd(str, 2);
-				ft_putstr_fd(": not a valid identifier\n", 2);
-				return (1);
-			}
+				return (ft_error_name(str), 1);
 		}
 	}
 	return (0);
 }
+
