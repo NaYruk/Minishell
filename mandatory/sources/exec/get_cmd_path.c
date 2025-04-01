@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:36:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 15:15:42 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:43:07 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	**get_all_cmd_paths(t_data *data)
 	i = 0;
 	all_paths = NULL;
 	path_line = NULL;
-	while (!ft_strnstr(data->env[i], "PATH=", 5) && (data->env[i] != NULL))
+	while ((data->env[i] != NULL) && !ft_strnstr(data->env[i], "PATH=", 5))
 		i++;
 	if (!data->env[i])
 		return (NULL);
@@ -109,7 +109,7 @@ int	check_dir(t_data *data, t_token *current, int mode)
 	Returns -1 if the command is executable, otherwise returns 0.
 */
 
-int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path)
+int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, char **all_cmd_path)
 {
 	if (check_dir(data, *current, 0) == -1)
 		return (-2);
@@ -129,7 +129,7 @@ int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path)
 			return (-1);
 		}
 	}
-	if (!data->exec->cmd_path && !exec_build((*current)->line) && (ft_strncmp((*current)->line, "./", 2) == 0 || ft_strncmp((*current)->line, "/", 1) == 0))
+	if (!data->exec->cmd_path && !exec_build((*current)->line) && ((ft_strncmp((*current)->line, "./", 2) == 0 || ft_strncmp((*current)->line, "/", 1) == 0) || !all_cmd_path))
 	{
 		ft_putstr_fd((*current)->line, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
@@ -165,25 +165,26 @@ int	get_cmd_path(t_data *data, t_token **current)
 	i = -1;
 	test_cmd_path = NULL;
 	all_cmd_paths = get_all_cmd_paths(data);
-	if (!all_cmd_paths)
-		return (-1);
-	while (all_cmd_paths[++i] != NULL)
+	if (all_cmd_paths)
 	{
-		test_cmd_path = ft_strjoin(all_cmd_paths[i], (*current)->line);
-		if (!test_cmd_path)
-            malloc_error(data);
-		if (access(test_cmd_path, F_OK) == 0)
+		while (all_cmd_paths[++i] != NULL)
 		{
-			data->exec->cmd_path = test_cmd_path;
-			break ;
+			test_cmd_path = ft_strjoin(all_cmd_paths[i], (*current)->line);
+			if (!test_cmd_path)
+        	    malloc_error(data);
+			if (access(test_cmd_path, F_OK) == 0)
+			{
+				data->exec->cmd_path = test_cmd_path;
+				break ;
+			}
+			free(test_cmd_path);
 		}
-		free(test_cmd_path);
+		i = -1;
+		while (all_cmd_paths[++i] != NULL)
+			free(all_cmd_paths[i]);
+		free(all_cmd_paths);
 	}
-	i = -1;
-	while (all_cmd_paths[++i] != NULL)
-		free(all_cmd_paths[i]);
-	free(all_cmd_paths);
-	if (check_absolute_cmd(data, current, test_cmd_path) == -2)
+	if (check_absolute_cmd(data, current, test_cmd_path, all_cmd_paths) == -2)
 		return (-1);
 	return (0);
 }

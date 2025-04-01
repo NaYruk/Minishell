@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/29 04:49:05 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/02 00:24:46 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* REDIRECT_INFILE = In the case of we have a infile
 					  redirect STDIN in the infile */
 			  
-int	redirect_infile(t_data *data, bool builtin)
+int	redirect_infile(t_data *data)
 {
 	int	fd_file;
 	int	i;
@@ -29,10 +29,7 @@ int	redirect_infile(t_data *data, bool builtin)
 		{
 			perror(data->exec->infile[i]);
 			data->exit_status = 1;
-			if (builtin == true)
-				return (-1);
-			else
-				exit(EXIT_FAILURE);
+			return (-1);
 		}
 		dup2(fd_file, STDIN_FILENO);
 		close (fd_file);
@@ -44,7 +41,7 @@ int	redirect_infile(t_data *data, bool builtin)
 /* REDIRECT_OUTFILE = In the case of we have a outfile
 					   redirect STDOUT in the outfile */
 
-int	redirect_outfile(t_data *data, bool builtin)
+int	redirect_outfile(t_data *data)
 {
 	int	fd_file;
 	int	i;
@@ -59,10 +56,7 @@ int	redirect_outfile(t_data *data, bool builtin)
 		{
 			perror(data->exec->outfile[i]);
 			data->exit_status = 1;
-			if (builtin == true)
-				return (-1);
-			else
-				exit(EXIT_FAILURE);
+			return (-1);
 		}
 		dup2(fd_file, STDOUT_FILENO);
 		close(fd_file);
@@ -74,7 +68,7 @@ int	redirect_outfile(t_data *data, bool builtin)
 /* REDIRECT_APPEND = In the case of we have a append
 					  redirect STDOUT in the append */
 				  
-int	redirect_append(t_data *data, bool builtin)
+int	redirect_append(t_data *data)
 {
 	int	fd_file;
 	int	i;
@@ -89,10 +83,7 @@ int	redirect_append(t_data *data, bool builtin)
 		{
 			perror(data->exec->append[i]);
 			data->exit_status = 1;
-			if (builtin == true)
-				return (-1);
-			else
-				exit(EXIT_FAILURE);
+			return (-1);
 		}
 		dup2(fd_file, STDOUT_FILENO);
 		close(fd_file);
@@ -129,27 +120,25 @@ void	redirect_heredoc(t_data *data)
 
 int	setup_redirection(t_data *data, int cmd_process, bool builtin)
 {
-	if (cmd_process > 0 && data->old_pipe[0] != -1)
-	{
-		dup2(data->old_pipe[0], STDIN_FILENO);
-		close(data->old_pipe[0]);
+	(void)builtin;
+    if (cmd_process > 0 && data->old_pipe[0] != -1)
+    {
+        dup2(data->old_pipe[0], STDIN_FILENO);
+        close(data->old_pipe[0]);
         close(data->old_pipe[1]);
-	}
-	if (cmd_process < data->nbr_of_command - 1)
-	{
-		dup2(data->current_pipe[1], STDOUT_FILENO);
-		if (builtin == false)
-		{
-			close(data->current_pipe[0]);
-        	close(data->current_pipe[1]);
-		}
-	}
-	if (redirect_infile(data, builtin) == -1)
-		return (-1);
-	if (redirect_outfile(data, builtin) == -1)
-		return (-1);
-	if (redirect_append(data, builtin) == -1)
-		return (-1);
-	redirect_heredoc(data);
-	return (0);
+    }
+    if (cmd_process < data->nbr_of_command - 1)
+    {
+        dup2(data->current_pipe[1], STDOUT_FILENO);
+		close(data->current_pipe[0]);
+		close(data->current_pipe[1]);
+    } 
+    if (redirect_infile(data) == -1)
+        return (-1);
+    if (redirect_outfile(data) == -1)
+        return (-1);
+    if (redirect_append(data) == -1)
+        return (-1);
+    redirect_heredoc(data);
+    return (0);
 }

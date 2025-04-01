@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/01 10:52:13 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/01 22:33:19 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int	ft_export(t_data *data, char **args_cmd)
 	{
 		ft_process_export(data, &error, args_cmd);
 		if (error == 1)
-			return (data->exit_status = 1, EXIT_SUCCESS);
+			return (data->exit_status = 1, EXIT_FAILURE);
 		return (data->exit_status = 0, EXIT_SUCCESS);
 	}
 	tmp = ft_duplicate_env(data);

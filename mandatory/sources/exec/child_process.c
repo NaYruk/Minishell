@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:09:46 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/01 12:19:43 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/01 23:35:17 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	free_all(t_data *data)
 
 int	child_process(t_data *data, int i)
 {
-	close(data->stdin_backup);
-	close(data->stdout_backup);
 	if (setup_redirection(data, i, false) == -1)
 	{
 		free_all(data);
@@ -44,6 +42,7 @@ int	child_process(t_data *data, int i)
 	{
 		perror("Execve :");
 		exit(EXIT_FAILURE);
-	}
+	}	
 	exit(0);
 }
+	

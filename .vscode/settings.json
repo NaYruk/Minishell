@@ -9,7 +9,8 @@
 		"concepts": "c",
 		"type_traits": "c",
 		"new": "c",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"cstdlib": "c"
 	},
 	"makefile.launchConfigurations": [
 		{

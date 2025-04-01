@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/01 12:45:21 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/01 19:56:40 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		setup_signals_interactive();
-		data->prompt = readline("SegfaultBros> ");
+		data->prompt = readline("SegfaultBros ");
 		if (!data->prompt)
 			break ;
 		if (data->prompt[0] != '\0')

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/01 12:45:25 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/01 23:55:24 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ char	*ft_getenv(t_data *data, char *name, int *available);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
 int		ft_verif_name(char *str);
-int		exec_builtin(t_data *data, char **args_cmd, int cmd_process);
+int		exec_builtin(t_data *data, char **args_cmd, int cmd_process, bool builtin);
 
 char	**ft_duplicate_env(t_data *data);
 void	ft_sort_env(char **env);

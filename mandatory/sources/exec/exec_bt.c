@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:32:33 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/29 06:50:31 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/01 23:55:44 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,26 @@
 	they are on the command line.
 */
 
-int	exec_builtin(t_data *data, char **args_cmd, int cmd_process)
+int	exec_builtin(t_data *data, char **args_cmd, int cmd_process, bool builtin)
 {
-	if (setup_redirection(data, cmd_process, true) == -1)
+	if (setup_redirection(data, cmd_process, builtin) == -1)
 		return (-1);
 	if (ft_strcmp(args_cmd[0], "pwd") == 0)
-		ft_pwd(data);
+		return (data->exit_status = ft_pwd(data), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "cd") == 0)
-		ft_cd(data);
+		return (data->exit_status = ft_cd(data), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "exit") == 0)
-		ft_exit(data, args_cmd);
+		return (data->exit_status = ft_exit(data, args_cmd), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "env") == 0)
-		ft_env(data);
+		return (data->exit_status = ft_env(data), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "echo") == 0)
-		ft_echo(data, args_cmd);
+		return (data->exit_status = ft_echo(data, args_cmd), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "unset") == 0)
-		ft_unset(data, args_cmd);
+		return (data->exit_status = ft_unset(data, args_cmd), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "export") == 0)
-		ft_export(data, args_cmd);
+		return (data->exit_status = ft_export(data, args_cmd), data->exit_status);
 	if (cmd_process < data->nbr_of_command - 1)
         close(data->current_pipe[1]);
-	dup2(data->stdout_backup, STDOUT_FILENO);
-	dup2(data->stdin_backup, STDIN_FILENO);
 	data->is_builtin_cmd[cmd_process] = true;
 	return (0);
 }

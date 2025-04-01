@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/01 13:00:50 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/02 00:35:43 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	wait_all(t_data *data, int nbr_of_fork)
 				quit_displayed = 1;
 			}
 		}
-		if (WIFEXITED(status) && data->exit_status == 0)
+		if (WIFEXITED(status))
 			data->exit_status = WEXITSTATUS(status);
 		i++;
 	}
@@ -78,6 +78,38 @@ int	exec_build(char *line)
 	return (0);
 }
 
+int	need_to_exec_builtin(t_data *data, int *cmd_process, int *nbr_of_fork)
+{
+	if (data->nbr_of_command > 1)
+	{
+		data->pids[++(*nbr_of_fork)] = fork();
+		if (data->pids[*nbr_of_fork] == 0)
+		{
+			if (exec_builtin(data, data->exec->arg_cmd, *cmd_process, false) == -1)
+				exit(EXIT_FAILURE);
+			exit(data->exit_status);
+		}
+		else
+		{
+			if (*cmd_process > 0)
+				close(data->old_pipe[0]);
+			if (*cmd_process < data->nbr_of_command - 1)
+				close(data->current_pipe[1]);
+		}
+	}
+	else
+	{
+		data->is_builtin_cmd[*cmd_process] = true;
+		if (exec_builtin(data, data->exec->arg_cmd, *cmd_process, true) == -1)
+			return (-1);
+		dup2(data->stdin_backup, STDIN_FILENO);
+		dup2(data->stdout_backup, STDOUT_FILENO);
+		close(data->current_pipe[0]);
+		close(data->current_pipe[1]);
+	}
+	return (0);
+}
+
 /*
 	EXEC_BUILD_OR_CMD = Function for exec a builtin if the token is a builtin
 						exec other cmd if the token is not a builtin.
@@ -89,13 +121,11 @@ int	exec_build(char *line)
 
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 {
-	if (*cmd_process < data->nbr_of_command - 1)
+	if (exec_build(data->exec->arg_cmd[0]))
 	{
-		if (pipe(data->current_pipe) == -1)
-			malloc_error(data);
+		if (need_to_exec_builtin(data, cmd_process, nbr_of_fork) == -1)
+			return ;
 	}
-	if (exec_build(data->exec->arg_cmd[0]) == 1)
-		exec_builtin(data, data->exec->arg_cmd, *cmd_process);
 	else
 	{
 		data->pids[++(*nbr_of_fork)] = fork();
@@ -109,9 +139,6 @@ void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 				close(data->current_pipe[1]);
 		}
 	}
-	data->old_pipe[0] = data->current_pipe[0];
-	data->old_pipe[1] = data->current_pipe[1];
-	(*cmd_process)++;
 }
 
 bool	get_next_pipe_or_null(t_token **current)
@@ -165,11 +192,16 @@ void	exec(t_data *data, t_token *current)
 
 	cmd_process = 0;
 	nbr_of_fork = -1;
+	allocate_status_command(data);
 	data->stdin_backup = dup(STDIN_FILENO);
 	data->stdout_backup = dup(STDOUT_FILENO);
-	allocate_status_command(data);
 	while (current != NULL)
 	{
+		if (cmd_process < data->nbr_of_command - 1)
+		{
+			if (pipe(data->current_pipe) == -1)
+				malloc_error(data);
+		}
 		if (set_exec_struct(data, &current) == -1)
 		{
 			if (get_next_pipe_or_null(&current) == false)
@@ -177,18 +209,22 @@ void	exec(t_data *data, t_token *current)
 				free_exec_struct(data);
 				break ;
 			}
-			cmd_process++;
+			else if (cmd_process < data->nbr_of_command - 1)
+				close(data->current_pipe[1]);
 		}
 		else
 		{
-			if (data->nbr_of_command > 0)	
+			if (data->nbr_of_command > 0 && data->exec->arg_cmd)	
 				exec_build_or_cmd(data, &cmd_process, &nbr_of_fork);
 		}
+		data->old_pipe[0] = data->current_pipe[0];
+		data->old_pipe[1] = data->current_pipe[1];
+		cmd_process++;
 		free_exec_struct(data);
 	}
-	close(data->stdout_backup);
-	close(data->stdin_backup);
 	wait_all(data, nbr_of_fork);
+	close (data->stdin_backup);
+	close (data->stdout_backup);
 }
 
 /*
