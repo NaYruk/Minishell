@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:09:46 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 14:24:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/01 12:19:43 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	child_process(t_data *data, int i)
 		free_all(data);
 		exit(EXIT_FAILURE);
 	}
+	setup_signals_execution();
 	if (execve(data->exec->cmd_path, data->exec->arg_cmd, data->env) == -1)
 	{
 		perror("Execve :");

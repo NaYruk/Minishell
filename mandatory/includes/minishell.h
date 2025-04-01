@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 22:35:39 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/01 12:45:25 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ void	add_g_c_node(t_data *data, t_garb_c **g_c, void **memory, bool is_arr);
 void	free_garbage(t_data *data);
 
 /* Function for manage signals */
-void	sig_handler(void);
+void	setup_signals_interactive(void);
+void	setup_signals_heredoc(void);
+void	setup_signals_execution(void);
 
 /* Functions for command-line tokenization */
 int		check_quotes(t_data *data, char *str);

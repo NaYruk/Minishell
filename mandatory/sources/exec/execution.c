@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 13:06:45 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/01 13:00:50 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 void	wait_all(t_data *data, int nbr_of_fork)
 {
 	int	i;
+	int	status;
+	int	quit_displayed;
 
 	if (data->is_builtin_cmd)
 	{
@@ -24,16 +26,33 @@ void	wait_all(t_data *data, int nbr_of_fork)
 			return ;
 	}
 	i = 0;
+	quit_displayed = 0;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	while (i <= nbr_of_fork)
 	{
-		if (waitpid(data->pids[i], &data->exit_status, 0) == -1)
+		if (waitpid(data->pids[i], &status, 0) == -1)
 		{
 			perror("WAITPID");
 			error(data);
 			return ;
 		}
-		if (WIFEXITED(data->exit_status))
-			data->exit_status = WEXITSTATUS(data->exit_status);
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGINT)
+			{
+				ft_putstr_fd("\n", STDOUT_FILENO);
+				data->exit_status = 130;
+			}
+			else if (WTERMSIG(status) == SIGQUIT && !quit_displayed)
+			{
+				ft_putstr_fd("Quit\n", STDERR_FILENO);
+				data->exit_status = 131;
+				quit_displayed = 1;
+			}
+		}
+		if (WIFEXITED(status) && data->exit_status == 0)
+			data->exit_status = WEXITSTATUS(status);
 		i++;
 	}
 }
