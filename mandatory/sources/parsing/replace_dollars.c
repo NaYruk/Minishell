@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_dollars.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:24:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 21:59:36 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/01 10:16:26 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	extand_dollar(t_data *data, char **new_line, char *prompt, int *i)
 	else if ((ft_isalnum(prompt[*i]) || prompt[*i] == '_'))
 	{
 		var_name = get_expand_line(prompt, i);
-		after_expand = ft_getenv(data, var_name);
+		after_expand = ft_getenv(data, var_name, NULL);
 		if (after_expand)
 			*new_line = ft_strjoin(*new_line, after_expand);
 		free(var_name);
