@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/31 21:53:39 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/01 10:52:13 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ static int	search_egal(char *str)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 int	ft_verif_name(char *str)
@@ -217,7 +217,7 @@ int	ft_verif_name(char *str)
 		ft_putstr_fd(": not a valid identifier\n", 2);
 		return (1);
 	}
-	while (str[i] && i < j)
+	while (str[i] && (j == -1 || i < j))
 	{
 		if (ft_isalnum(str[i]) || str[i] == '_' || (str[i] == '+' && str[i + 1] == '='))
 			i++;
@@ -228,15 +228,18 @@ int	ft_verif_name(char *str)
 			return (1);
 		}
 	}
-	while (str[i] && i >= j && j != 0)
-	{		
-		if (ft_isascii(str[i]))
-			i++;
-		else
-		{
-			ft_putstr_fd(str, 2);
-			ft_putstr_fd(": not a valid identifier\n", 2);
-			return (1);
+	if (j != -1)
+	{
+		while (str[i] && i >= j)
+		{		
+			if (ft_isascii(str[i]))
+				i++;
+			else
+			{
+				ft_putstr_fd(str, 2);
+				ft_putstr_fd(": not a valid identifier\n", 2);
+				return (1);
+			}
 		}
 	}
 	return (0);
