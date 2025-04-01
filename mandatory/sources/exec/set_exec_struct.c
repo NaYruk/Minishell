@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_exec_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 12:27:59 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:35:20 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,10 @@ int	set_exec_struct(t_data *data, t_token **current)
 	int	i;
 	int	j;
 	int	k;
-	int	l;
 
 	i = 0;
 	j = 0;
 	k = 0;
-	l = 0;
 	if (get_nbr_redir(data, *current) == -1)
 		return (-1);
 	data->exec->heredoc[0] = NULL;
