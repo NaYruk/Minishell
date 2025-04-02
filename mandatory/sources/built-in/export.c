@@ -6,7 +6,7 @@
 /*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/02 01:35:04 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/02 02:16:33 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,20 @@
 void	ft_realloc_env(t_data *data, size_t new_size)
 {
 	char	**new_env;
-	size_t	old_size;
 	size_t	i;
 	
-	old_size = 0;
-	while (data->env && data->env[old_size])
-		old_size++;
-/* 	if (new_size == 0)
-		free_env(data); */
+	if (!data || ! data->env)
+		return ;
 	new_env = malloc(sizeof(char *) * (new_size + 1));
 	if (!new_env)
 		malloc_error(data);
 	i = 0;
-	while (i < old_size && i < new_size)
+	while (data->env[i] && i < new_size)
 	{
 		new_env[i] = data->env[i];
 		i++;
 	}
-	while (i < old_size)
-	{
-		free(data->env[i]);
-		i++;
-	}
-	while (i <= new_size)
+	while (i < new_size)
 	{
 		new_env[i] = NULL;
 		i++;
@@ -73,33 +64,25 @@ void	ft_add_new_env(t_data *data, char *name, char *value)
 
 void	ft_extract_name_value(char *str, char **name, char **value)
 {
-	char	*plus_equal_pos;
-	char	*equal_pos;
+	char *pos;
 
 	*name = NULL;
 	*value = NULL;
-	equal_pos = NULL;
-	plus_equal_pos = NULL;
-	plus_equal_pos = ft_strnstr(str, "+=", ft_strlen(str));
-	if (plus_equal_pos)
+	pos = NULL;
+	if ((pos = ft_strnstr(str, "+=", ft_strlen(str))))
 	{
-		*name = ft_strndup(str, plus_equal_pos - str);
-		*value = ft_strdup(plus_equal_pos + 2);
+		*name = ft_strndup(str, pos - str);
+		*value = ft_strdup(pos + 2);
+	}
+	else if ((pos = ft_strchr(str, '=')))
+	{
+		*name = ft_strndup(str, pos - str);
+		*value = ft_strdup(pos + 1);
 	}
 	else
-	{
-		equal_pos = ft_strchr(str, '=');
-		if (equal_pos)
-		{
-			*name = ft_strndup(str, equal_pos - str);
-			*value = ft_strdup(equal_pos + 1);
-		}
-		else
-		{
-			*name = ft_strdup(str);
-			*value = NULL;
-		}
-	}
+		*name = ft_strdup(str);
+	if (!*name || (pos && !*value))
+		malloc_error(NULL);
 }
 
 static int	ft_add_env(t_data *data, char *str)
