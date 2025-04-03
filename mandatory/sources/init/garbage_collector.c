@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:50:41 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/03 18:59:20 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:19:26 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,21 +103,6 @@ static void	free_array(t_data *data)
 		and free the array.
 */
 
-static void	free_env(char **env)
-{
-	int	i;
-
-	if (!env)
-		return ;
-	i = 0;
-	while (env[i])
-	{
-		free (env[i]);
-		i++;
-	}
-	free (env);
-}
-
 void	free_garbage(t_data *data)
 {
 	t_garb_c	*temp;
@@ -141,6 +126,6 @@ void	free_garbage(t_data *data)
 		data->g_c = temp;
 	}
 	data->g_c = NULL;
-	free_env(data->env);
+	ft_free_env(data->env);
 	free(data);
 }

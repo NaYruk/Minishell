@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/03 18:39:30 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:16:26 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,6 @@ int	ft_export(t_data *data, char **args_cmd)
 	}
 	tmp = ft_duplicate_env(data);
 	ft_display_env(tmp);
-	ft_free_tmp(tmp);
+	ft_free_env(tmp);
 	return (data->exit_status = 0, EXIT_SUCCESS);
 }

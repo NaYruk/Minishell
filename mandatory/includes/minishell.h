@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/03 18:18:44 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:18:21 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ t_token	*last_node(t_token *lst);
 /* Function for write an error and return the program */
 void	malloc_error(t_data *data);
 void	error(t_data *data);
+void	ft_free_env(char **tmp);
+
 
 /* 
 	Functions for manipulate the memory with a garbage collector
@@ -142,7 +144,6 @@ void	ft_extract_name_value(char *str, char **name, char **value);
 char	**ft_duplicate_env(t_data *data);
 void	ft_sort_env(char **env);
 void	ft_display_env(char **tmp);
-void	ft_free_tmp(char **tmp);
 
 /* Function for the execution of commands */
 void	execution(t_data *data);

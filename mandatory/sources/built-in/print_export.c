@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:51:52 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/03 17:36:36 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:15:53 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,4 @@ void	ft_display_env(char **tmp)
 			printf("declare -x %s\n", tmp[i]);
 		i++;
 	}
-}
-
-void	ft_free_tmp(char **tmp)
-{
-	int	i;
-
-	i = 0;
-	while (tmp[i])
-	{
-		free (tmp[i]);
-		i++;
-	}
-	free (tmp);
-	return ;
 }
