@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:31:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/26 14:08:18 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/03 13:53:53 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	free_token(t_data *data)
 
 /* Function for get the last node of the chained list*/
 
-t_token	*last_node(t_token *lst)
+static t_token	*last_node(t_token *lst)
 {
 	if (!lst)
 		return (NULL);

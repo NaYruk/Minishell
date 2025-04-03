@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/02 00:35:43 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:19:57 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	wait_all(t_data *data, int nbr_of_fork)
 				quit_displayed = 1;
 			}
 		}
-		if (WIFEXITED(status))
+		if (WIFEXITED(status) && data->error_built == -1)
 			data->exit_status = WEXITSTATUS(status);
 		i++;
 	}
@@ -85,8 +85,11 @@ int	need_to_exec_builtin(t_data *data, int *cmd_process, int *nbr_of_fork)
 		data->pids[++(*nbr_of_fork)] = fork();
 		if (data->pids[*nbr_of_fork] == 0)
 		{
-			if (exec_builtin(data, data->exec->arg_cmd, *cmd_process, false) == -1)
+			if (exec_builtin(data, data->exec->arg_cmd, *cmd_process) == -1)
+			{
+				data->error_built = 1;
 				exit(EXIT_FAILURE);
+			}
 			exit(data->exit_status);
 		}
 		else
@@ -100,8 +103,11 @@ int	need_to_exec_builtin(t_data *data, int *cmd_process, int *nbr_of_fork)
 	else
 	{
 		data->is_builtin_cmd[*cmd_process] = true;
-		if (exec_builtin(data, data->exec->arg_cmd, *cmd_process, true) == -1)
+		if (exec_builtin(data, data->exec->arg_cmd, *cmd_process) == -1)
+		{
+			data->error_built = 1;
 			return (-1);
+		}
 		dup2(data->stdin_backup, STDIN_FILENO);
 		dup2(data->stdout_backup, STDOUT_FILENO);
 		close(data->current_pipe[0]);

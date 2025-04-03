@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 16:17:36 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/03 14:18:12 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_data	*init_all(char **envp)
 	data->pids = NULL;
 	data->current_pipe[0] = -1;
 	data->current_pipe[1] = -1;
+	data->error_built = -1;
 	data->is_builtin_cmd = NULL;
 	data->old_pipe[0] = -1;
 	data->old_pipe[1] = -1;

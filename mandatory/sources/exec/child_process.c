@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:09:46 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/01 23:35:17 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/03 13:53:07 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	free_all(t_data *data)
 
 int	child_process(t_data *data, int i)
 {
-	if (setup_redirection(data, i, false) == -1)
+	if (setup_redirection(data, i) == -1)
 	{
 		free_all(data);
 		exit(EXIT_FAILURE);
