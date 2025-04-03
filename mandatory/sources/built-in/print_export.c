@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:51:52 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/31 21:44:55 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:36:36 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	**ft_duplicate_env(t_data *data)
 {
-	size_t 	i;
-	size_t 	env_size;
+	size_t	i;
+	size_t	env_size;
 	char	**tmp;
 
 	env_size = 0;
@@ -30,7 +30,7 @@ char	**ft_duplicate_env(t_data *data)
 		tmp[i] = ft_strdup(data->env[i]);
 		if (!tmp[i])
 			malloc_error(data);
-		i++;	
+		i++;
 	}
 	tmp[i] = NULL;
 	return (tmp);
@@ -84,7 +84,7 @@ void	ft_display_env(char **tmp)
 
 void	ft_free_tmp(char **tmp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tmp[i])
@@ -95,4 +95,3 @@ void	ft_free_tmp(char **tmp)
 	free (tmp);
 	return ;
 }
-

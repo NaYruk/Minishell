@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:57:17 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/01 12:45:32 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:40:55 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void	sig_sigint_interactive(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-
 }
 
 void	setup_signals_interactive(void)

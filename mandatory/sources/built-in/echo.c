@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/29 02:25:07 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:34:01 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static	void	print_args(char **cmd_args, int *index)
 
 int	ft_echo(t_data *data, char **args_cmd)
 {
-	int 	i;
+	int		i;
 	int		new_line;
 
 	new_line = 1;

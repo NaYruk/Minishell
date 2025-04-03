@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:50:41 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/29 08:00:03 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:44:04 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,24 +78,23 @@ void	add_g_c_node(t_data *data, t_garb_c **g_c, void **memory, bool is_arr)
 	return ;
 }
 
-static void free_array(t_data *data)
+static void	free_array(t_data *data)
 {
-    char **array;
-    int i;
+	char	**array;
+	int		i;
 
-    if (!data->g_c->memory)
-        return;
-
-    array = (char **)data->g_c->memory;
-    i = 0;
-    while (array[i] != NULL)
-    {
-        free(array[i]);
-        array[i] = NULL;
-        i++;
-    }
-    free(array);
-    data->g_c->memory = NULL;
+	if (!data->g_c->memory)
+		return ;
+	array = (char **)data->g_c->memory;
+	i = 0;
+	while (array[i] != NULL)
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+	data->g_c->memory = NULL;
 }
 
 /* 
@@ -104,34 +103,34 @@ static void free_array(t_data *data)
 		and free the array.
 */
 
-void free_garbage(t_data *data)
+void	free_garbage(t_data *data)
 {
-    t_garb_c *temp;
-    int i;
+	t_garb_c	*temp;
+	int			i;
 
-    i = -1;
-    while (data->g_c != NULL)
-    {
-        temp = data->g_c->next;
-        if (data->g_c->memory)
-        {
-            if (data->g_c->is_array == true)
-                free_array(data);
-            else
-            {
-                free(data->g_c->memory);
-                data->g_c->memory = NULL;
-            }
-        }
-        free(data->g_c);
-        data->g_c = temp;
-    }
-    data->g_c = NULL;
-    if (data->env)
-    {
-        while (data->env[++i])
-            free(data->env[i]);
-        free(data->env);
-    }
-    free(data);
+	i = -1;
+	while (data->g_c != NULL)
+	{
+		temp = data->g_c->next;
+		if (data->g_c->memory)
+		{
+			if (data->g_c->is_array == true)
+				free_array(data);
+			else
+			{
+				free(data->g_c->memory);
+				data->g_c->memory = NULL;
+			}
+		}
+		free(data->g_c);
+		data->g_c = temp;
+	}
+	data->g_c = NULL;
+	if (data->env)
+	{
+		while (data->env[++i])
+			free(data->env[i]);
+		free(data->env);
+	}
+	free(data);
 }
