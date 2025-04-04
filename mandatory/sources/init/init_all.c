@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/31 16:17:36 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:55:51 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,10 @@ t_data	*init_all(char **envp)
 		exit(EXIT_FAILURE);
 	}
 	init_garbage_collector(data);
-	data->prompt = NULL;
-	data->env = NULL;
-	data->lst_token = NULL;
-	data->exec = NULL;
-	data->operator = false;
-	data->exit_status = 0;
-	data->nbr_of_command = 0;
-	data->stdin_backup = 0;
-	data->stdout_backup = 0;
-	data->simple_q = false;
-	data->double_q = false;
-	data->quotes_char = '\0';
-	data->pids = NULL;
+	ft_memset(data, 0, sizeof(t_data));
+	data->old_read_pipe = -1;
 	data->current_pipe[0] = -1;
 	data->current_pipe[1] = -1;
-	data->is_builtin_cmd = NULL;
-	data->old_pipe[0] = -1;
-	data->old_pipe[1] = -1;
 	copy_envp(envp, data);
 	return (data);
 }

@@ -6,11 +6,11 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:04:47 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/29 07:49:23 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:00:06 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 /* SET_NBR_OF_COMMAND = Function for find the nbr of command in token */
 
@@ -44,8 +44,21 @@ void	get_pids(t_data *data)
 	}
 }
 
-/* FREE_EXEC_STRUCT = function for free the exec struct for the next command. */
+void	free_redir_nodes(t_data *data)
+{
+	t_exec_redir	*tmp;
 
+	tmp = NULL;
+	while (data->exec->t_exec_redir != NULL)
+	{
+		tmp = data->exec->t_exec_redir->next;
+		free(data->exec->t_exec_redir);
+		data->exec->t_exec_redir = tmp;
+	}
+	return ;
+}
+
+/* FREE_EXEC_STRUCT = function for free the exec struct for the next command. */
 void	free_exec_struct(t_data *data)
 {
 	int	i;
@@ -60,20 +73,9 @@ void	free_exec_struct(t_data *data)
 	}
 	if (data->exec->cmd_path)
 		free(data->exec->cmd_path);
-	if (data->exec->infile != NULL)
-		free(data->exec->infile);
-	if (data->exec->outfile != NULL)
-		free(data->exec->outfile);
-	if (data->exec->append != NULL)
-		free(data->exec->append);
-	if (data->exec->heredoc != NULL)
-		free(data->exec->heredoc);
-	data->exec->heredoc = NULL;
-	data->exec->infile = NULL;
-	data->exec->outfile = NULL;
-	data->exec->cmd_path = NULL;
-	data->exec->arg_cmd = NULL;
-	data->exec->append = NULL;
-	if (data->exec->last_heredoc_fd != -1)
-		close(data->exec->last_heredoc_fd);
+	if (data->exec->t_exec_redir)
+	{
+		free_redir_nodes(data);
+		data->exec->t_exec_redir = NULL;
+	}
 }

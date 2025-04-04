@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/02 01:06:25 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/04 14:13:34 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 /* ************************************************************************** */
 
@@ -24,21 +24,22 @@ void	print_list(t_data *data)
 		current = current->next;
 	}
 }
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
 	(void)argv;
- 	if (argc != 1)
+	if (argc != 1)
 	{
 		ft_putstr_fd("Error ! nbr of arguments != 1\n", 2);
 		exit(EXIT_FAILURE);
 	}
 	data = init_all(envp);
- 	while (1)
+	while (1)
 	{
 		setup_signals_interactive();
-		data->prompt = readline("SegfaultBros> ");
+		data->prompt = readline("SegfaultBros ");
 		if (!data->prompt)
 			break ;
 		if (data->prompt[0] != '\0')
@@ -46,7 +47,6 @@ int	main(int argc, char **argv, char **envp)
 			add_history(data->prompt);
 			if (tokenization(data) == 0)
 				execution(data);
-			//tokenization(data);
 		}
 		//print_list(data);
 		free(data->prompt);

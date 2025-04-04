@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/03 20:18:21 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:54:44 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
 # include "../../Libft/includes/libft.h"
 # include "./define.h"
 
-# define BUF_SIZE 1024
-
 /* Chained List Garbage collector */
 typedef struct s_garbage_collector
 {
@@ -39,20 +37,22 @@ typedef struct s_garbage_collector
 	struct s_garbage_collector	*next;
 }	t_garb_c;
 
+typedef struct s_exec_redir
+{
+	int					type;
+	int					position;
+	char				*arg;
+	struct s_exec_redir	*next;
+	struct s_exec_redir *prev;
+}	t_exec_redir;
+
 /* Struct for the execution of each command */
 typedef struct s_exec
 {
-	int				nbr_infile;
-	int				nbr_outfile;
-	int				nbr_append;
-	int				nbr_heredoc;
-	int				last_heredoc_fd;
-	char			**infile;
-	char			**outfile;
-	char			**append;
-	char			**heredoc;
+	t_exec_redir	*t_exec_redir;
 	char			**arg_cmd;
 	char			*cmd_path;
+	int				last_heredoc_fd;
 }	t_exec;
 
 /* Struct data, she contain all struct / variable for Minishell */
@@ -61,9 +61,9 @@ typedef struct s_data
 	char		*prompt;
 	char		**env;
 	pid_t		*pids;
-	int			old_pipe[2];
+	int			old_read_pipe;
 	int			current_pipe[2];
-	bool		*is_builtin_cmd;
+	int			error_built;
 	bool		operator;
 	bool		simple_q;
 	bool		double_q;
@@ -80,14 +80,10 @@ typedef struct s_data
 /* Function for all initialization */
 t_data	*init_all(char **envp);
 
-/* Functions utils for Manipulate chained list */
-t_token	*last_node(t_token *lst);
-
 /* Function for write an error and return the program */
 void	malloc_error(t_data *data);
 void	error(t_data *data);
 void	ft_free_env(char **tmp);
-
 
 /* 
 	Functions for manipulate the memory with a garbage collector
@@ -154,13 +150,17 @@ void	set_nbr_of_commands(t_data *data);
 void	get_args_cmd(t_data *data, t_token *current);
 int		exec_build(char *line);
 int		get_cmd_path(t_data *data, t_token **current);
-int		get_nbr_redir(t_data *data, t_token *current);
-int		set_outfile_array(t_data *data, t_token *current, int *k);
-int		set_append_array(t_data *data, t_token *current, int *j);
-int		set_infile_heredoc_array(t_data *data, t_token *current, int *i, int *l);
-int		exec_heredoc(t_data *data);
+int		set_outfile(t_data *data, t_token *current);
+int		set_append(t_data *data, t_token *current);
+int		set_infile_heredoc(t_data *data, t_token *current);
+int		exec_heredoc(t_data *data, t_exec_redir *current);
 int		child_process(t_data *data, int i);
-int		setup_redirection(t_data *data, int cmd_process, bool builtin);
+int		setup_redirection(t_data *data, int cmd_process);
 int		set_exec_struct(t_data *data, t_token **current);
+void	add_new_redir_node(t_data *data, t_exec_redir **lst, char *line, int type);
+
+void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork);
+void	wait_all(t_data *data, int nbr_of_fork);
+int		check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, char **all_cmd_path);
 
 #endif

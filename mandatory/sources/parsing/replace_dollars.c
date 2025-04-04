@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   replace_dollars.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:24:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/01 10:16:26 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/04 14:08:47 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -44,11 +44,14 @@ int	check_dollar_interrogation(t_data *data, char **new_line, int *i)
 
 void	stock_char(char **new_line, char c)
 {
-	char character[2];
+	char	*old_line;
+	char	character[2];
 
 	character[0] = c;
 	character[1] = '\0';
-	*new_line = ft_strjoin(*new_line, character);
+	old_line = *new_line;
+	*new_line = ft_strjoin(old_line, character);
+	free(old_line);
 }
 
 void	extand_dollar(t_data *data, char **new_line, char *prompt, int *i)
