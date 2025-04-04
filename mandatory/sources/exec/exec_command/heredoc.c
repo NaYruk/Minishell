@@ -6,43 +6,21 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 15:53:15 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:53:27 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-/*
-	read_heredoc_to_pipe - Reads user input until the delimiter is reached
-	and writes it to the given pipe.
-*/
-
-t_token	*find_heredoc_token(t_data *data, int position)
-{
-	t_token *current;
-	int		count;
-	
-	current = data->lst_token;
-	count = 0;
-	while (current)
-	{
-		if (count == position)
-			return (current);
-		if (current->token >= 1 && current->token <= 4 && current->next->token == ARG)
-			count++;
-		current = current->next;
-	}
-	return (NULL);
-}
-
-void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_exec_redir *current)
+void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 {
 	char	*line;
 	char	*delimiter;
 	t_token	*heredoc_token;
 	
 	line = NULL;
-	delimiter = current->arg;
+	delimiter = current->line;
+	heredoc_token = current;
 	while (1)
 	{
 		line = readline("> ");
@@ -51,7 +29,6 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_exec_redir *current)
 			free(line);
 			break ;
 		}
-		heredoc_token = find_heredoc_token(data, current->position);
 		if (heredoc_token)
 		{
 			if (heredoc_token->quote_char == '\0')
@@ -68,7 +45,7 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_exec_redir *current)
 	the last heredoc's read end for input redirection.
 */
 
-int	exec_heredoc(t_data *data, t_exec_redir *current)
+int	exec_heredoc(t_data *data, t_token *current)
 {
 	int	pipefd[2];
 	

@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 16:54:44 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:35:17 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,9 @@ int		exec_build(char *line);
 int		get_cmd_path(t_data *data, t_token **current);
 int		set_outfile(t_data *data, t_token *current);
 int		set_append(t_data *data, t_token *current);
-int		set_infile_heredoc(t_data *data, t_token *current);
-int		exec_heredoc(t_data *data, t_exec_redir *current);
+int		set_infile(t_data *data, t_token *current);
+int		set_heredoc(t_data *data, t_token *current);
+int		exec_heredoc(t_data *data, t_token *current);
 int		child_process(t_data *data, int i);
 int		setup_redirection(t_data *data, int cmd_process);
 int		set_exec_struct(t_data *data, t_token **current);

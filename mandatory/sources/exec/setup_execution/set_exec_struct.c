@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 16:01:39 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:35:55 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,38 @@ int	args_and_cmd(t_data *data, t_token **current)
 	return (0);
 }
 
+void	execute_heredoc(t_data *data, t_token *current)
+{
+	t_token *current_start;
+
+	current_start = current;
+	while (current != NULL)
+	{
+		if (current->prev && current->prev->token == HEREDOC
+				&& current->token == ARG)
+			exec_heredoc(data, current);
+		current = current->next;
+	}
+	return ;
+}
 int	set_exec_struct(t_data *data, t_token **current)
 {
 	data->error_built = -1;
 	if ((*current)->token == PIPE)
 		*current = (*current)->next;
+	execute_heredoc(data, *current);
 	while (*current != NULL)
 	{
 		if ((*current)->token == PIPE)
 			break ;
 		if (args_and_cmd(data, current) == -1)
 			return (-1);
+		set_heredoc(data, *current);
 		if (set_append(data, *current) == -1)
 			return (-1);
 		if (set_outfile(data, *current) == -1)
 			return (-1);
-		if (set_infile_heredoc(data, *current) == -1)
+		if (set_infile(data, *current) == -1)
 			return (-1);
 		*current = (*current)->next;
 	}

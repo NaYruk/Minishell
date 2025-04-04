@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:23:42 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 15:53:34 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:35:03 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,8 @@ int	set_outfile(t_data *data, t_token *current)
 	return (0);
 }
 
-int	set_infile_heredoc(t_data *data, t_token *current)
-{	
-	if (current->token == HEREDOC && (current->next->token) == ARG)
-		add_new_redir_node(data, &data->exec->t_exec_redir, 
-			current->next->line, HEREDOC);
+int	set_infile(t_data *data, t_token *current)
+{
 	if (current->token == INFILE && (current->next->token) == ARG)
 	{
 		add_new_redir_node(data, &data->exec->t_exec_redir, 
@@ -77,6 +74,16 @@ int	set_infile_heredoc(t_data *data, t_token *current)
 			data->exit_status = 1;
 			return (-1);
 		}
+	}
+	return (0);
+}
+
+int	set_heredoc(t_data *data, t_token *current)
+{	
+	if (current->token == HEREDOC && (current->next->token) == ARG)
+	{
+		add_new_redir_node(data, &data->exec->t_exec_redir,
+				current->next->line, HEREDOC);
 	}
 	return (0);
 }

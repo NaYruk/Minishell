@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 15:52:56 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:48:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,28 @@ int	redirect_append(t_data *data, t_exec_redir *current)
 	return (0);
 }
 
+bool	last_heredoc(t_exec_redir *current)
+{
+	t_exec_redir	*current_start;
+
+	current_start = current;
+	if (current->next)
+		current = current->next;
+	else
+		return (true);
+	while (current != NULL)
+	{
+		if (current->type == HEREDOC)
+		{
+			current = current_start;
+			return (false);
+		}
+		current = current->next;
+	}
+	current = current_start;
+	return (true);
+}
+
 /* REDIRECT_HEREDOC = In the case of we have a heredoc
 					  redirect STDIN is last pipe heredoc */
 					  
@@ -90,9 +112,11 @@ void	redirect_heredoc(t_data *data, t_exec_redir *current)
 {
 	if (current != NULL && current->type == HEREDOC)
 	{
-		exec_heredoc(data, current);
-		dup2(data->exec->last_heredoc_fd, STDIN_FILENO);
-		close(data->exec->last_heredoc_fd);
+		if (last_heredoc(current) == true)
+		{
+			dup2(data->exec->last_heredoc_fd, STDIN_FILENO);
+			close(data->exec->last_heredoc_fd);
+		}
 	}
 }
 

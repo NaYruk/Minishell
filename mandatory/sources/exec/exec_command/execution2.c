@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:21:11 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 16:31:43 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:23:39 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	handle_fork(t_data *data, int *cmd_process, int *nbr_of_fork, bool is_built
 
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 {
-	if (exec_build(data->exec->arg_cmd[0]))
+	if (exec_build(data->exec->arg_cmd[0]) || data->nbr_of_command == 0)
 	{
 		if (data->nbr_of_command > 1)
 			handle_fork(data, cmd_process, nbr_of_fork, true);

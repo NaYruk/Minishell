@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:04:47 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 16:00:06 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 20:45:48 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ void	free_exec_struct(t_data *data)
 		data->exec->arg_cmd = NULL;
 	}
 	if (data->exec->cmd_path)
+	{
 		free(data->exec->cmd_path);
+		data->exec->cmd_path = NULL;
+	}
 	if (data->exec->t_exec_redir)
 	{
 		free_redir_nodes(data);

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   replace_dollars.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:24:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 14:08:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 20:40:29 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -103,7 +103,7 @@ void	replace_dollars(t_data *data, char **line)
 		{
 			data->double_q = !data->double_q;
 			stock_char(&new_line, DOUBLE_QUOTES);
-		}	
+		}
 		else if ((*line)[i] == '$' && !data->simple_q)
 			extand_dollar(data, &new_line, *line, &i);
 		else
