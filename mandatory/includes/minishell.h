@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/03 14:17:34 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 14:29:58 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -61,10 +61,9 @@ typedef struct s_data
 	char		*prompt;
 	char		**env;
 	pid_t		*pids;
-	int			old_pipe[2];
+	int			old_read_pipe;
 	int			current_pipe[2];
 	int			error_built;
-	bool		*is_builtin_cmd;
 	bool		operator;
 	bool		simple_q;
 	bool		double_q;
@@ -156,5 +155,7 @@ int		child_process(t_data *data, int i);
 int		setup_redirection(t_data *data, int cmd_process);
 int		set_exec_struct(t_data *data, t_token **current);
 void	add_new_redir_node(t_data *data, t_exec_redir **lst, char *line, int type);
+
+t_exec_redir	*last_node(t_exec_redir *lst);
 
 #endif

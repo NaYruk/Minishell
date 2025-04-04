@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_bt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:32:33 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/03 13:51:35 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 13:56:23 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -37,6 +37,10 @@ int	exec_builtin(t_data *data, char **args_cmd, int cmd_process)
 		return (data->exit_status = ft_export(data, args_cmd), data->exit_status);
 	if (cmd_process < data->nbr_of_command - 1)
         close(data->current_pipe[1]);
-	data->is_builtin_cmd[cmd_process] = true;
+	if (data->nbr_of_command == 0)
+	{
+		dup2(data->stdin_backup, STDIN_FILENO);
+		dup2(data->stdout_backup, STDOUT_FILENO);
+	}
 	return (0);
 }

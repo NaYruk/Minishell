@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   apply_redirections.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/03 16:50:13 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:41:19 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -115,11 +115,10 @@ int	setup_redirection(t_data *data, int cmd_process)
 	t_exec_redir	*current;
 
 	current = data->exec->t_exec_redir;
-    if (cmd_process > 0 && data->old_pipe[0] != -1)
+    if (cmd_process > 0 && data->old_read_pipe != -1)
     {
-        dup2(data->old_pipe[0], STDIN_FILENO);
-        close(data->old_pipe[0]);
-        close(data->old_pipe[1]);
+        dup2(data->old_read_pipe, STDIN_FILENO);
+        close(data->old_read_pipe);
     }
     if (cmd_process < data->nbr_of_command - 1)
     {

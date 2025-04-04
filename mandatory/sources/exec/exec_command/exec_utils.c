@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:04:47 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/03 13:21:11 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 14:29:47 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -78,4 +78,15 @@ void	free_exec_struct(t_data *data)
 		free_redir_nodes(data);
 		data->exec->t_exec_redir = NULL;
 	}
+}
+
+t_exec_redir	*last_node(t_exec_redir *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next != NULL)
+	{
+		lst = lst->next;
+	}
+	return (lst);
 }

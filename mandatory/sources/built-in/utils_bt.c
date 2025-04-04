@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils_bt.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 13:12:19 by melvin            #+#    #+#             */
-/*   Updated: 2025/03/31 21:32:57 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:12:04 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -84,10 +84,8 @@ static char	*ft_create_env_variable(char *name, char *value)
 void	ft_update_env(t_data *data, char *name, char *value)
 {
 	int	i;
-	int	len_total;
 
 	i = 0;
-	len_total = ft_strlen(name) + ft_strlen(value);
 	if (!data || !data->env)
 		return ;
 	while (data->env[i])
