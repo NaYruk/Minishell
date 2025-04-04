@@ -29,16 +29,21 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)built-in/export.c \
 	  $(SRC_PATH)built-in/print_export.c \
 	  $(SRC_PATH)built-in/utils_bt.c \
-	  $(SRC_PATH)exec/exec_bt.c \
-	  $(SRC_PATH)exec/execution.c \
-	  $(SRC_PATH)exec/get_cmd_path.c \
-	  $(SRC_PATH)exec/get_args.c \
-	  $(SRC_PATH)exec/apply_redirections.c \
-	  $(SRC_PATH)exec/init_redirections.c \
-	  $(SRC_PATH)exec/exec_utils.c \
-	  $(SRC_PATH)exec/child_process.c \
-	  $(SRC_PATH)exec/set_exec_struct.c \
-	  $(SRC_PATH)exec/heredoc.c \
+	  $(SRC_PATH)built-in/utils_export.c \
+	  $(SRC_PATH)exec/exec_command/execution.c \
+	  $(SRC_PATH)exec/exec_command/execution2.c \
+	  $(SRC_PATH)exec/exec_command/exec_builtin.c \
+	  $(SRC_PATH)exec/exec_command/exec_cmd.c \
+	  $(SRC_PATH)exec/exec_command/heredoc.c \
+	  $(SRC_PATH)exec/exec_command/attribute_redirections.c \
+	  $(SRC_PATH)exec/exec_command/exec_utils.c \
+	  $(SRC_PATH)exec/exec_command/waiting_process.c \
+	  $(SRC_PATH)exec/setup_execution/set_exec_struct.c \
+	  $(SRC_PATH)exec/setup_execution/get_cmd_path.c \
+	  $(SRC_PATH)exec/setup_execution/get_args.c \
+	  $(SRC_PATH)exec/setup_execution/set_redirections.c \
+	  $(SRC_PATH)exec/setup_execution/absolute_path.c \
+	  $(SRC_PATH)exec/setup_execution/redir_chained_list.c \
 
 OBJ_DIR = ./tmp
 OBJ = $(SRC:$(SRC_PATH)%.c=$(OBJ_DIR)/%.o)
@@ -76,5 +81,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/parsing 
 	@mkdir -p $(OBJ_DIR)/built-in
 	@mkdir -p $(OBJ_DIR)/exec
+	@mkdir -p $(OBJ_DIR)/exec/exec_command
+	@mkdir -p $(OBJ_DIR)/exec/setup_execution
 
 .PHONY: NAME all clean fclean re

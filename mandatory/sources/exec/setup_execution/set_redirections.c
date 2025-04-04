@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_redirections.c                                :+:      :+:    :+:   */
+/*   set_redirections.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:23:42 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/03 14:30:00 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 15:53:34 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 int	set_append(t_data *data, t_token *current)
 {

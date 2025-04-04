@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 14:29:58 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:54:44 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -83,6 +83,7 @@ t_data	*init_all(char **envp);
 /* Function for write an error and return the program */
 void	malloc_error(t_data *data);
 void	error(t_data *data);
+void	ft_free_env(char **tmp);
 
 /* 
 	Functions for manipulate the memory with a garbage collector
@@ -130,13 +131,15 @@ int		ft_export(t_data *data, char **args_cmd);
 char	*ft_getenv(t_data *data, char *name, int *available);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
-int		ft_verif_name(char *str);
 int		exec_builtin(t_data *data, char **args_cmd, int cmd_process);
+
+void	ft_error_name(char *str);
+void	process_existing_env(t_data *data, char *str, char *name, char *value);
+void	ft_extract_name_value(char *str, char **name, char **value);
 
 char	**ft_duplicate_env(t_data *data);
 void	ft_sort_env(char **env);
 void	ft_display_env(char **tmp);
-void	ft_free_tmp(char **tmp);
 
 /* Function for the execution of commands */
 void	execution(t_data *data);
@@ -156,6 +159,8 @@ int		setup_redirection(t_data *data, int cmd_process);
 int		set_exec_struct(t_data *data, t_token **current);
 void	add_new_redir_node(t_data *data, t_exec_redir **lst, char *line, int type);
 
-t_exec_redir	*last_node(t_exec_redir *lst);
+void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork);
+void	wait_all(t_data *data, int nbr_of_fork);
+int		check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, char **all_cmd_path);
 
 #endif

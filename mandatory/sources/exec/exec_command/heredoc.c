@@ -6,11 +6,11 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/03 13:54:39 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 15:53:15 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 /*
 	read_heredoc_to_pipe - Reads user input until the delimiter is reached

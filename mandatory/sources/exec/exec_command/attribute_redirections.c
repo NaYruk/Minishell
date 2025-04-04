@@ -1,16 +1,16 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   apply_redirections.c                               :+:      :+:    :+:   */
+/*   attribute_redirections.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 12:41:19 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 15:52:56 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../..//includes/minishell.h"
 
 /* REDIRECT_INFILE = In the case of we have a infile
 					  redirect STDIN in the infile */

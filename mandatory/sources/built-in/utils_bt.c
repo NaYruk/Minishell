@@ -1,18 +1,18 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils_bt.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 13:12:19 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/04 12:12:04 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:09:47 by mcotonea         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	ft_check_env(char *env, char *name, int	len, int *available)
+static int	ft_check_env(char *env, char *name, int len, int *available)
 {
 	if (ft_strncmp(env, name, len) == 0 && env[len] == '\0')
 	{
@@ -59,19 +59,23 @@ char	*ft_getenv(t_data *data, char *name, int *available)
 	return (NULL);
 }
 
-
 static char	*ft_create_env_variable(char *name, char *value)
 {
-	char 	*result;
+	char	*result;
 	int		len_total;
 
-	len_total = ft_strlen(name) + ft_strlen(value) + 2;
+	len_total = ft_strlen(name) + 1;
+	if (value)
+		len_total += ft_strlen(value);
+	len_total += 1;
 	result = malloc(sizeof(char) * len_total);
 	if (!result)
 		return (NULL);
 	ft_strncpy(result, name, ft_strlen(name));
 	result[ft_strlen(name)] = '=';
-	ft_strncpy(result + ft_strlen(name) + 1, value, ft_strlen(value));
+	if (value)
+		ft_strncpy(result + ft_strlen(name) + 1, value, ft_strlen(value));
+	result[len_total - 1] = '\0';
 	return (result);
 }
 
@@ -95,7 +99,7 @@ void	ft_update_env(t_data *data, char *name, char *value)
 			if (value)
 			{
 				free(data->env[i]);
-				data->env[i] = ft_create_env_variable(name,value);
+				data->env[i] = ft_create_env_variable(name, value);
 				return ;
 			}
 		}

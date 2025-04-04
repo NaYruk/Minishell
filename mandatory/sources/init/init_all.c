@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 14:04:34 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:55:51 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -52,10 +52,9 @@ t_data	*init_all(char **envp)
 	}
 	init_garbage_collector(data);
 	ft_memset(data, 0, sizeof(t_data));
+	data->old_read_pipe = -1;
 	data->current_pipe[0] = -1;
 	data->current_pipe[1] = -1;
-	data->error_built = -1;
-	data->old_read_pipe = -1;
 	copy_envp(envp, data);
 	return (data);
 }
