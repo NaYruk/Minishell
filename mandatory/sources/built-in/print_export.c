@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:51:52 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/03 20:15:53 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/05 03:07:35 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**ft_duplicate_env(t_data *data)
 	return (tmp);
 }
 
-void	ft_sort_env(char **env)
+static void	ft_sort_env(char **env)
 {
 	int		i;
 	int		j;

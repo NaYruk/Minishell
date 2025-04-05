@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 19:35:17 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/05 04:34:41 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@
 # include "../../Libft/includes/libft.h"
 # include "./define.h"
 
+typedef struct s_env
+{
+	char	*name;
+	char	*value;
+	char	*existing_value;
+	char	*new_value;
+	int		available;
+}	t_env;
+
 /* Chained List Garbage collector */
 typedef struct s_garbage_collector
 {
@@ -43,7 +52,7 @@ typedef struct s_exec_redir
 	int					position;
 	char				*arg;
 	struct s_exec_redir	*next;
-	struct s_exec_redir *prev;
+	struct s_exec_redir	*prev;
 }	t_exec_redir;
 
 /* Struct for the execution of each command */
@@ -131,14 +140,15 @@ int		ft_export(t_data *data, char **args_cmd);
 char	*ft_getenv(t_data *data, char *name, int *available);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
+void	ft_realloc_env(t_data *data, size_t new_size);
 int		exec_builtin(t_data *data, char **args_cmd, int cmd_process);
 
-void	ft_error_name(char *str);
-void	process_existing_env(t_data *data, char *str, char *name, char *value);
-void	ft_extract_name_value(char *str, char **name, char **value);
+/* Functions to export builtin */
 
+void	ft_error_name(char *str);
+int		ft_verif_name(char *str);
+void	ft_extract_name_value(char *str, char **name, char **value);
 char	**ft_duplicate_env(t_data *data);
-void	ft_sort_env(char **env);
 void	ft_display_env(char **tmp);
 
 /* Function for the execution of commands */
