@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:21:11 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 17:23:39 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/06 22:57:58 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../../includes/minishell.h"
 
@@ -69,6 +69,11 @@ void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 			handle_fork(data, cmd_process, nbr_of_fork, true);
 		else if (exec_builtin(data, data->exec->arg_cmd, *cmd_process) == -1)
 			data->error_built = 1;
+		if (data->nbr_of_command == 1)
+		{
+			dup2(data->stdin_backup, STDIN_FILENO);
+			dup2(data->stdout_backup, STDOUT_FILENO);
+		}
 	}
 	else
 		handle_fork(data, cmd_process, nbr_of_fork, false);

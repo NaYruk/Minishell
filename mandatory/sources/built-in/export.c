@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:55:04 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/05 04:42:24 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/06 23:34:22 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../includes/minishell.h"
 
@@ -102,7 +102,7 @@ int	ft_export(t_data *data, char **args_cmd)
 	{
 		ft_process_export(data, &error, args_cmd);
 		if (error == 1)
-			return (data->exit_status = 1, EXIT_SUCCESS);
+			return (data->exit_status = 1, EXIT_FAILURE);
 		return (data->exit_status = 0, EXIT_SUCCESS);
 	}
 	tmp = ft_duplicate_env(data);

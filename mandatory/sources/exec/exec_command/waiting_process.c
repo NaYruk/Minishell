@@ -1,18 +1,18 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   waiting_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:25:57 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 15:53:19 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/06 23:24:20 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../../includes/minishell.h"
 
-void	handle_signal_status(int status, t_data *data, int *quit_displayed)
+void	handle_signal_status(int status, t_data *data, int *quit_displayed, bool last_fork)
 {
     if (WIFSIGNALED(status))
     {
@@ -28,7 +28,7 @@ void	handle_signal_status(int status, t_data *data, int *quit_displayed)
             *quit_displayed = 1;
         }
     }
-    else if (WIFEXITED(status) && data->error_built == -1)
+    else if (WIFEXITED(status) && data->error_built == -1 && last_fork == true)
         data->exit_status = WEXITSTATUS(status);
 }
 
@@ -50,7 +50,10 @@ void	wait_all(t_data *data, int nbr_of_fork)
 			error(data);
 			return ;
 		}
-		handle_signal_status(status, data, &quit_displayed);
+		if (i == nbr_of_fork)
+			handle_signal_status(status, data, &quit_displayed, true);
+		else
+			handle_signal_status(status, data, &quit_displayed, false);
 		i++;
 	}
 }

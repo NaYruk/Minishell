@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:31:22 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 14:31:35 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/06 23:29:05 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -57,6 +57,7 @@ int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, cha
 		{
 			ft_putstr_fd((*current)->line, 2);
 			ft_putstr_fd(": Permission denied\n", 2);
+			data->error_built = 1;
 			data->exit_status = 126;
 			return (-2);
 		}
@@ -72,6 +73,7 @@ int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, cha
 		ft_putstr_fd((*current)->line, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		data->exit_status = 127;
+		data->error_built = 1;
 		return (-2);
 	}
 	else if (!data->exec->cmd_path && !exec_build((*current)->line))
@@ -79,6 +81,7 @@ int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, cha
 		ft_putstr_fd((*current)->line, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		data->exit_status = 127;
+		data->error_built = 1;
 		return (-2);
 	}
 	return (0);

@@ -1,1 +1,55 @@
-Je
+ECHO :
+
+echoecho : bash exit_status (127), mini exit_status(0) :
+
+
+eCho what u execute bro? | cat ~/echo : bash exit_status (1), mini exit_status(0)
+bash STDOUT  : eCho: command not found
+mini STDOUT : eCho: command not found$
+                 cat: '~/echo': No such file or directory$
+
+
+unset PATH | EcHo how u launch this without PATH?? :
+bash : exit (127)
+mini : exit (0)
+
+
+ENV :
+env | grep TESTVAR
+bash : exit(1)
+mini : exit(0)
+
+
+export TESTVAR | env | grep TESTVAR :
+bash : exit (1)
+mini : exit (0)
+
+
+cd " " :
+bash : exit (1)
+exit (0)
+
+
+cd "" "" :
+bash : STDOUT : cd: too many arguments$ exit : (1)
+mini : STDOUT : VIDE exit(0)
+
+
+cd / non_existent : 
+bash : exit(1)
+mini : exit(0)
+
+
+ENV NE DOIT PAS POUVOIR EXECUTER SI IL Y A DES ARGUMENTS DERRIERE, env: ‘with’: No such file or directory
+
+
+echo $'\n' DOIT EXECUTER LE \n
+
+
+FAIRE EN SORTE QUE ~ = $HOME
+
+
+J AI PETER LES REDIR OUTFILE TESTER : echo hi > file2 > file hi
+
+
+WAITPID NE PAS SE FIER AU STATUS DE EXIT CAR UNE COMMANDE AVANT LE PIPE PEUT SE TERMINER APRES UNE ERREUR APRES PIPE  TESTET : sleep 1 | dddd
