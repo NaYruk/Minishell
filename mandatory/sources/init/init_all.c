@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 16:55:51 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 01:14:23 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,25 @@ void	copy_envp(char **envp, t_data *data)
 	while (envp[++i] != NULL)
 		data->env[i] = ft_strdup(envp[i]);
 	data->env[i] = NULL;
+}
+
+void	update_shlvl(t_data *data)
+{
+	char	*shlvl_str;
+	int		shlvl;
+
+	shlvl_str = ft_getenv(data, "SHLVL", NULL);
+	if (shlvl_str)
+	{
+		shlvl = ft_atoi(shlvl_str);
+		if (shlvl < 0)
+			shlvl = 0;
+	}
+	else
+		shlvl = 0;
+	shlvl++;
+	ft_update_env(data, "SHLVL", ft_itoa(shlvl));
+	
 }
 
 /* 
@@ -56,5 +75,6 @@ t_data	*init_all(char **envp)
 	data->current_pipe[0] = -1;
 	data->current_pipe[1] = -1;
 	copy_envp(envp, data);
+	update_shlvl(data);
 	return (data);
 }
