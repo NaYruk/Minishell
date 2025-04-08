@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 19:48:42 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 04:24:13 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,12 +139,12 @@ int	setup_redirection(t_data *data, int cmd_process)
 	t_exec_redir	*current;
 
 	current = data->exec->t_exec_redir;
-    if (cmd_process > 0 && data->old_read_pipe != -1)
+    if (data->part_of_line - 1 > 0 && data->old_read_pipe != -1)
     {
         dup2(data->old_read_pipe, STDIN_FILENO);
         close(data->old_read_pipe);
     }
-    if (cmd_process < data->nbr_of_command - 1)
+    if (cmd_process < data->part_of_line - 1)
     {
         dup2(data->current_pipe[1], STDOUT_FILENO);
 		close(data->current_pipe[0]);

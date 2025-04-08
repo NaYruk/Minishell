@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:36:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 15:53:27 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 03:18:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	get_cmd_path(t_data *data, t_token **current)
 	i = -1;
 	test_cmd_path = NULL;
 	all_cmd_paths = get_all_cmd_paths(data);
-	if (all_cmd_paths)
+	if (all_cmd_paths && (*current)->line[0] != '\0')
 	{
 		while (all_cmd_paths[++i] != NULL)
 		{

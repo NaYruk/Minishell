@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   replace_dollars.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 16:24:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/06 22:37:06 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 02:51:03 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -72,7 +72,7 @@ void	extand_dollar(t_data *data, char **new_line, char *prompt, int *i)
 			*new_line = ft_strjoin(*new_line, after_expand);
 		free(var_name);
 	}
-	else
+	else if (prompt[*i] != DOUBLE_QUOTES)
 		stock_char(new_line, '$');
 	(*i)--;
 }
@@ -84,7 +84,9 @@ int	expand_till(t_data *data, char **new_line, char *line, int *i)
 
 	home = NULL;
 	old_line = NULL;
-	if ((line[*i + 1] == '\0' || (line[*i + 1] && (line[*i + 1] == ' ' || line[*i + 1] == '/'))) && ((*i > 0 && line[*i - 1] == ' ') || (*i == 0)))
+	if ((line[*i + 1] == '\0' || (line[*i + 1] && (line[*i + 1] == ' '
+			|| line[*i + 1] == '/')))
+			&& ((*i > 0 && line[*i - 1] == ' ') || (*i == 0)))
 	{
 		home = ft_getenv(data, "HOME", false);
 		if (!home)
@@ -99,6 +101,88 @@ int	expand_till(t_data *data, char **new_line, char *line, int *i)
 	else
 		stock_char(new_line, line[*i]);
 	return (0);
+}
+
+void	stock_escaped_char(char *line, int *start, char **escaped_line, int *index)
+{
+	if (line[*start] == '\\' && line[*start + 1] == 'a')
+	{
+		(*start) += 2;
+		(*escaped_line)[*index] = '\a';
+		(*index)++;
+	}
+	else if (line[*start] == '\\' && line[*start + 1] == 'b')
+	{
+		(*start) += 2;
+		(*escaped_line)[*index] = '\b';
+		(*index)++;
+	}
+	else if (line[*start] == '\\' && line[*start + 1] == 't')
+	{
+		(*start) += 2;
+		(*escaped_line)[*index] = '\t';
+		(*index)++;
+	}
+	else if (line[*start] == '\\' && line[*start + 1] == 'n')
+	{
+		(*start) += 2;
+		(*escaped_line)[*index] = '\n';
+		(*index)++;
+	}
+	else if (line[*start] == '\\' && line[*start + 1] == 'v')
+	{
+		(*start) += 2;
+		(*escaped_line)[*index] = '\v';
+		(*index)++;
+	}
+	else if (line[*start] == '\\' && line[*start + 1] == 'f')
+	{
+		(*start) += 2;
+		(*escaped_line)[*index] = '\f';
+		(*index)++;
+	}
+	else if (line[*start] == '\\' && line[*start + 1] == 'r')
+	{
+		(*start) += 2;
+		(*escaped_line)[*index] = '\r';
+		(*index)++;
+	}
+	else
+	{
+		stock_char(escaped_line, line[(*start)++]);
+		(*index)++;
+	}
+	
+}
+
+void	check_escaped_content(t_data *data, char **line, int *i, char **new_line)
+{
+	int		start;
+	int		end;
+	int		index;
+	char	*escaped_line;
+	char	*old_line;
+	
+	start = *i + 2;
+	end = start;
+	index = 0;
+	old_line = NULL;
+	escaped_line = NULL;
+	while ((*line)[end] && (*line)[end] != SIMPLE_QUOTES)
+		end++;
+	escaped_line = calloc(sizeof(char) * (end - start + 3), 0);
+	if (!escaped_line)
+		malloc_error(data);
+	escaped_line[index++] = SIMPLE_QUOTES;
+	while ((*line)[start] != SIMPLE_QUOTES)
+		stock_escaped_char(*line, &start, &escaped_line, &index);
+	escaped_line[index++] = SIMPLE_QUOTES;
+	escaped_line[index] = '\0';
+	old_line = *new_line;
+	*new_line = ft_strjoin(old_line, escaped_line);
+	free(old_line);
+	free(escaped_line);
+	*i = end;
 }
 
 /*
@@ -118,7 +202,9 @@ void	replace_dollars(t_data *data, char **line)
 	data->double_q = false;
 	while ((*line)[i] != '\0')
 	{
-		if ((*line)[i] == SIMPLE_QUOTES && !data->double_q)
+		if ((*line)[i] == '$' && (*line)[i + 1] == SIMPLE_QUOTES && !data->simple_q && !data->double_q)
+			check_escaped_content(data, line, &i, &new_line);
+		else if ((*line)[i] == SIMPLE_QUOTES && !data->double_q)
 		{
 			data->simple_q = !data->simple_q;
 			stock_char(&new_line, SIMPLE_QUOTES);

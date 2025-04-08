@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:04:47 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 20:45:48 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 04:32:46 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ void	set_nbr_of_commands(t_data *data)
 
 	current = data->lst_token;
 	data->nbr_of_command = 0;
+	data->part_of_line = 1;
 	while (current != NULL)
 	{
 		if (current->token == CMD)
 			data->nbr_of_command++;
+		if (current->token == PIPE)
+			data->part_of_line++;
 		current = current->next;
 	}
 }

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:32:33 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/06 22:56:58 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 04:31:06 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
@@ -24,7 +24,7 @@ int	exec_builtin(t_data *data, char **args_cmd, int cmd_process)
 	if (ft_strcmp(args_cmd[0], "pwd") == 0)
 		return (data->exit_status = ft_pwd(data), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "cd") == 0)
-		return (data->exit_status = ft_cd(data), data->exit_status);
+		return (data->exit_status = ft_cd(data, args_cmd), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "exit") == 0)
 		return (data->exit_status = ft_exit(data, args_cmd), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "env") == 0)

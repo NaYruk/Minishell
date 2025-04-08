@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   absolute_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:31:22 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/06 23:29:05 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 03:13:50 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
@@ -76,7 +76,7 @@ int	check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, cha
 		data->error_built = 1;
 		return (-2);
 	}
-	else if (!data->exec->cmd_path && !exec_build((*current)->line))
+	else if (!data->exec->cmd_path && (!exec_build((*current)->line)))
 	{
 		ft_putstr_fd((*current)->line, 2);
 		ft_putstr_fd(": command not found\n", 2);
