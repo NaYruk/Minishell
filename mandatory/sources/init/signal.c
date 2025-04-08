@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:57:17 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/03 18:40:55 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/08 02:32:06 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,17 @@ void	setup_signals_interactive(void)
 	CTRL+\ is ignored. 
 */
 
-/* static void	sig_sigint_heredoc(int signum)
+static void	sig_sigint_heredoc(int signum)
 {
 	(void)signum;
 	ft_putstr_fd("\n", STDOUT_FILENO);
-	g_exit_status = 130;
-	close (STDIN_FILENO);
 }
 
 void	setup_signals_heredoc(void)
 {
 	signal(SIGINT, &sig_sigint_heredoc);
 	signal(SIGQUIT, SIG_IGN);
-} */
+}
 
 /* 
 	In the case of a child process, we must restore the default CTRL+C
