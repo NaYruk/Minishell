@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/03 17:34:01 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/08 02:27:00 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static	void	print_args(char **cmd_args, int *index)
 			printf("%s", cmd_args[*index + 1]);
 			first_arg = 0;
 		}
+		if (cmd_args[*index + 1][0] == '\0')
+			printf(" ");
 		(*index)++;
 	}
 }

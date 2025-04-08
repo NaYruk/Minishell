@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/26 13:38:42 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 00:36:36 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ static void	get_interior_of_quotes(t_data *data, int *i, int *count)
 			type_quote = DOUBLE_QUOTES;
 	}
 	(*i)++;
+	if (data->prompt[*i] == type_quote)
+	{
+		(*count)++;
+		return ;
+	}
 	while (data->prompt[*i] && data->prompt[*i] != type_quote)
 	{
 		(*count)++;
@@ -56,7 +61,8 @@ static void	get_nbr_char_line(t_data *data, int *i, int *count, char **line)
 		{
 			if (operator(data->prompt[*i]))
 				break ;
-			(*count)++;
+			else if (data->prompt[*i] != '\\')
+				(*count)++;
 		}
 		(*i)++;
 	}
@@ -107,7 +113,8 @@ static void	stock_line_in_token(t_data *data, int *i, int *count, char *line)
 		{
 			if (operator(data->prompt[*i]))
 				break ;
-			line[line_index++] = data->prompt[*i];
+			if (data->prompt[*i] != '\\')
+				line[line_index++] = data->prompt[*i];
 		}
 		(*i)++;
 	}

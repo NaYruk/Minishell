@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/06 22:45:41 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 04:09:21 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -39,12 +39,12 @@ static int	cd_error(char *path, int many_args)
 	Otherwise, the path is the argument to the cd command. 
 */
 
-static char	*get_cd_path(t_data *data, t_token *tmp)
+static char	*get_cd_path(t_data *data, char **args_cmd)
 {
-	char	*home;
+	char *home;
 	char	*path;
 
-	if (!tmp || !tmp->next || ft_strcmp(tmp->next->line, "~") == 0)
+	if (!args_cmd[1])
 	{
 		home = ft_getenv(data, "HOME", NULL);
 		if (!home)
@@ -54,7 +54,7 @@ static char	*get_cd_path(t_data *data, t_token *tmp)
 		}
 		path = home;
 	}
-	else if (ft_strcmp(tmp->next->line, "-") == 0)
+	else if (ft_strcmp(args_cmd[1], "-") == 0)
 	{
 		path = ft_getenv(data, "OLDPWD", NULL);
 		if (!path)
@@ -64,25 +64,23 @@ static char	*get_cd_path(t_data *data, t_token *tmp)
 		}
 	}
 	else
-		path = tmp->next->line;
+		path = args_cmd[1];
 	return (path);
 }
 
-int	ft_cd(t_data *data)
+int	ft_cd(t_data *data, char **args_cmd)
 {
 	char	*current_dir;
 	char	*old_pwd;
 	char	*path;
-	t_token	*tmp;
 
-	tmp = data->lst_token;
-	if (tmp && tmp->next && tmp->next->next)
+	if (args_cmd[0] && args_cmd[1] && args_cmd[2])
 		return (data->exit_status = 1, cd_error(NULL, 1));
 	old_pwd = getcwd(NULL, 0);
-	path = get_cd_path(data, tmp);
+	path = get_cd_path(data, args_cmd);
 	if (!path)
 		return (free (old_pwd), data->exit_status = 1, EXIT_FAILURE);
-	if (chdir(path) == -1)
+	if (chdir(path) == -1 && args_cmd[1][0] != '\0')
 		return (free(old_pwd), data->exit_status = 1, cd_error(path, 0));
 	ft_update_env(data, "OLDPWD", old_pwd);
 	free (old_pwd);

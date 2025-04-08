@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:36 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/07 09:55:00 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 00:23:08 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_is_quote(char c)
 
 int	ft_is_white_spaces(char c)
 {
-	if (c == 32 || (c >= 7 && c <= 13))
+	if (c == 32)
 		return (1);
 	return (0);
 }

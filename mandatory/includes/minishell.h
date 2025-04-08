@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/06 22:37:13 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 04:16:44 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -79,6 +79,7 @@ typedef struct s_data
 	char		quotes_char;
 	int			exit_status;
 	int			nbr_of_command;
+	int			part_of_line;
 	int			stdout_backup;
 	int			stdin_backup;
 	t_exec		*exec;
@@ -132,7 +133,7 @@ int		token_error(t_data *data, char *line);
 /* Functions for built-in commands */
 int		ft_pwd(t_data *data);
 int		ft_exit(t_data *data, char **args_cmd);
-int		ft_cd(t_data *data);
+int		ft_cd(t_data *data, char **args_cmd);
 int		ft_env(t_data *data);
 int		ft_echo(t_data *data, char **args_cmd);
 int		ft_unset(t_data *data, char **args_cmd);
