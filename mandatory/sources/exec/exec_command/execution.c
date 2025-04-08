@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/08 04:31:17 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 04:40:17 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	get_next_pipe_or_null(t_token **current)
 
 void	setup_pipe(t_data *data, int cmd_process)
 {
-	if (cmd_process < data->nbr_of_command - 1)
+	if (cmd_process < data->part_of_line - 1)
 	{
 		if (pipe(data->current_pipe) == -1)
 			malloc_error(data);
@@ -41,7 +41,7 @@ int	handle_execution(t_data *data, t_token **current,
 			free_exec_struct(data);
 			return (-1);
 		}
-		else if (*cmd_process < data->nbr_of_command - 1)
+		else if (*cmd_process < data->part_of_line - 1)
 			close(data->current_pipe[1]);
 	}
 	else if (data->nbr_of_command > 0 && data->exec->arg_cmd)	

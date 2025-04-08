@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:32:33 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/08 04:31:06 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/08 04:43:36 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	exec_builtin(t_data *data, char **args_cmd, int cmd_process)
 		return (data->exit_status = ft_unset(data, args_cmd), data->exit_status);
 	else if (ft_strcmp(args_cmd[0], "export") == 0)
 		return (data->exit_status = ft_export(data, args_cmd), data->exit_status);
-	if (cmd_process < data->nbr_of_command - 1)
+	if (cmd_process < data->part_of_line - 1)
         close(data->current_pipe[1]);
 	return (0);
 }
