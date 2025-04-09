@@ -1,22 +1,30 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_pipes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 20:21:16 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/28 01:40:14 by mmilliot         ###   ########.fr       */
+/*   Created: 2025/04/09 17:11:00 by mmilliot          #+#    #+#             */
+/*   Updated: 2025/04/09 17:25:22 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /* Function for write a token error */
 
-int	token_error(t_data *data, char *line)
+int	token_error(t_data *data, char *line, bool newline)
 {
+	if (newline == true)
+	{
+		line = ft_strdup("syntax error near unexpected token `newline'\n");
+		if (!line)
+			malloc_error(data);
+	}
 	ft_putstr_fd(line, 2);
+	if (newline == true)
+		free(line);
 	data->exit_status = 2;
 	return (-1);
 }
@@ -51,12 +59,14 @@ static int	check_first_and_last_node(t_token *token, t_data *data)
 	if (token->quote_char == '\0')
 	{
 		if (token->token == PIPE)
-			return (token_error(data, "syntax error near unexpected token `|'\n"));
+			return (token_error
+				(data, "syntax error near unexpected token `|'\n", 0));
 		nbr = pipes_nbr(token->line, nbr);
 		if (nbr == 2)
-			return (token_error(data, "2 Pipes, we don't do bonus !\n"));
+			return (token_error(data, "2 Pipes, we don't do bonus !\n", 0));
 		if (nbr >= 2)
-			return (token_error(data, "syntax error near unexpected token `||'\n"));
+			return (token_error
+				(data, "syntax error near unexpected token `||'\n", 0));
 	}
 	return (0);
 }
@@ -66,17 +76,17 @@ int	check_potential_errors(t_data *data, int nbr, t_token *current)
 	if (nbr > 1)
 	{
 		if (nbr == 2)
-			return (token_error(data, "2 Pipes, we don't do bonus !\n"));
+			return (token_error(data, "2 Pipes, we don't do bonus !\n", 0));
 		if (nbr == 3)
 			return (token_error(data,
-					"syntax error near unexpected token `|'\n"));
+					"syntax error near unexpected token `|'\n", 0));
 		if (nbr >= 4)
 			return (token_error(data,
-					"syntax error near unexpected token `||'\n"));
+					"syntax error near unexpected token `||'\n", 0));
 	}
 	if (current->next->token == PIPE && current->token == PIPE)
 		return (token_error(data,
-				"syntax error near unexpected token `|'\n"));
+				"syntax error near unexpected token `|'\n", 0));
 	return (0);
 }
 

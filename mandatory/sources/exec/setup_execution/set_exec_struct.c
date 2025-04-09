@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_exec_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/05 01:50:15 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/09 17:09:41 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,16 @@ int	args_and_cmd(t_data *data, t_token **current)
 
 void	execute_heredoc(t_data *data, t_token *current)
 {
-	// t_token *current_start;
-
-	// current_start = current;
 	while (current != NULL)
 	{
 		if (current->prev && current->prev->token == HEREDOC
-				&& current->token == ARG)
+			&& current->token == ARG)
 			exec_heredoc(data, current);
 		current = current->next;
 	}
 	return ;
 }
+
 int	set_exec_struct(t_data *data, t_token **current)
 {
 	data->error_built = -1;

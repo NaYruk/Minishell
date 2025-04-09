@@ -6,25 +6,18 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 12:27:27 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/08 00:36:36 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:34:39 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static int	quotes(char c)
-{
-	if (c == SIMPLE_QUOTES || c == DOUBLE_QUOTES)
-		return (1);
-	return (0);
-}
 
 static void	get_interior_of_quotes(t_data *data, int *i, int *count)
 {
 	char	type_quote;
 
 	type_quote = '\0';
-	if (quotes(data->prompt[*i]))
+	if (ft_is_quote(data->prompt[*i]))
 	{
 		if (data->prompt[*i] == SIMPLE_QUOTES)
 			type_quote = SIMPLE_QUOTES;
@@ -48,14 +41,14 @@ static void	get_nbr_char_line(t_data *data, int *i, int *count, char **line)
 {
 	*count = 0;
 	while (data->prompt[*i] && ft_is_white_spaces(data->prompt[*i])
-		&& !quotes(data->prompt[*i]))
+		&& !ft_is_quote(data->prompt[*i]))
 		(*i)++;
-	if (data->prompt[*i] && !quotes(data->prompt[*i]))
+	if (data->prompt[*i] && !ft_is_quote(data->prompt[*i]))
 		if (is_operator(data, i, line))
 			return ;
 	while (data->prompt[*i] && !ft_is_white_spaces(data->prompt[*i]))
 	{
-		if (quotes(data->prompt[*i]))
+		if (ft_is_quote(data->prompt[*i]))
 			get_interior_of_quotes(data, i, count);
 		else
 		{
@@ -73,7 +66,7 @@ static void	stock_quotes(t_data *data, int *i, char *line, int *line_index)
 	char	type_quote;
 
 	type_quote = '\0';
-	if (quotes(data->prompt[*i]))
+	if (ft_is_quote(data->prompt[*i]))
 	{
 		if (data->prompt[*i] == SIMPLE_QUOTES)
 		{
@@ -83,7 +76,7 @@ static void	stock_quotes(t_data *data, int *i, char *line, int *line_index)
 		else
 		{
 			type_quote = DOUBLE_QUOTES;
-			data->quotes_char = DOUBLE_QUOTES;	
+			data->quotes_char = DOUBLE_QUOTES;
 		}
 	}
 	(*i)++;
@@ -103,11 +96,11 @@ static void	stock_line_in_token(t_data *data, int *i, int *count, char *line)
 	if (!line)
 		malloc_error(data);
 	while (data->prompt[*i] && ft_is_white_spaces(data->prompt[*i])
-		&& !quotes(data->prompt[*i]))
+		&& !ft_is_quote(data->prompt[*i]))
 		(*i)++;
 	while (data->prompt[*i] && !ft_is_white_spaces(data->prompt[*i]))
 	{
-		if (quotes(data->prompt[*i]))
+		if (ft_is_quote(data->prompt[*i]))
 			stock_quotes(data, i, line, &line_index);
 		else
 		{

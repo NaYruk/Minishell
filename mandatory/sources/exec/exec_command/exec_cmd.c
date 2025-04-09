@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:09:46 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/04 16:31:54 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 13:01:36 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	child_process(t_data *data, int i)
 	{
 		perror("Execve :");
 		exit(EXIT_FAILURE);
-	}	
+	}
 	exit(0);
 }
-	

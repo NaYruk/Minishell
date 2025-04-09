@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/08 01:14:23 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:10:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	update_shlvl(t_data *data)
 		shlvl = 0;
 	shlvl++;
 	ft_update_env(data, "SHLVL", ft_itoa(shlvl));
-	
 }
 
 /* 
