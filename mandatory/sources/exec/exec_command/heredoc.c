@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/08 03:21:20 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:33:35 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,42 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 	char	*line;
 	char	*delimiter;
 	t_token	*heredoc_token;
+	int		fd;
 	
 	setup_signals_heredoc();
 	line = NULL;
 	delimiter = current->line;
 	heredoc_token = current;
+	fd = open("/dev/tty", O_RDONLY);
 	while (1)
 	{
-		line = readline("> ");
+		if (g_signal == SIGINT)
+		{
+			if (fd != -1)
+			{
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
+			data->exec_heredoc = 1;
+			update_exit_status(data);
+			break ;
+		}
+		ft_putstr_fd("> ", STDOUT_FILENO);
+		line = get_next_line(STDIN_FILENO);
+		line = ft_strtrim(line, "\n");
 		if (!line)
 		{
-			ft_putstr_fd("warning: here-document delimited by EOF. Wanted: '", 2);
-			ft_putstr_fd(delimiter, 2);
-			ft_putstr_fd("'.\n", 2);
+			if (fd != -1)
+			{
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
+			if (g_signal != SIGINT)
+			{
+				ft_putstr_fd("warning: here-document delimited by EOF. Wanted: '", 2);
+				ft_putstr_fd(delimiter, 2);
+				ft_putstr_fd("'.\n", 2);
+			}
 			break ;
 		}
 		else if (ft_strcmp(line, delimiter) == 0)
@@ -46,7 +69,6 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 		ft_putstr_fd("\n", write_pipe);
 		free(line);
 	}
-	setup_signals_execution();
 }
 
 /*
@@ -62,9 +84,16 @@ int	exec_heredoc(t_data *data, t_token *current)
 	{
 		perror("Pipe");
 		return (-1);
+		//stop programme
 	}
 	read_heredoc_to_pipe(data, pipefd[1], current);
 	close(pipefd[1]);
+	if (g_signal == SIGINT)
+	{
+		close(pipefd[0]);
+		return (-1);
+	}
+	setup_signals_interactive();
 	if (data->exec->last_heredoc_fd != -1)
 		close(data->exec->last_heredoc_fd);
 	data->exec->last_heredoc_fd = pipefd[0];

@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/08 01:14:23 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:45:28 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ void	update_shlvl(t_data *data)
 	{
 		shlvl = ft_atoi(shlvl_str);
 		if (shlvl < 0)
-			shlvl = 0;
+			shlvl = -1;
 	}
 	else
 		shlvl = 0;
 	shlvl++;
 	ft_update_env(data, "SHLVL", ft_itoa(shlvl));
-	
 }
 
 /* 

@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:57:17 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/08 02:32:06 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:05:37 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,20 @@
 	prompt. CTRL+\ is ignored.
 */
 
+void	update_exit_status(t_data *data)
+{
+	if (g_signal)
+	{
+		g_signal = g_signal + 128;
+		data->exit_status = g_signal;
+	}
+}
+
 static void	sig_sigint_interactive(int signum)
 {
 	if (signum == SIGINT)
 	{
+		g_signal = SIGINT;
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		rl_replace_line("", STDIN_FILENO);
 		rl_on_new_line();
@@ -43,7 +53,9 @@ void	setup_signals_interactive(void)
 static void	sig_sigint_heredoc(int signum)
 {
 	(void)signum;
+	g_signal = SIGINT;
 	ft_putstr_fd("\n", STDOUT_FILENO);
+	close(STDIN_FILENO);
 }
 
 void	setup_signals_heredoc(void)

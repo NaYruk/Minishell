@@ -1,24 +1,25 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   waiting_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:25:57 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/06 23:24:20 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 15:39:49 by mcotonea         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
 void	handle_signal_status(int status, t_data *data, int *quit_displayed, bool last_fork)
 {
+	g_signal = 0;
     if (WIFSIGNALED(status))
     {
         if (WTERMSIG(status) == SIGINT)
         {
-            ft_putstr_fd("\n", STDOUT_FILENO);
+            ft_putstr_fd("\n", STDERR_FILENO);
             data->exit_status = 130;
         }
         else if (WTERMSIG(status) == SIGQUIT && !(*quit_displayed))

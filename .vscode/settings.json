@@ -9,7 +9,9 @@
 		"concepts": "c",
 		"type_traits": "c",
 		"new": "c",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"get_next_line.h": "c",
+		"signal.h": "c"
 	},
 	"makefile.launchConfigurations": [
 		{
