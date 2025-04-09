@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/08 04:09:21 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 12:38:55 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	cd_error(char *path, int many_args)
 
 static char	*get_cd_path(t_data *data, char **args_cmd)
 {
-	char *home;
+	char	*home;
 	char	*path;
 
 	if (!args_cmd[1])

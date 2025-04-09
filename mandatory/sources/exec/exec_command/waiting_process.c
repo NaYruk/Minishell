@@ -12,7 +12,8 @@
 
 #include "../../../includes/minishell.h"
 
-void	handle_signal_status(int status, t_data *data, int *quit_displayed, bool last_fork)
+void	handle_signal_status(int status, t_data *data,
+		int *quit_displayed, bool last_fork)
 {
 	g_signal = 0;
     if (WIFSIGNALED(status))
@@ -47,8 +48,7 @@ void	wait_all(t_data *data, int nbr_of_fork)
 	{
 		if (waitpid(data->pids[i], &status, 0) == -1)
 		{
-			perror("WAITPID");
-			error(data);
+			error(data, "WAITPID");
 			return ;
 		}
 		if (i == nbr_of_fork)

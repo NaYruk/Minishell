@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/08 00:03:02 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:52:47 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,8 @@ static void	ft_gettype(t_data *data)
 				current->token = HEREDOC;
 			else if (ft_strcmp(current->line, ">>") == 0)
 				current->token = APPEND;
-			else if (ft_strcmp(current->line, "&&") == 0)
-				current->token = AND;
-			else if (ft_strcmp(current->line, "||") == 0)
-				current->token = OR;
 			else
-			current->token = OTHER;
+				current->token = OTHER;
 		}
 		else
 			current->token = OTHER;

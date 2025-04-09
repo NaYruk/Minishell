@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:21:11 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/08 04:42:37 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 13:02:38 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	exec_build(char *line)
 	return (0);
 }
 
-void	handle_fork(t_data *data, int *cmd_process, int *nbr_of_fork, bool is_builtin)
+void	handle_fork(t_data *data, int *cmd_process,
+		int *nbr_of_fork, bool is_builtin)
 {
 	data->pids[++(*nbr_of_fork)] = fork();
 	if (data->pids[*nbr_of_fork] == 0)

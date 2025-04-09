@@ -37,10 +37,6 @@ int	args_and_cmd(t_data *data, t_token **current)
 
 void	execute_heredoc(t_data *data, t_token *current)
 {
-	// t_token *current_start;
-
-	// current_start = current;
-
 	while (current != NULL)
 	{
 		if (current->prev && current->prev->token == HEREDOC
@@ -53,6 +49,7 @@ void	execute_heredoc(t_data *data, t_token *current)
 	}
 	return ;
 }
+
 int	set_exec_struct(t_data *data, t_token **current)
 {
 	data->error_built = -1;

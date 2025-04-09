@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_rafter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42mulhouse.f    +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 20:23:54 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/03/28 01:37:40 by mmilliot         ###   ########.fr       */
+/*   Created: 2025/04/09 17:12:45 by mmilliot          #+#    #+#             */
+/*   Updated: 2025/04/09 17:26:30 by mmilliot         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -37,9 +37,15 @@ static int	rafter_nbr(char *line, int nbr)
 				current->next->line);
 	}
 */
-static int	special_error(t_data *data, char *line, char *subline)
+static int	special_error(t_data *data, char *subline)
 {
+	char	*line;
+
+	line = ft_strdup("syntax error near unexpected token ");
+	if (!line)
+		malloc_error(data);
 	ft_putstr_fd(line, 2);
+	free(line);
 	ft_putstr_fd("`", 2);
 	ft_putstr_fd(subline, 2);
 	ft_putstr_fd("'", 2);
@@ -53,26 +59,25 @@ static int	check_errors(t_data *data, int nbr, t_token *current)
 	if (current->line[0] == '<')
 	{
 		if (nbr == 3)
-			return (token_error(data,
-					"syntax error near unexpected token `newline'\n"));
+			return (token_error(data, NULL, 1));
 		else if (nbr == 4)
 			return (token_error(data,
-					"syntax error near unexpected token `<'\n"));
+					"syntax error near unexpected token `<'\n", 0));
 		else if (nbr == 5)
 			return (token_error(data,
-					"syntax error near unexpected token `<<'\n"));
+					"syntax error near unexpected token `<<'\n", 0));
 		else if (nbr >= 6)
 			return (token_error(data,
-					"syntax error near unexpected token `<<<'\n"));
+					"syntax error near unexpected token `<<<'\n", 0));
 	}
 	else
 	{
 		if (nbr == 3)
 			return (token_error(data,
-					"syntax error near unexpected token `>'\n"));
+					"syntax error near unexpected token `>'\n", 0));
 		else if (nbr >= 4)
 			return (token_error(data,
-					"syntax error near unexpected token `>>'\n"));
+					"syntax error near unexpected token `>>'\n", 0));
 	}
 	return (0);
 }
@@ -88,8 +93,7 @@ static int	error_rafter(t_data *data, int nbr, t_token *current)
 	{
 		nbr = rafter_nbr(current->line, nbr);
 		if (nbr < 3 && nbr >= 1)
-			return (token_error(data,
-					"syntax error near unexpected token `newline'\n"));
+			return (token_error(data, NULL, 1));
 		if (check_errors(data, nbr, current) != 0)
 			return (-1);
 	}
@@ -123,15 +127,11 @@ int	check_rafter(t_data *data)
 				if (current->next != NULL)
 				{
 					if (current->next->token != ARG)
-						return (special_error(data,
-								"syntax error near unexpected token ",
-								current->next->line));
+						return (special_error(data, current->next->line));
 				}
 				else
-					return (token_error(data,
-						"syntax error near unexpected token `newline'\n"));
+					return (token_error(data, NULL, 1));
 			}
-			
 		}
 		current = current->next;
 	}

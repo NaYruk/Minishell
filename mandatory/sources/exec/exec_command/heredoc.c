@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
 /*   Updated: 2025/04/09 16:33:35 by mcotonea         ###   ########.fr       */
@@ -12,13 +12,34 @@
 
 #include "../../../includes/minishell.h"
 
+bool	last_heredoc(t_exec_redir *current)
+{
+	t_exec_redir	*current_start;
+
+	current_start = current;
+	if (current->next)
+		current = current->next;
+	else
+		return (true);
+	while (current != NULL)
+	{
+		if (current->type == HEREDOC)
+		{
+			current = current_start;
+			return (false);
+		}
+		current = current->next;
+	}
+	current = current_start;
+	return (true);
+}
+
 void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 {
 	char	*line;
 	char	*delimiter;
 	t_token	*heredoc_token;
 	int		fd;
-	
 	setup_signals_heredoc();
 	line = NULL;
 	delimiter = current->line;
@@ -59,12 +80,6 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 		{
 			free(line);
 			break ;
-		}
-		else if (heredoc_token)
-		{
-			if (heredoc_token->quote_char == '\0')
-				replace_dollars(data, &line);
-		}
 		ft_putstr_fd(line, write_pipe);
 		ft_putstr_fd("\n", write_pipe);
 		free(line);

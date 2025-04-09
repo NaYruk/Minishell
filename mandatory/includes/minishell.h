@@ -31,6 +31,15 @@
 
 extern int	g_signal;
 
+typedef struct s_escaped_char
+{
+	char	*escaped_line;
+	char	*old_line;
+	int		start;
+	int		end;
+	int		index;
+}	t_escaped_char;
+
 typedef struct s_env
 {
 	char	*name;
@@ -95,7 +104,7 @@ t_data	*init_all(char **envp);
 
 /* Function for write an error and return the program */
 void	malloc_error(t_data *data);
-void	error(t_data *data);
+void	error(t_data *data, char *error);
 void	ft_free_env(char **tmp);
 
 /* 
@@ -131,7 +140,7 @@ void	free_token(t_data *data);
 int		check_rafter(t_data *data);
 int		check_pipes(t_data *data);
 void	replace_dollars(t_data *data, char **line);
-int		token_error(t_data *data, char *line);
+int		token_error(t_data *data, char *line, bool newline);
 
 /* Functions for built-in commands */
 int		ft_pwd(t_data *data);
@@ -168,6 +177,7 @@ int		set_outfile(t_data *data, t_token *current);
 int		set_append(t_data *data, t_token *current);
 int		set_infile(t_data *data, t_token *current);
 int		set_heredoc(t_data *data, t_token *current);
+bool	last_heredoc(t_exec_redir *current);
 int		exec_heredoc(t_data *data, t_token *current);
 int		child_process(t_data *data, int i);
 int		setup_redirection(t_data *data, int cmd_process);
@@ -176,7 +186,11 @@ void	add_new_redir_node(t_data *data, t_exec_redir **lst, char *line, int type);
 
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork);
 void	wait_all(t_data *data, int nbr_of_fork);
-int		check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, char **all_cmd_path);
+int		check_absolute_cmd(t_data *data, t_token **current, char **all_cmd_path);
+void	check_escaped_content(t_data *data, char **line, int *i, char **new_line);
+void	stock_char(char **new_line, char c);
+int		expand_till(t_data *data, char **new_line, char *line, int *i);
+void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
 
 void	update_exit_status(t_data *data);
 

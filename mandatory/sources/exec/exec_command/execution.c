@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/08 04:40:17 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 13:02:11 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	handle_execution(t_data *data, t_token **current,
 		else if (*cmd_process < data->part_of_line - 1)
 			close(data->current_pipe[1]);
 	}
-	else if (data->nbr_of_command > 0 && data->exec->arg_cmd)	
+	else if (data->nbr_of_command > 0 && data->exec->arg_cmd)
 		exec_build_or_cmd(data, cmd_process, nbr_of_fork);
 	return (0);
 }

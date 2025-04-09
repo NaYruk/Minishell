@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/08 02:27:00 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:00:13 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,19 @@ static int	check_option(char *str)
 
 static	void	print_args(char **cmd_args, int *index)
 {
-	int	first_arg;
-
-	first_arg = 1;
 	while (cmd_args[*index + 1])
 	{
 		if (cmd_args[*index + 1] && cmd_args[*index + 1][0] != '\0')
 		{
-			if (!first_arg)
+			if (cmd_args[*index][0] == '\0')
 				printf(" ");
 			printf("%s", cmd_args[*index + 1]);
-			first_arg = 0;
 		}
-		if (cmd_args[*index + 1][0] == '\0')
-			printf(" ");
 		(*index)++;
 	}
+	if (!(cmd_args[*index + 1]) && ft_strcmp(cmd_args[*index - 1], "echo")
+		&& cmd_args[*index][0] == '\0')
+		printf(" ");
 }
 
 /* 
