@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 18:04:00 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 18:51:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 22:03:17 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	stock_escaped_char(char *line, int *start,
 		char_stock(start, escaped_line, index, '\t');
 	else if (line[*start] == '\\' && line[*start + 1] == 'n')
 		char_stock(start, escaped_line, index, '\n');
-	if (line[*start] == '\\' && line[*start + 1] == 'v')
+	else if (line[*start] == '\\' && line[*start + 1] == 'v')
 		char_stock(start, escaped_line, index, '\v');
 	else if (line[*start] == '\\' && line[*start + 1] == 'f')
 		char_stock(start, escaped_line, index, '\f');
@@ -61,8 +61,7 @@ void	check_escaped_content(t_data *data, char **line,
 		malloc_error(data);
 	e_c.escaped_line[(e_c.index)++] = SIMPLE_QUOTES;
 	while ((*line)[e_c.start] && (*line)[e_c.start] != SIMPLE_QUOTES)
-		stock_escaped_char(*line, &(e_c.start),
-			&(e_c.escaped_line), &(e_c.index));
+		stock_escaped_char(*line, &(e_c.start), &(e_c.escaped_line), &(e_c.index));
 	e_c.escaped_line[(e_c.index)++] = SIMPLE_QUOTES;
 	e_c.escaped_line[e_c.index] = '\0';
 	e_c.old_line = *new_line;

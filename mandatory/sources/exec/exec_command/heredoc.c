@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 16:33:35 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/09 23:36:01 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 			}
 			if (g_signal != SIGINT)
 			{
+				ft_putstr_fd("\n", 2);
 				ft_putstr_fd("warning: here-document delimited by EOF. Wanted: '", 2);
 				ft_putstr_fd(delimiter, 2);
 				ft_putstr_fd("'.\n", 2);
@@ -80,9 +81,9 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 		{
 			free(line);
 			break ;
+		}
 		ft_putstr_fd(line, write_pipe);
 		ft_putstr_fd("\n", write_pipe);
-		free(line);
 	}
 }
 
@@ -96,11 +97,7 @@ int	exec_heredoc(t_data *data, t_token *current)
 	int	pipefd[2];
 	
 	if (pipe(pipefd) == -1)
-	{
-		perror("Pipe");
-		return (-1);
-		//stop programme
-	}
+		error(data, "PIPE");
 	read_heredoc_to_pipe(data, pipefd[1], current);
 	close(pipefd[1]);
 	if (g_signal == SIGINT)

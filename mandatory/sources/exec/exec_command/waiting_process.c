@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   waiting_process.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:25:57 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 15:39:49 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:46:39 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@ void	handle_signal_status(int status, t_data *data,
 		int *quit_displayed, bool last_fork)
 {
 	g_signal = 0;
-    if (WIFSIGNALED(status))
-    {
-        if (WTERMSIG(status) == SIGINT)
-        {
-            ft_putstr_fd("\n", STDERR_FILENO);
-            data->exit_status = 130;
-        }
-        else if (WTERMSIG(status) == SIGQUIT && !(*quit_displayed))
-        {
-            ft_putstr_fd("Quit\n", STDERR_FILENO);
-            data->exit_status = 131;
-            *quit_displayed = 1;
-        }
-    }
-    else if (WIFEXITED(status) && data->error_built == -1 && last_fork == true)
-        data->exit_status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+		{
+			ft_putstr_fd("\n", STDERR_FILENO);
+			data->exit_status = 130;
+		}
+		else if (WTERMSIG(status) == SIGQUIT && !(*quit_displayed))
+		{
+			ft_putstr_fd("Quit\n", STDERR_FILENO);
+			data->exit_status = 131;
+			*quit_displayed = 1;
+		}
+	}
+	else if (WIFEXITED(status) && data->error_built == -1 && last_fork == true)
+		data->exit_status = WEXITSTATUS(status);
 }
 
 void	wait_all(t_data *data, int nbr_of_fork)

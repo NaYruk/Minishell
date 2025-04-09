@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 16:30:34 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/10 00:01:29 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,5 +193,6 @@ int		expand_till(t_data *data, char **new_line, char *line, int *i);
 void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
 
 void	update_exit_status(t_data *data);
+void	redirect_pipes(t_data *data, int cmd_process);
 
 #endif
