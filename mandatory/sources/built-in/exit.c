@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/29 02:17:01 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:39:32 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	ft_exit(t_data *data, char **args_cmd)
 	status = 0;
 	too_large = 0;
 	if (!args_cmd[1])
-		status = 0;
+		status = data->exit_status;
 	else if (args_cmd[1] && args_cmd[2])
 	{
 		print_exit_error("too many arguments", 1);

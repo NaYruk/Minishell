@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 19:35:59 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:30:34 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include "../../Libft/includes/get_next_line.h"
 # include "../../Libft/includes/libft.h"
 # include "./define.h"
+
+extern int	g_signal;
 
 typedef struct s_escaped_char
 {
@@ -91,6 +93,7 @@ typedef struct s_data
 	int			part_of_line;
 	int			stdout_backup;
 	int			stdin_backup;
+	int			exec_heredoc;
 	t_exec		*exec;
 	t_garb_c	*g_c;
 	t_token		*lst_token;
@@ -188,5 +191,7 @@ void	check_escaped_content(t_data *data, char **line, int *i, char **new_line);
 void	stock_char(char **new_line, char c);
 int		expand_till(t_data *data, char **new_line, char *line, int *i);
 void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
+
+void	update_exit_status(t_data *data);
 
 #endif

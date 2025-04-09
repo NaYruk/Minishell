@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_exec_struct.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 17:09:41 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:39:13 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ void	execute_heredoc(t_data *data, t_token *current)
 	while (current != NULL)
 	{
 		if (current->prev && current->prev->token == HEREDOC
-			&& current->token == ARG)
-			exec_heredoc(data, current);
+				&& current->token == ARG)
+		{
+			if (data->exec_heredoc == 0)
+				exec_heredoc(data, current);
+		}
 		current = current->next;
 	}
 	return ;
