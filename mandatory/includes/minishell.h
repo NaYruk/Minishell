@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/08 04:16:44 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:30:34 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include "../../Libft/includes/get_next_line.h"
 # include "../../Libft/includes/libft.h"
 # include "./define.h"
+
+extern int	g_signal;
 
 typedef struct s_env
 {
@@ -82,6 +84,7 @@ typedef struct s_data
 	int			part_of_line;
 	int			stdout_backup;
 	int			stdin_backup;
+	int			exec_heredoc;
 	t_exec		*exec;
 	t_garb_c	*g_c;
 	t_token		*lst_token;
@@ -174,5 +177,7 @@ void	add_new_redir_node(t_data *data, t_exec_redir **lst, char *line, int type);
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork);
 void	wait_all(t_data *data, int nbr_of_fork);
 int		check_absolute_cmd(t_data *data, t_token **current, char *test_cmd_path, char **all_cmd_path);
+
+void	update_exit_status(t_data *data);
 
 #endif
