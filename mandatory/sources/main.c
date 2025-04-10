@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/09 16:32:25 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:02:43 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_list(t_data *data)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	*data;
+	t_data	*data = NULL;
 
 	(void)argv;
 	if (argc != 1)
@@ -60,3 +60,9 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("exit\n", 2);
 	return (free_garbage(data), data->exit_status);
 }
+
+/* int main(void)
+{
+	long long a = ft_atoll("-9223372036854775808");
+	printf("%lld\n", a);
+} */
