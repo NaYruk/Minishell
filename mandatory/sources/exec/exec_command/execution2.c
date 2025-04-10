@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:21:11 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 13:02:38 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/11 00:55:57 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,17 @@ int	exec_build(char *line)
 void	handle_fork(t_data *data, int *cmd_process,
 		int *nbr_of_fork, bool is_builtin)
 {
+	int	status;
+
 	data->pids[++(*nbr_of_fork)] = fork();
 	if (data->pids[*nbr_of_fork] == 0)
 	{
 		if (is_builtin == true)
-			exit(exec_builtin(data, data->exec->arg_cmd, *cmd_process));
+		{
+			status = exec_builtin(data, data->exec->arg_cmd, *cmd_process);
+			free_all(data);
+			exit(status);
+		}
 		else
 			child_process(data, *cmd_process);
 	}

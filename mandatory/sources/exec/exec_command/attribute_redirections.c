@@ -6,18 +6,31 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 00:11:27 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:19:43 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../..//includes/minishell.h"
+
+void	redirect_heredoc(t_data *data, t_exec_redir *current, int cmd_process)
+{
+	if (current != NULL && current->type == HEREDOC)
+	{
+		if (last_heredoc(current) == true)
+		{
+			if (dup2(data->heredoc_fd[cmd_process][0], STDIN_FILENO) == -1)
+				error(data, "dup2");
+			close(data->heredoc_fd[cmd_process][0]);
+		}
+	}
+}
 
 /* REDIRECT_INFILE = In the case of we have a infile
 					  redirect STDIN in the infile 
 					 In the case of we have a heredoc
 					  redirect STDIN is last pipe heredoc */
 
-int	redirect_infile_heredoc(t_data *data, t_exec_redir *current)
+int	redirect_infile(t_data *data, t_exec_redir *current)
 {
 	int	fd_file;
 
@@ -33,15 +46,6 @@ int	redirect_infile_heredoc(t_data *data, t_exec_redir *current)
 		}
 		dup2(fd_file, STDIN_FILENO);
 		close (fd_file);
-	}
-	if (current != NULL && current->type == HEREDOC)
-	{
-		if (last_heredoc(current) == true)
-		{
-			if (dup2(data->exec->last_heredoc_fd, STDIN_FILENO) == -1)
-				error(data, "dup2");
-			close(data->exec->last_heredoc_fd);
-		}
 	}
 	return (0);
 }
@@ -106,13 +110,13 @@ void	redirect_pipes(t_data *data, int cmd_process)
 	if ((data->part_of_line - 1) > 0 && data->old_read_pipe != -1)
 	{
 		if (dup2(data->old_read_pipe, STDIN_FILENO) == -1)
-			error(data, "dup2bbb");
+			error(data, "dup2");
 		close(data->old_read_pipe);
 	}
 	if (cmd_process < (data->part_of_line - 1))
 	{
 		if (dup2(data->current_pipe[1], STDOUT_FILENO) == -1)
-			error(data, "dup2aaaa");
+			error(data, "dup2");
 		close(data->current_pipe[0]);
 		close(data->current_pipe[1]);
 	}
@@ -141,7 +145,8 @@ int	setup_redirection(t_data *data, int cmd_process)
 	redirect_pipes(data, cmd_process);
 	while (current != NULL)
 	{
-		if (redirect_infile_heredoc(data, current) == -1)
+		redirect_heredoc(data, current, cmd_process);
+		if (redirect_infile(data, current) == -1)
 			return (-1);
 		if (redirect_outfile(data, current) == -1)
 			return (-1);
