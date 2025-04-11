@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/09 14:39:32 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:06:32 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	print_exit_error(char *message, int status)
 
 static void	clean_and_exit(t_data *data, int status)
 {
-	printf("exit\n");
+	// printf("exit\n");
 	free_garbage(data);
 	free_token(data);
 	exit (status);
@@ -67,12 +67,19 @@ static void	clean_and_exit(t_data *data, int status)
 
 static int	number_too_large(char *line)
 {
-	if (ft_strlen(line) > 19)
+
+	if (ft_strlen(line) > 20)
 		return (1);
-	if (ft_strlen(line) == 19)
+	else if (ft_strlen(line) == 20)
 	{
-		if (ft_strcmp(line, "-9223372036854775808") > 0
-			|| ft_strcmp(line, "9223372036854775807") > 0)
+		if (ft_strcmp(line, "-9223372036854775808") > 0)
+			return (1);
+		else if (ft_strcmp(line, "+9223372036854775807") > 0)
+			return (1);
+	}
+	else if (ft_strlen(line) == 19)
+	{
+		if (ft_strcmp(line, "9223372036854775807") > 0)
 			return (1);
 	}
 	return (0);
@@ -109,7 +116,7 @@ int	ft_exit(t_data *data, char **args_cmd)
 		status = 1;
 		return (data->exit_status = status);
 	}
-	else if (args_cmd[1] && ft_str_is_digit(args_cmd[1]) == 1)
+	else if (args_cmd[1] && (ft_str_is_digit(args_cmd[1]) == 1 || args_cmd[1][0] == '\0'))
 	{
 		print_exit_error(args_cmd[1], 2);
 		status = 2;
