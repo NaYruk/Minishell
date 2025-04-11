@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/09 12:38:55 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:20:55 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*get_cd_path(t_data *data, char **args_cmd)
 		home = ft_getenv(data, "HOME", NULL);
 		if (!home)
 		{
-			perror("cd: HOME not set");
+			ft_putstr_fd("cd: HOME not set\n", 2);
 			return (NULL);
 		}
 		path = home;
@@ -59,7 +59,7 @@ static char	*get_cd_path(t_data *data, char **args_cmd)
 		path = ft_getenv(data, "OLDPWD", NULL);
 		if (!path)
 		{
-			perror("cd: OLDPWD not set");
+			ft_putstr_fd("cd: OLDPWD not set\n", 2);
 			return (NULL);
 		}
 	}
