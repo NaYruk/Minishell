@@ -78,7 +78,6 @@ typedef struct s_exec
 	t_exec_redir	*t_exec_redir;
 	char			**arg_cmd;
 	char			*cmd_path;
-	int				last_heredoc_fd;
 }	t_exec;
 
 /* Struct data, she contain all struct / variable for Minishell */
@@ -87,6 +86,7 @@ typedef struct s_data
 	char		*prompt;
 	char		**env;
 	pid_t		*pids;
+	int			**heredoc_fd;
 	int			old_read_pipe;
 	int			current_pipe[2];
 	int			error_built;
@@ -99,7 +99,6 @@ typedef struct s_data
 	int			part_of_line;
 	int			stdout_backup;
 	int			stdin_backup;
-	int			exec_heredoc;
 	t_exec		*exec;
 	t_garb_c	*g_c;
 	t_token		*lst_token;
@@ -184,7 +183,7 @@ int		set_append(t_data *data, t_token *current);
 int		set_infile(t_data *data, t_token *current);
 int		set_heredoc(t_data *data, t_token *current);
 bool	last_heredoc(t_exec_redir *current);
-int		exec_heredoc(t_data *data, t_token *current);
+int		exec_heredoc(t_data *data);
 int		child_process(t_data *data, int i);
 int		setup_redirection(t_data *data, int cmd_process);
 int		set_exec_struct(t_data *data, t_token **current);
@@ -200,6 +199,7 @@ void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
 
 void	update_exit_status(t_data *data);
 void	redirect_pipes(t_data *data, int cmd_process);
+void	free_all(t_data *data);
 
 void	free_all(t_data *data);
 

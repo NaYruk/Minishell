@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:57:17 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/10 01:32:43 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/10 23:24:41 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@
 void	update_exit_status(t_data *data)
 {
 	if (g_signal)
-	{
-		g_signal = g_signal + 128;
-		data->exit_status = g_signal;
-	}
+		data->exit_status = g_signal + 128;
 }
 
 static void	sig_sigint_interactive(int signum)

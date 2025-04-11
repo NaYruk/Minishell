@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
 /*   Updated: 2025/04/11 00:42:52 by mcotonea         ###   ########.fr       */
@@ -45,11 +45,11 @@ int	main(int argc, char **argv, char **envp)
 		data->prompt = readline("SegfaultBros> ");
 		if (!data->prompt)
 			break ;
-		update_exit_status(data);
+		if (g_signal == SIGINT)
+			update_exit_status(data);
 		if (data->prompt[0] != '\0')
 		{
 			add_history(data->prompt);
-			data->exec_heredoc = 0; //tmp
 			if (tokenization(data) == 0)
 				execution(data);
 		}

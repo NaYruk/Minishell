@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:21:11 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/11 00:53:33 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/11 02:10:09 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_fork(t_data *data, int *cmd_process,
 		int *nbr_of_fork, bool is_builtin)
 {
 	int	status;
-	
+
 	data->pids[++(*nbr_of_fork)] = fork();
 	if (data->pids[*nbr_of_fork] == 0)
 	{
