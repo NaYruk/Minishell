@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 19:46:56 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/10 22:20:27 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	init_exec(t_data *data)
 	data->exec->arg_cmd = NULL;
 	data->exec->cmd_path = NULL;
 	data->exec->t_exec_redir = NULL;
-	data->exec->last_heredoc_fd = -1;
 }
 
 int	args_and_cmd(t_data *data, t_token **current)
@@ -35,27 +34,11 @@ int	args_and_cmd(t_data *data, t_token **current)
 	return (0);
 }
 
-void	execute_heredoc(t_data *data, t_token *current)
-{
-	while (current != NULL)
-	{
-		if (current->prev && current->prev->token == HEREDOC
-			&& current->token == ARG)
-		{
-			if (data->exec_heredoc == 0)
-				exec_heredoc(data, current);
-		}
-		current = current->next;
-	}
-	return ;
-}
-
 int	set_exec_struct(t_data *data, t_token **current)
 {
 	data->error_built = -1;
 	if ((*current)->token == PIPE)
 		*current = (*current)->next;
-	execute_heredoc(data, *current);
 	while (*current != NULL)
 	{
 		if ((*current)->token == PIPE)

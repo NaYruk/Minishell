@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 00:22:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/11 00:36:20 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,14 @@ void	exec(t_data *data, t_token *current)
 {
 	int	cmd_process;
 	int	nbr_of_fork;
+	int	status;
 
 	cmd_process = 0;
 	nbr_of_fork = -1;
 	data->stdin_backup = dup(STDIN_FILENO);
 	data->stdout_backup = dup(STDOUT_FILENO);
-	while (current != NULL)
+	status = exec_heredoc(data);
+	while (current != NULL && status != -1)
 	{
 		setup_pipe(data, cmd_process);
 		if (handle_execution(data, &current, &cmd_process, &nbr_of_fork) == -1)
