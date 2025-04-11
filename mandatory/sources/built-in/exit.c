@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/10 17:06:32 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/11 01:15:30 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,6 @@
 	
 */
 
-/* static int	ft_str_is_digit(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[0] == '+' || str[0] == '-')
-			i++;
-		if (str[i] < '0' || str[i] > '9')
-			return (1);
-		i++;
-	}
-	return (0);
-} */
-
 static void	print_exit_error(char *message, int status)
 {
 	ft_putstr_fd("exit\n", 2);
@@ -59,7 +43,7 @@ static void	print_exit_error(char *message, int status)
 
 static void	clean_and_exit(t_data *data, int status)
 {
-	// printf("exit\n");
+	printf("exit\n");
 	free_garbage(data);
 	free_token(data);
 	exit (status);
@@ -67,17 +51,25 @@ static void	clean_and_exit(t_data *data, int status)
 
 static int	number_too_large(char *line)
 {
+	int	size;
+	int	i;
 
-	if (ft_strlen(line) > 20)
-		return (1);
-	else if (ft_strlen(line) == 20)
+	size = ft_strlen(line);
+	i = 0;
+	while (line[i] == '0')
 	{
-		if (ft_strcmp(line, "-9223372036854775808") > 0)
-			return (1);
-		else if (ft_strcmp(line, "+9223372036854775807") > 0)
+		i++;
+		size--;
+	}
+	if (size > 20)
+		return (1);
+	else if (size == 20)
+	{
+		if (ft_strcmp(line, "-9223372036854775808") > 0
+			&& ft_strcmp(line, "+9223372036854775807") > 0)
 			return (1);
 	}
-	else if (ft_strlen(line) == 19)
+	else if (size == 19)
 	{
 		if (ft_strcmp(line, "9223372036854775807") > 0)
 			return (1);

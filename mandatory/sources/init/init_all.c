@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 11:30:12 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/11 00:44:21 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ void	update_shlvl(t_data *data)
 	else
 		shlvl = 0;
 	shlvl++;
-	ft_update_env(data, "SHLVL", ft_itoa(shlvl));
+	shlvl_str = ft_itoa(shlvl);
+	if (!shlvl_str)
+		malloc_error(data);
+	ft_update_env(data, "SHLVL", shlvl_str);
+	free (shlvl_str);
 }
 
 void	minienv(t_data *data)
@@ -90,7 +94,6 @@ t_data	*init_all(char **envp)
 		perror("Error with a malloc\n");
 		exit(EXIT_FAILURE);
 	}
-	init_garbage_collector(data);
 	ft_memset(data, 0, sizeof(t_data));
 	data->old_read_pipe = -1;
 	data->current_pipe[0] = -1;

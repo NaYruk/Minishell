@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 16:22:17 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/11 00:53:23 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@
 # include "./define.h"
 
 extern int	g_signal;
+
+typedef struct s_signal_flags
+{
+	int	ctrl_c_displayed;
+	int	quit_displayed;
+}	t_signal_flags;
 
 typedef struct s_escaped_char
 {
@@ -194,5 +200,7 @@ void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
 
 void	update_exit_status(t_data *data);
 void	redirect_pipes(t_data *data, int cmd_process);
+
+void	free_all(t_data *data);
 
 #endif

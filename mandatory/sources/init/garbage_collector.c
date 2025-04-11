@@ -3,38 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 13:50:41 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/05 01:45:24 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/11 00:44:16 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-/* 
-	Function for initialize the garbage collector.
-	Garbage collector is a chained list.
-	She stock all memory malloc in the programm.
-	This is the simplest method for free all malloc.
-	In the programm for free all we need just to call the function :
-	free_garbage(t_data *data)
-*/
-
-void	init_garbage_collector(t_data *data)
-{
-	data->g_c = malloc(sizeof(t_garb_c));
-	if (!data->g_c)
-	{
-		free(data);
-		perror("Error with a malloc\n");
-		exit(EXIT_FAILURE);
-	}
-	data->g_c->memory = NULL;
-	data->g_c->next = NULL;
-	data->g_c->is_array = 0;
-	return ;
-}
 
 /* 
 Function for add a new node in the front of garbage collector chained list 
@@ -125,5 +101,6 @@ void	free_garbage(t_data *data)
 	}
 	data->g_c = NULL;
 	ft_free_env(data->env);
-	free(data);
+	if (data)
+		free(data);
 }
