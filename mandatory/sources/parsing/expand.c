@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:34:23 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 19:37:06 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/13 16:28:11 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,11 @@ void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i)
 {
 	char	*var_name;
 	char	*after_expand;
+	char	*tmp;
 
 	var_name = NULL;
 	after_expand = NULL;
+	tmp = NULL;
 	(*i)++;
 	if (check_dollar_interrogation(data, new_line, i) == 1)
 		return ;
@@ -56,7 +58,11 @@ void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i)
 		var_name = get_expand_line(prompt, i);
 		after_expand = ft_getenv(data, var_name, NULL);
 		if (after_expand)
-			*new_line = ft_strjoin(*new_line, after_expand);
+		{
+			tmp = ft_strjoin(*new_line, after_expand);
+			free (*new_line);
+			*new_line = tmp;
+		}
 		free(var_name);
 	}
 	else if (prompt[*i] != DOUBLE_QUOTES)
