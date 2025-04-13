@@ -79,6 +79,19 @@ static char	**get_all_cmd_paths(t_data *data)
 	return (all_paths);
 }
 
+/*
+** find_cmd_path:
+** - This function searches for the full path of a command
+**		in the provided command paths.
+** - Iterates through the `all_cmd_paths` array, appending
+**		the command name to each path.
+** - Checks if the resulting path exists and is executable using `access`.
+** - Sets `data->exec->cmd_path` to the first valid path found.
+** - Frees all allocated memory for paths and the command
+**		path array after processing.
+** - Handles memory allocation errors by calling `malloc_error` if necessary.
+*/
+
 void	find_cmd_path(t_data *data, char **all_cmd_paths,
 			t_token **current, int *i)
 {

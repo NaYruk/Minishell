@@ -12,6 +12,13 @@
 
 #include "../../../includes/minishell.h"
 
+/*
+** get_next_pipe_or_null:
+** - This function searches for the next pipe token (`|`) in the token list.
+** - Advances the `current` pointer to the next pipe or the end of the list.
+** - Returns `true` if a pipe token is found, otherwise returns `false`.
+*/
+
 bool	get_next_pipe_or_null(t_token **current)
 {
 	while (*current && (*current)->token != PIPE)
@@ -20,6 +27,14 @@ bool	get_next_pipe_or_null(t_token **current)
 		return (true);
 	return (false);
 }
+
+/*
+** setup_pipe:
+** - This function sets up a pipe for inter-process communication.
+** - Creates a new pipe if the current command
+**		is not the last one in the pipeline.
+** - Handles errors during pipe creation by calling the `malloc_error` function
+*/
 
 void	setup_pipe(t_data *data, int cmd_process)
 {
@@ -30,6 +45,16 @@ void	setup_pipe(t_data *data, int cmd_process)
 	}
 	return ;
 }
+
+/*
+** handle_execution:
+** - This function manages the execution of a single command or built-in.
+** - Sets up the execution structure for the current command.
+** - Handles cases where the command is invalid or not executable.
+** - Executes the command or built-in and manages the pipeline connections.
+** - Closes the write end of the current pipe if no further command are execute
+** - Returns 0 on success or -1 if an error occurs during execution.
+*/
 
 int	handle_execution(t_data *data, t_token **current,
 				int *cmd_process, int *nbr_of_fork)
@@ -50,6 +75,17 @@ int	handle_execution(t_data *data, t_token **current,
 		close(data->current_pipe[1]);
 	return (0);
 }
+
+/*
+** exec:
+** - This function handles the execution of commands
+**		and manages the pipeline setup.
+** - Iterates through the token list, setting up pipes
+**		and executing commands or built-ins.
+** - Handles heredoc execution and restores standard
+**		input/output after execution.
+** - Waits for all child processes to finish and cleans up resources.
+*/
 
 void	exec(t_data *data, t_token *current)
 {
@@ -75,6 +111,15 @@ void	exec(t_data *data, t_token *current)
 	close (data->stdin_backup);
 	close (data->stdout_backup);
 }
+
+/*
+** execution:
+** - This function orchestrates the execution of commands in the shell.
+** - Initializes necessary structures and variables for command execution.
+** - Iterates through the token list, setting up pipe and handling each command
+** - Manages the execution of built-in commands or external programs.
+** - Waits for all child processes to finish and restores standard input/output
+*/
 
 void	execution(t_data *data)
 {

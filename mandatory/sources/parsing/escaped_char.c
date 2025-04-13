@@ -12,6 +12,14 @@
 
 #include "../../includes/minishell.h"
 
+/*
+** char_stock:
+** - This helper function updates the escaped_line buffer
+**		with a specific character.
+** - Advances the start index by 2 to skip the escape sequence.
+** - Increments the buffer index to prepare for the next character.
+*/
+
 static void	char_stock(int *start, char **escaped_line, int *index, char c)
 {
 	(*start) += 2;
@@ -19,6 +27,15 @@ static void	char_stock(int *start, char **escaped_line, int *index, char c)
 	(*index)++;
 	return ;
 }
+
+/*
+** stock_escaped_char:
+** - This function processes escaped characters in a string.
+** - It identifies escape sequences (e.g., \n, \t) and
+**		replaces them with their corresponding characters.
+** - Updates the escaped_line buffer with the processed characters.
+** - Advances the start index and increments the buffer index accordingly.
+*/
 
 void	stock_escaped_char(char *line, int *start,
 			char **escaped_line, int *index)
@@ -43,6 +60,17 @@ void	stock_escaped_char(char *line, int *start,
 		(*index)++;
 	}
 }
+
+/*
+** check_escaped_content:
+** - This function processes a segment of a string enclosed in single quotes,
+**		handling escaped characters.
+** - It identifies and converts escaped sequences (e.g., \n, \t)
+**		into their corresponding characters.
+** - Builds a new string with the processed content,
+**		preserving the single quotes around it.
+** - Updates the original string and index to reflect the processed content.
+*/
 
 void	check_escaped_content(t_data *data, char **line,
 			int *i, char **new_line)

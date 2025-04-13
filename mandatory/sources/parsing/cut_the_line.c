@@ -12,6 +12,16 @@
 
 #include "../../includes/minishell.h"
 
+/*
+** get_interior_of_quotes:
+** - This function processes the content inside
+**		a quoted segment of the input prompt.
+** - It identifies the type of quote (single or double)
+**		and counts the characters within.
+** - Skips the opening and closing quotes while updating the index and count.
+** - Handles cases where the quote is immediately closed.
+*/
+
 static void	get_interior_of_quotes(t_data *data, int *i, int *count)
 {
 	char	type_quote;
@@ -37,6 +47,15 @@ static void	get_interior_of_quotes(t_data *data, int *i, int *count)
 	}
 }
 
+/*
+** get_nbr_char_line:
+** - This function calculates the number of characters 
+**		in a segment of the input prompt.
+** - It skips whitespace and identifies operators or quoted segments.
+** - Updates the count of characters and the current index in the prompt.
+** - Handles escape characters and stops at operators or whitespace.
+*/
+
 static void	get_nbr_char_line(t_data *data, int *i, int *count, char **line)
 {
 	*count = 0;
@@ -60,6 +79,15 @@ static void	get_nbr_char_line(t_data *data, int *i, int *count, char **line)
 		(*i)++;
 	}
 }
+
+/*
+** stock_quotes:
+** - This function processes a quoted segment of the input prompt.
+** - It identifies the type of quote (single or double)
+**		and extracts the content inside.
+** - The extracted content is stored in the provided line buffer.
+** - Updates the quote character in the data structure for further processing.
+*/
 
 static void	stock_quotes(t_data *data, int *i, char *line, int *line_index)
 {
@@ -86,6 +114,15 @@ static void	stock_quotes(t_data *data, int *i, char *line, int *line_index)
 		(*i)++;
 	}
 }
+
+/*
+** stock_line_in_token:
+** - This function extracts segment of the input prompt and stores as a token.
+** - It handles quoted strings, operators, and escape while copying characters.
+** - Allocates memory for the token and adds it to the linked list of tokens.
+** - Ensures proper handling of whitespace and resets
+**		the quote character after processing.
+*/
 
 static void	stock_line_in_token(t_data *data, int *i, int *count, char *line)
 {
@@ -117,22 +154,12 @@ static void	stock_line_in_token(t_data *data, int *i, int *count, char *line)
 }
 
 /*
-	Cut_the_line = Function for Cut the line in token :
-		arg, cmd, and, or, pipe, outfile, append, infile, heredoc
-	- check_quotes : In this function we search if a quote is remain open in
-					 this case, we have a error message.
-	- While the Prompt contain any character, we parcour the line.
-	
-	- get_line : Function for separate each token and
-				 stock each token node in a chained list.
-	a TOKEN IS : part of the prompt line associated
-				 with its function at runtime.
-	- IF OPERATOR IS FALSE : If there is no operator in the actual
-							   line cut, just stock this part of the prompt
-							   in line variable and stock_the line in the node.
-	- IF OPERATOR IS TRUE : If the actual line cut is an operator, jsut stock
-							the operator in a new node and add this node in the
-							chained list.
+** cut_the_line:
+** - This function processes the input prompt and splits it into tokens.
+** - It iterates through the prompt, identifying and extracting
+**		tokens based on quotes, operators, and whitespace.
+** - Tokens are stored in a linked list for further processing.
+** - Handles special cases like operators and quoted strings.
 */
 
 int	cut_the_line(t_data *data)

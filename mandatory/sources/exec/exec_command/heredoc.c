@@ -12,59 +12,26 @@
 
 #include "../../../includes/minishell.h"
 
-bool	last_heredoc(t_exec_redir *current)
-{
-	t_exec_redir	*current_start;
-
-	current_start = current;
-	if (current->next)
-		current = current->next;
-	else
-		return (true);
-	while (current != NULL)
-	{
-		if (current->type == HEREDOC)
-		{
-			current = current_start;
-			return (false);
-		}
-		current = current->next;
-	}
-	current = current_start;
-	return (true);
-}
-
-bool	catch_signal(t_data *data, char *line, char *delimiter, int fd)
-{
-	if (!line || g_signal == SIGINT)
-	{
-		if (fd != -1)
-		{
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
-		if (!line && g_signal != SIGINT)
-		{
-			ft_putstr_fd("\n", 2);
-			ft_putstr_fd("warning: here-document delimited by EOF. Wanted: '", 2);
-			ft_putstr_fd(delimiter, 2);
-			ft_putstr_fd("'.\n", 2);
-		}
-		if (g_signal == SIGINT)
-			update_exit_status(data);
-		return (true);
-	}
-	return (false);
-}
+/*
+** read_heredoc_to_pipe:
+** - This function reads input for a heredoc
+**		and writes it to the specified pipe.
+** - Prompts the user for input until the delimiter is encountered
+**		or a signal interrupts the process.
+** - Trims the newline character from each input line and compares
+**		it to the delimiter.
+** - Writes valid input lines to the pipe and frees
+**		allocated memory for each line.
+** - Handles signals during heredoc processing
+**		and exits gracefully if interrupted.
+*/
 
 void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 {
-	t_token	*heredoc_token;
 	char	*line;
 	char	*delimiter;
 	int		fd;
 	
-	heredoc_token = current;
 	delimiter = current->line;
 	line = NULL;
 	setup_signals_heredoc();
@@ -86,61 +53,48 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 	}
 }
 
-int	nbr_of_heredoc(t_data *data)
-{
-	bool	heredoc_detected_in_pipe;
-	int		nbr;
-	t_token	*current;
+/*
+** read_heredoc:
+** - This function handles the processing of a single heredoc token.
+** - Creates a pipe to store the heredoc input and writes the input to the pipe
+** - Reads lines from the user until the delimiter is encountered
+**		or a signal interrupts the process.
+** - Closes the write end of the pipe after writing the heredoc input.
+** - Returns 0 on success or 1 if interrupted by a signal (e.g., SIGINT).
+*/
 
-	nbr = 0;
-	current = data->lst_token;
-	heredoc_detected_in_pipe = false;
-	while (current != NULL)
-	{
-		if (current->token == PIPE)
-			heredoc_detected_in_pipe = false;
-		else if (current->token == HEREDOC && heredoc_detected_in_pipe == false)
-		{
-			heredoc_detected_in_pipe = true;
-			nbr++;
-		}
-		current = current->next;
-	}
-	return (nbr);
-}
-void	malloc_heredoc_fd(t_data *data, int nbr)
+int	read_heredoc(t_data *data, t_token *current, int tmp[2], bool heredoc_detected_in_pipe)
 {
-	int	i;
-	
-	i = 0;
-	if (nbr == 0)
-		return ;
-	data->heredoc_fd = malloc(sizeof(int *) * nbr);
-	if (!data->heredoc_fd)
-		malloc_error(data);
-	add_g_c_node(data, &data->g_c, (void **)data->heredoc_fd, false);
-	while (i != nbr)
+	if (current->token == HEREDOC && current->next && current->next->token == ARG)
 	{
-		data->heredoc_fd[i] = malloc(sizeof(int) * 2);
-		if (!data->heredoc_fd[i])
-			malloc_error(data);
-		add_g_c_node(data, &data->g_c, (void **)data->heredoc_fd[i], false);
-		if (pipe(data->heredoc_fd[i]) == -1)
+		if (heredoc_detected_in_pipe)
+			close(tmp[0]);
+		if (pipe(tmp) == -1)
 			error(data, "PIPE");
-		i++;
+		read_heredoc_to_pipe(data, tmp[1], current->next);
+		close(tmp[1]);
+		if (g_signal == SIGINT)
+		{
+			close(tmp[0]);
+			return (1);
+		}
+		heredoc_detected_in_pipe = true;
+		setup_signals_interactive();
 	}
-	return ;
+	return (0);
 }
 
-void	close_fd(t_data *data, int hd_index)
-{
-	while (hd_index > 0)
-	{
-		close (data->heredoc_fd[hd_index][0]);
-		close (data->heredoc_fd[hd_index][1]);
-		hd_index--;
-	}
-}
+/*
+** exec_heredoc2:
+** - This function processes all heredocs in the token list and stores
+**		their input in pipes.
+** - Reads heredoc input for each token of type HEREDOC and writes
+**		it to a temporary pipe.
+** - Handles heredocs within pipelines, ensuring proper pipe management.
+** - Closes unused file descriptors and stores the read end
+**		of the pipe for later use.
+** - Returns 0 on success or 1 if interrupted by a signal (e.g., SIGINT).
+*/
 
 int	exec_heredoc2(t_data *data, t_token *current, int tmp[2])
 {
@@ -151,23 +105,8 @@ int	exec_heredoc2(t_data *data, t_token *current, int tmp[2])
 	heredoc_detected_in_pipe = false;
 	while (current != NULL)
 	{
-		if (current->token == HEREDOC && current->next && current->next->token == ARG)
-		{
-			if (heredoc_detected_in_pipe)
-				close(tmp[0]);
-			if (pipe(tmp) == -1)
-				error(data, "PIPE");
-			read_heredoc_to_pipe(data, tmp[1], current->next);
-			close(tmp[1]);
-			if (g_signal == SIGINT)
-			{
-				close(tmp[0]);
-				close_fd(data, hd_index);
-                return (1);
-			}
-			heredoc_detected_in_pipe = true;
-			setup_signals_interactive();
-		}
+		if (read_heredoc(data, current, tmp, heredoc_detected_in_pipe) == 1)
+			return (close_fd(data, hd_index), 1);
 		if (current->token == PIPE || !current->next)
 		{
 			if (heredoc_detected_in_pipe)
@@ -182,6 +121,17 @@ int	exec_heredoc2(t_data *data, t_token *current, int tmp[2])
 	}
 	return (0);
 }
+
+/*
+** exec_heredoc:
+** - This function manages the execution of all heredoc in the command pipeline
+** - Counts the number of heredocs and allocates file descriptors for them.
+** - Iterates through the token list, reading heredoc
+**		input and storing it in pipes.
+** - Handles signals like `SIGINT` to interrupt heredoc processing.
+** - Returns 0 on success or -1 if an error occurs
+**		(e.g., interrupted by a signal).
+*/
 
 int	exec_heredoc(t_data *data)
 {

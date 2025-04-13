@@ -104,15 +104,18 @@ static void	cmd_or_arg(t_data *data)
 	return ;
 }
 
-/* 
-	main Function for the tokenisation !
-	- cut_the_line = Function for Cut the line in token :
-		arg, cmd, and, or, pipe, outfile, append, infile, heredoc
-	- ft_gettype = Function for attribute the token to each
-		node create in the cut_the_line function.
-	- cmd_or_arg = Function for decide if a node is a cmd or an arg
-	- check_pipes = Verify the position of each | and find any error.
-	- check_rafter =  Verify the position of each <,<<,>>,> and find any error.
+/*
+** tokenization:
+** - This is the main function for tokenizing
+**		the input prompt into meaningful components.
+** - It first validates the quotes in the input to ensure proper syntax.
+** - Replaces environment variables and special characters like `$` and `~`.
+** - Splits the input into tokens such as commands, arguments, pipes,
+**		and redirections.
+** - Assigns a type to each token (e.g., CMD, ARG, PIPE, INFILE, OUTFILE).
+** - Checks for syntax errors related to pipes (`|`)
+**		and redirections (`<`, `>`, etc.).
+** - Returns 0 on success or -1 if any error is encountered during tokenization
 */
 
 int	tokenization(t_data *data)

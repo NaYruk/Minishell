@@ -12,7 +12,15 @@
 
 #include "../../includes/minishell.h"
 
-/* Function for copy the envp in a char ** variable */
+/*
+** copy_envp:
+** - This function copies the environment variables from
+**		`envp` into the `data->env` array.
+** - Counts the number of environment variables and allocates
+**		memory for the `data->env` array.
+** - Duplicates each environment variable string and stores it in the new array
+** - Ensures proper memory allocation and handles errors if any allocation fail
+*/
 
 void	copy_envp(char **envp, t_data *data)
 {
@@ -30,6 +38,15 @@ void	copy_envp(char **envp, t_data *data)
 		data->env[i] = ft_strdup(envp[i]);
 	data->env[i] = NULL;
 }
+
+/*
+** update_shlvl:
+** - This function updates the `SHLVL` (Shell Level) environment variable.
+** - Retrieves the current value of `SHLVL` from the environment.
+** - Increments the value by 1, ensuring it does not go below 0.
+** - Updates the `SHLVL` variable in the environment with the new value.
+** - Handles memory allocation and ensures proper error handling.
+*/
 
 void	update_shlvl(t_data *data)
 {
@@ -53,6 +70,16 @@ void	update_shlvl(t_data *data)
 	free (shlvl_str);
 }
 
+/*
+** minienv:
+** - This function creates a minimal environment for
+**		the shell when no environment is provided.
+** - Initializes the `PWD` variable with the current working directory.
+** - Sets default values for `SHLVL`, `PATH`, and `OLDPWD`.
+** - Allocates memory for the environment variables
+**		and ensures proper error handling.
+*/
+
 void	minienv(t_data *data)
 {
 	char	*pwd;
@@ -75,12 +102,16 @@ void	minienv(t_data *data)
 		malloc_error(data);
 }
 
-/* 
-	Function for initialize all data need in Minishell 
-	Malloc the struct data,
-	Call the init_garbage_collector function for init the garbage collector
-	All Malloc need to be follow by add_new_g_b_node function for adding
-	of the malloc adress in the garbage collector.
+/*
+** init_all:
+** - This function initializes all the data needed for Minishell.
+** - Allocates memory for the `t_data` structure and sets
+**		its fields to default values.
+** - Initializes the garbage collector for memory management.
+** - Copies the environment variables into the `data->env` array
+**		or creates a minimal environment if none is provided.
+** - Updates the `SHLVL` variable to reflect the shell's current level.
+** - Returns a pointer to the initialized `t_data` structure.
 */
 
 t_data	*init_all(char **envp)

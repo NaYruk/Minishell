@@ -12,6 +12,15 @@
 
 #include "../../..//includes/minishell.h"
 
+/*
+** redirect_heredoc:
+** - This function handles input redirection from a heredoc.
+** - Checks if the current redirection is of type HEREDOC
+**		and is the last one in the list.
+** - Redirects `STDIN` to the heredoc file descriptor using `dup2`.
+** - Closes the heredoc file descriptor after redirection is set up.
+*/
+
 void	redirect_heredoc(t_data *data, t_exec_redir *current, int cmd_process)
 {
 	if (current != NULL && current->type == HEREDOC)
@@ -123,18 +132,15 @@ void	redirect_pipes(t_data *data, int cmd_process)
 	return ;
 }
 
-/* 
-	SETUP_REDIRECTION = Function for setup each redirection
-					   before the execution of a command 
-	
-	if the command is not the first, redirect the STDIN in the last pipe
-	if the command is not the lastm redirect the STDOUT in the actual pipe.
-	REDIRECT_INFILE = In the case of we have a infile
-					  redirect STDIN in the infile
-	REDIRECT_OUTFILE = In the case of we have a outfile
-					   redirect STDOUT in the outfile
-	REDIRECT_APPEND = In the case of we have a append
-					  redirect STDOUT in the append
+/*
+** setup_redirection:
+** - This function sets up all necessary redirection before executing a command
+** - Redirects `STDIN` and `STDOUT` based on
+**		the command's position in the pipeline.
+** - Handles input redirection from files or heredocs
+**		and output redirection to files or append mode.
+** - Iterates through the redirection list and applie each redirection in order
+** - Returns 0 on success or -1 if an error occurs during redirection setup.
 */
 
 int	setup_redirection(t_data *data, int cmd_process)

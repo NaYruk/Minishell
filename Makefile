@@ -37,6 +37,7 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)exec/exec_command/exec_builtin.c \
 	  $(SRC_PATH)exec/exec_command/exec_cmd.c \
 	  $(SRC_PATH)exec/exec_command/heredoc.c \
+	  $(SRC_PATH)exec/exec_command/heredoc2.c \
 	  $(SRC_PATH)exec/exec_command/attribute_redirections.c \
 	  $(SRC_PATH)exec/exec_command/exec_utils.c \
 	  $(SRC_PATH)exec/exec_command/waiting_process.c \

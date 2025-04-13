@@ -12,6 +12,8 @@
 
 #include "../../../includes/minishell.h"
 
+/* Function for free the data of child process */
+
 void	free_all(t_data *data)
 {
 	free_exec_struct(data);

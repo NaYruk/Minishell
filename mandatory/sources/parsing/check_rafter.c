@@ -54,6 +54,18 @@ static int	special_error(t_data *data, char *subline)
 	return (-1);
 }
 
+/* 
+    check_errors:
+    - This function checks for syntax errors
+		related to rafter tokens (<, <<, >, >>).
+    - It validates the number of consecutive rafter characters
+		and returns an error if invalid.
+    - Handles specific cases for '<', '<<', '<<<',
+		and their corresponding '>' variations.
+    - Updates the exit status and displays an appropriate
+		error message if an issue is found.
+*/
+
 static int	check_errors(t_data *data, int nbr, t_token *current)
 {
 	if (current->line[0] == '<')

@@ -71,6 +71,14 @@ static int	check_first_and_last_node(t_token *token, t_data *data)
 	return (0);
 }
 
+/*
+** check_potential_errors:
+** - This function checks for syntax errors related to pipe tokens (`|`).
+** - Validates the number of consecutive pipes and returns an error if invalid.
+** - Handles specific cases for single, double, or multiple consecutive pipes.
+** - Ensures that two consecutive pipe tokens are not allowed in the token list.
+*/
+
 int	check_potential_errors(t_data *data, int nbr, t_token *current)
 {
 	if (nbr > 1)

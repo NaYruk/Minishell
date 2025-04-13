@@ -21,7 +21,7 @@ int	ft_is_quote(char c)
 	return (false);
 }
 /* 
-	Function for check if a Whitespace is detected in the current character
+	Function for check if a space is detected in the current character
 */
 
 int	ft_is_white_spaces(char c)

@@ -12,9 +12,17 @@
 
 #include "../../../includes/minishell.h"
 
-/* 
-	This function executes the builtin commands when
-	they are on the command line.
+/*
+** exec_builtin:
+** - This function executes a built-in command if
+**		it matches one of the supported commands.
+** - Sets up redirection for the command if necessary.
+** - Executes the appropriate function for the built-in command
+**		(e.g., `pwd`, `cd`, `exit`).
+** - Updates the shell's exit status based on the result of the command.
+** - Closes the write end of the current pipe if the command
+**		is part of a pipeline.
+** - Returns the exit status of the built-in command or -1 if an error occurs.
 */
 
 int	exec_builtin(t_data *data, char **args_cmd, int cmd_process)

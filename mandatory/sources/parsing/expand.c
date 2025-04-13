@@ -12,6 +12,16 @@
 
 #include "../../includes/minishell.h"
 
+/*
+** get_expand_line:
+** - This function extracts the name of a variable
+**		to be expanded from the input line.
+** - It starts at the current index and continues until
+**		a non-alphanumeric or non-underscore character is found.
+** - Returns the extracted variable name as a newly allocated string.
+** - Updates the index to point to the character after the variable name.
+*/
+
 char	*get_expand_line(char *line, int *i)
 {
 	int		count;
@@ -25,6 +35,15 @@ char	*get_expand_line(char *line, int *i)
 	*i = count;
 	return (line_expand);
 }
+
+/*
+** check_dollar_interrogation:
+** - This function handles the special case of the
+**		`$?` variable in the input prompt.
+** - Expands `$?` to the exit status of the last executed command.
+** - Appends the expanded value to the new_line buffer.
+** - Returns 1 if `$?` is successfully processed, otherwise returns 0.
+*/
 
 int	check_dollar_interrogation(t_data *data, char **new_line, int *i)
 {
@@ -40,6 +59,18 @@ int	check_dollar_interrogation(t_data *data, char **new_line, int *i)
 	}
 	return (0);
 }
+
+/*
+** expand_dollar:
+** - This function handles the expansion of variables
+**		prefixed by a dollar sign (`$`) in the input prompt.
+** - It checks for special cases like `$?` to expand
+**		the exit status of the last command.
+** - Retrieves the value of environment variables
+**		and appends it to the new_line buffer.
+** - If the variable is not found, it appends nothing or the literal
+**		`$` if no valid variable name follows.
+*/
 
 void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i)
 {
@@ -69,6 +100,19 @@ void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i)
 		stock_char(new_line, '$');
 	(*i)--;
 }
+
+/*
+** expand_till:
+** - This function handles the expansion of the tilde
+**		(`~`) character in the input line.
+** - If the tilde is at the start or preceded by a
+**		space and followed by a space or `/`,
+**   it expands to the value of the `HOME` environment variable.
+** - If no valid `HOME` variable is found,
+**		it sets the exit status to 0 and does nothing.
+** - Otherwise, it appends the tilde or the expanded
+**		value to the new_line buffer.
+*/
 
 int	expand_till(t_data *data, char **new_line, char *line, int *i)
 {

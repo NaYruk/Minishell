@@ -12,6 +12,13 @@
 
 #include "../../includes/minishell.h"
 
+/*
+** stock_char:
+** - This function appends a single character to the `new_line` buffer.
+** - Allocates memory for the updated string and frees the old buffer.
+** - Ensures proper reconstruction of the input line during processing.
+*/
+
 void	stock_char(char **new_line, char c)
 {
 	char	*old_line;
@@ -23,6 +30,17 @@ void	stock_char(char **new_line, char c)
 	*new_line = ft_strjoin(old_line, character);
 	free(old_line);
 }
+
+/*
+** stock_quotes:
+** - This function handles the toggling of quote states
+**		(single or double) in the input line.
+** - Updates the `simple_q` or `double_q` flags in the
+**		`t_data` structure based on the quote type.
+** - Appends the quote character to the `new_line`
+**		buffer for proper reconstruction of the input.
+** - Ensures that single quotes are ignored inside double quotes and vice versa
+*/
 
 void	stock_quotes(t_data *data, int i, char **line, char **new_line)
 {
@@ -38,10 +56,19 @@ void	stock_quotes(t_data *data, int i, char **line, char **new_line)
 	}
 	return ;
 }
+
 /*
-	REPLACE_DOLLARS :
-	Main function for environment variable expansion
-	Replaces $ variables with their values while respecting quote contexts
+** replace_dollars:
+** - This is the main function for environment variable
+**		expansion in the input line.
+** - It replaces `$` variables with their corresponding
+**		values while respecting quote contexts.
+** - Handles special cases like `$?` for the exit status
+**		and `~` for the home directory.
+** - Ensures proper handling of single and double quotes
+**		during the expansion process.
+** - Constructs a new line with the expanded content
+**		and updates the original line.
 */
 
 void	replace_dollars(t_data *data, char **line)

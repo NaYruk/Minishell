@@ -41,6 +41,19 @@ int	check_dir(t_data *data, t_token *current, int mode)
 	return (0);
 }
 
+/*
+** check_permissions:
+** - This function checks if the command has
+**		the necessary permissions for execution.
+** - Verifies if the command exists using `access` with `F_OK`.
+** - Checks if the command is executable using `access` with `X_OK`.
+** - Handles cases where the command is a directory
+**		or lacks execution permissions.
+** - Updates the shell's exit status and error flags for permission errors.
+** - Returns -2 for permission errors, -1 if the command is valid,
+**		or 0 otherwise.
+*/
+
 int	check_permissions(t_data *data, t_token **current, char **test_cmd_path)
 {
 	if (access((*current)->line, F_OK) == 0 && !check_dir(data, *current, 1))
@@ -65,6 +78,16 @@ int	check_permissions(t_data *data, t_token **current, char **test_cmd_path)
 	return (0);
 }
 
+/*
+** check_existing:
+** - This function checks if the command exists and is valid for execution.
+** - Handles cases where the command is a relative or absolute 
+**		path but does not exist.
+** - Displays appropriate error messages for missing files or invalid commands.
+** - Updates the shell's exit status and error flags based on the type of error
+** - Returns 0 if the command exists, or -2 if it does not exist or is invalid.
+*/
+
 int	check_existing(t_data *data, t_token **current, char **all_cmd_path)
 {
 	if (!data->exec->cmd_path && !exec_build((*current)->line)
@@ -87,6 +110,15 @@ int	check_existing(t_data *data, t_token **current, char **all_cmd_path)
 	}
 	return (0);
 }
+
+/*
+** check_absolute_cmd:
+** - This function verifies if a command is an absolute or relative path.
+** - Checks if the command is a directory and handles errors accordingly.
+** - Validates file permissions to ensure the command is executable.
+** - Handles cases where the command does not exist or is not found in the PATH
+** - Returns 0 on success, -1 for permission errors, or -2 for other errors.
+*/
 
 int	check_absolute_cmd(t_data *data, t_token **current, char **all_cmd_path)
 {

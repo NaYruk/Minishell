@@ -117,7 +117,6 @@ void	ft_free_env(char **tmp);
 	Each memory allocation need to be stock in the garbage collector with
 	a cast in (void **).
 */
-void	init_garbage_collector(t_data *data);
 void	add_g_c_node(t_data *data, t_garb_c **g_c, void **memory, bool is_arr);
 void	free_garbage(t_data *data);
 
@@ -133,6 +132,11 @@ int		ft_is_white_spaces(char c);
 int		cut_the_line(t_data *data);
 int		is_operator(t_data *data, int *i, char **line);
 bool	operator(char c);
+int		check_absolute_cmd(t_data *data, t_token **current, char **all_cmd_path);
+void	check_escaped_content(t_data *data, char **line, int *i, char **new_line);
+void	stock_char(char **new_line, char c);
+int		expand_till(t_data *data, char **new_line, char *line, int *i);
+void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
 
 /* Main Function for the tokenization ! */
 int		tokenization(t_data *data);
@@ -188,19 +192,15 @@ int		child_process(t_data *data, int i);
 int		setup_redirection(t_data *data, int cmd_process);
 int		set_exec_struct(t_data *data, t_token **current);
 void	add_new_redir_node(t_data *data, t_exec_redir **lst, char *line, int type);
-
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork);
 void	wait_all(t_data *data, int nbr_of_fork);
-int		check_absolute_cmd(t_data *data, t_token **current, char **all_cmd_path);
-void	check_escaped_content(t_data *data, char **line, int *i, char **new_line);
-void	stock_char(char **new_line, char c);
-int		expand_till(t_data *data, char **new_line, char *line, int *i);
-void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
-
+void	free_all(t_data *data);
 void	update_exit_status(t_data *data);
 void	redirect_pipes(t_data *data, int cmd_process);
-void	free_all(t_data *data);
-
-void	free_all(t_data *data);
+void	close_fd(t_data *data, int hd_index);
+void	malloc_heredoc_fd(t_data *data, int nbr);
+int		nbr_of_heredoc(t_data *data);
+bool	catch_signal(t_data *data, char *line, char *delimiter, int fd);
+bool	last_heredoc(t_exec_redir *current);
 
 #endif

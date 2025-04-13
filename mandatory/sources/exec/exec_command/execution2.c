@@ -33,6 +33,17 @@ int	exec_build(char *line)
 	return (0);
 }
 
+/*
+** handle_fork:
+** - This function handles the creation of a child process using `fork`.
+** - If the command is a built-in, it executes the built-in
+**		in the child process and exits with its status.
+** - If the command is not a built-in, it delegates execution
+**		to the `child_process` function.
+** - Manages the closing of pipes for the parent process
+**		to ensure proper pipeline behavior.
+*/
+
 void	handle_fork(t_data *data, int *cmd_process,
 		int *nbr_of_fork, bool is_builtin)
 {
@@ -60,12 +71,15 @@ void	handle_fork(t_data *data, int *cmd_process,
 }
 
 /*
-	EXEC_BUILD_OR_CMD = Function for exec a builtin if the token is a builtin
-						exec other cmd if the token is not a builtin.
-	In the case of a Heredoc, exec_heredoc before the rest of execution.
-	In the case of a builtin, setup the redirections, and exec the builtin.
-	In the case of an other command, create a child process, setup the
-	redirections in the child, and exec the command with execve.
+** exec_build_or_cmd:
+** - This function determines whether to execute a built-in
+**		command or an external program.
+** - If the command is a built-in, it executes it directly or forks
+**		a process if part of a pipeline.
+** - If the command is not a built-in, it forks a process
+**		to execute the external program.
+** - Manages input/output redirection and restores standard
+**		input/output when necessary.
 */
 
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
