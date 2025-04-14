@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 10:29:41 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:14:00 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,37 @@ bool	last_heredoc(t_exec_redir *current)
 
 bool	catch_signal(t_data *data, char *line, char *delimiter, int fd)
 {
+    if (!line) // Si CTRL+D est détecté
+    {
+        if (fd != -1)
+        {
+            dup2(fd, STDIN_FILENO);
+            close(fd);
+        }
+        if (g_signal != SIGINT) // Afficher le warning uniquement si ce n'est pas un SIGINT
+        {
+            ft_putstr_fd("\n", 2);
+            ft_putstr_fd("warning: here-document delimited by EOF. Wanted: '", 2);
+            ft_putstr_fd(delimiter, 2);
+            ft_putstr_fd("'.\n", 2);
+        }
+        return (true);
+    }
+    if (g_signal == SIGINT) // Si SIGINT est détecté
+    {
+        if (fd != -1)
+        {
+            dup2(fd, STDIN_FILENO);
+            close(fd);
+        }
+        update_exit_status(data);
+        return (true);
+    }
+    return (false);
+}
+
+/* bool	catch_signal(t_data *data, char *line, char *delimiter, int fd)
+{
 	if (!line || g_signal == SIGINT)
 	{
 		if (fd != -1)
@@ -55,7 +86,7 @@ bool	catch_signal(t_data *data, char *line, char *delimiter, int fd)
 		return (true);
 	}
 	return (false);
-}
+} */
 
 void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 {
@@ -69,11 +100,17 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 	line = NULL;
 	setup_signals_heredoc();
 	fd = open("/dev/tty", O_RDONLY);
+	g_signal = 0;
 	while (1)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
 		line = ft_strtrim(line = get_next_line(STDIN_FILENO), "\n");
 		if (catch_signal(data, line, delimiter, fd) == true)
+		{
+			if (!line)
+				break;
+			return;
+		}
 			return ;
 		if (ft_strcmp(line, delimiter) == 0)
 		{
