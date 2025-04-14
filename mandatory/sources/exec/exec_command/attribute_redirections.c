@@ -26,7 +26,7 @@
 					  redirect STDIN is last pipe heredoc */
 
 int	redirect_infile_heredoc(t_data *data,
-		t_exec_redir *current, int cmd_process)
+		t_exec_redir *current)
 {
 	int	fd_file;
 
@@ -47,8 +47,9 @@ int	redirect_infile_heredoc(t_data *data,
 	{
 		if (last_heredoc(current) == true)
 		{
-			if (dup2(data->heredoc_fd[cmd_process], STDIN_FILENO) == -1)
+			if (dup2(data->heredoc_fd[data->hd_index], STDIN_FILENO) == -1)
 				error(data, "dup2");
+			data->hd_index++;
 		}
 	}
 	return (0);
@@ -147,7 +148,7 @@ int	setup_redirection(t_data *data, int cmd_process)
 	redirect_pipes(data, cmd_process);
 	while (current != NULL)
 	{
-		if (redirect_infile_heredoc(data, current, cmd_process) == -1)
+		if (redirect_infile_heredoc(data, current) == -1)
 			return (-1);
 		if (redirect_outfile(data, current) == -1)
 			return (-1);

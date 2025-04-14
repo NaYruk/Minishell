@@ -128,6 +128,7 @@ void	malloc_heredoc_fd(t_data *data, int nbr)
 		if (!data->heredoc_fd)
 			malloc_error(data);
 		add_g_c_node(data, &data->g_c, (void **)data->heredoc_fd, false);
+		ft_memset(data->heredoc_fd, -1, sizeof(int) * data->nbr_heredoc);
 	}
 	return ;
 }
@@ -150,7 +151,8 @@ void	close_heredoc_fd(t_data *data)
 	{
 		while (index <= data->nbr_heredoc - 1)
 		{
-			close (data->heredoc_fd[index]);
+			if (data->heredoc_fd[index] != -1)
+				close (data->heredoc_fd[index]);
 			index++;
 		}
 	}

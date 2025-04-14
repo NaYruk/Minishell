@@ -88,6 +88,7 @@ typedef struct s_data
 	pid_t		*pids;
 	int			*heredoc_fd;
 	int			nbr_heredoc;
+	int			hd_index;
 	int			old_read_pipe;
 	int			current_pipe[2];
 	int			error_built;
