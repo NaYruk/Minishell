@@ -19,7 +19,7 @@
 ** - Ensures proper reconstruction of the input line during processing.
 */
 
-void	stock_char(char **new_line, char c)
+void	stock_char(t_data *data, char **new_line, char c)
 {
 	char	*old_line;
 	char	character[2];
@@ -28,7 +28,10 @@ void	stock_char(char **new_line, char c)
 	character[1] = '\0';
 	old_line = *new_line;
 	*new_line = ft_strjoin(old_line, character);
-	free(old_line);
+	if (!(*new_line) && data)
+		malloc_error(data);
+	if (old_line)
+		free(old_line);
 }
 
 /*
@@ -47,12 +50,12 @@ void	stock_quotes(t_data *data, int i, char **line, char **new_line)
 	if ((*line)[i] == SIMPLE_QUOTES && !data->double_q)
 	{
 		data->simple_q = !data->simple_q;
-		stock_char(new_line, SIMPLE_QUOTES);
+		stock_char(data, new_line, SIMPLE_QUOTES);
 	}
 	else if ((*line)[i] == DOUBLE_QUOTES && !data->simple_q)
 	{
 		data->double_q = !data->double_q;
-		stock_char(new_line, DOUBLE_QUOTES);
+		stock_char(data, new_line, DOUBLE_QUOTES);
 	}
 	return ;
 }
@@ -93,7 +96,7 @@ void	replace_dollars(t_data *data, char **line)
 		else if ((*line)[i] == '~' && !data->simple_q && !data->double_q)
 			expand_till(data, &new_line, *line, &i);
 		else
-			stock_char(&new_line, (*line)[i]);
+			stock_char(data, &new_line, (*line)[i]);
 		i++;
 	}
 	free (*line);

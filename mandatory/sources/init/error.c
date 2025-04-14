@@ -44,6 +44,7 @@ void	error(t_data *data, char *error)
 	perror(error);
 	if (data->exec)
 		free_exec_struct(data);
+	close_heredoc_fd(data);
 	free_garbage(data);
 	exit(EXIT_FAILURE);
 }
@@ -68,10 +69,12 @@ void	ft_error_name(char *str)
 
 /*
 ** ft_free_env:
-** - This function frees all the memory allocated for an environment variable array.
+** - This function frees all the memory allocated
+**		for an environment variable array.
 ** - Iterates through the array, freeing each string individually.
 ** - Frees the array itself after all elements are released.
-** - Ensures no memory leaks occur when the environment array is no longer needed.
+** - Ensures no memory leaks occur when
+**		the environment array is no longer needed.
 */
 
 void	ft_free_env(char **tmp)

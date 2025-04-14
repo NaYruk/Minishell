@@ -44,8 +44,7 @@ static void	print_exit_error(char *message, int status)
 static void	clean_and_exit(t_data *data, int status)
 {
 	printf("exit\n");
-	free_garbage(data);
-	free_token(data);
+	free_all(data);
 	exit (status);
 }
 
@@ -108,10 +107,12 @@ int	ft_exit(t_data *data, char **args_cmd)
 		status = 1;
 		return (data->exit_status = status);
 	}
-	else if (args_cmd[1] && (ft_str_is_digit(args_cmd[1]) == 1 || args_cmd[1][0] == '\0'))
+	else if (args_cmd[1] && (ft_str_is_digit(args_cmd[1]) == 1
+			|| args_cmd[1][0] == '\0'))
 	{
 		print_exit_error(args_cmd[1], 2);
 		status = 2;
+		clean_and_exit(data, status);
 		exit(status);
 	}
 	else if (args_cmd[1])

@@ -29,6 +29,7 @@
 void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 {
 	char	*line;
+	char	*old_line;
 	char	*delimiter;
 	int		fd;
 	
@@ -39,12 +40,16 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 	while (1)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
-		line = ft_strtrim(line = get_next_line(STDIN_FILENO), "\n");
+		line = get_next_line(STDIN_FILENO);
+		old_line = line;
+		line = ft_strtrim(line, "\n");
+		free(old_line);
 		if (catch_signal(data, line, delimiter, fd) == true)
 			return ;
 		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
+			close (fd);
 			return ;
 		}
 		ft_putstr_fd(line, write_pipe);
@@ -63,11 +68,11 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 ** - Returns 0 on success or 1 if interrupted by a signal (e.g., SIGINT).
 */
 
-int	read_heredoc(t_data *data, t_token *current, int tmp[2], bool heredoc_detected_in_pipe)
+int	read_heredoc(t_data *data, t_token *current, int tmp[2], bool *heredoc_detected_in_pipe)
 {
 	if (current->token == HEREDOC && current->next && current->next->token == ARG)
 	{
-		if (heredoc_detected_in_pipe)
+		if (*heredoc_detected_in_pipe)
 			close(tmp[0]);
 		if (pipe(tmp) == -1)
 			error(data, "PIPE");
@@ -78,7 +83,7 @@ int	read_heredoc(t_data *data, t_token *current, int tmp[2], bool heredoc_detect
 			close(tmp[0]);
 			return (1);
 		}
-		heredoc_detected_in_pipe = true;
+		*heredoc_detected_in_pipe = true;
 		setup_signals_interactive();
 	}
 	return (0);
@@ -105,14 +110,13 @@ int	exec_heredoc2(t_data *data, t_token *current, int tmp[2])
 	heredoc_detected_in_pipe = false;
 	while (current != NULL)
 	{
-		if (read_heredoc(data, current, tmp, heredoc_detected_in_pipe) == 1)
-			return (close_fd(data, hd_index), 1);
+		if (read_heredoc(data, current, tmp, &heredoc_detected_in_pipe) == 1)
+			return (close_heredoc_fd(data), 1);
 		if (current->token == PIPE || !current->next)
 		{
 			if (heredoc_detected_in_pipe)
 			{
-				data->heredoc_fd[hd_index][0] = tmp[0];
-				close(data->heredoc_fd[hd_index][1]);
+				data->heredoc_fd[hd_index] = tmp[0];
                 hd_index++;
 			}
 			heredoc_detected_in_pipe = false;
@@ -136,14 +140,13 @@ int	exec_heredoc2(t_data *data, t_token *current, int tmp[2])
 int	exec_heredoc(t_data *data)
 {
 	t_token	*current;
-	int		nbr_heredoc;
 	int		tmp[2];
 	
-	nbr_heredoc = nbr_of_heredoc(data);
-	if (nbr_heredoc == 0)
+	data->nbr_heredoc = nbr_of_heredoc(data);
+	if (data->nbr_heredoc == 0)
 		return (0);
 	current = data->lst_token;
-	malloc_heredoc_fd(data, nbr_heredoc);
+	malloc_heredoc_fd(data, data->nbr_heredoc);
 	if (exec_heredoc2(data, current, tmp) == 1)
 	{
 		g_signal = 0;

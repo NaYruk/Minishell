@@ -120,24 +120,14 @@ int	nbr_of_heredoc(t_data *data)
 
 void	malloc_heredoc_fd(t_data *data, int nbr)
 {
-	int	i;
-	
-	i = 0;
 	if (nbr == 0)
 		return ;
-	data->heredoc_fd = malloc(sizeof(int *) * nbr);
-	if (!data->heredoc_fd)
-		malloc_error(data);
-	add_g_c_node(data, &data->g_c, (void **)data->heredoc_fd, false);
-	while (i != nbr)
+	else
 	{
-		data->heredoc_fd[i] = malloc(sizeof(int) * 2);
-		if (!data->heredoc_fd[i])
+		data->heredoc_fd = malloc(sizeof(int) * data->nbr_heredoc);
+		if (!data->heredoc_fd)
 			malloc_error(data);
-		add_g_c_node(data, &data->g_c, (void **)data->heredoc_fd[i], false);
-		if (pipe(data->heredoc_fd[i]) == -1)
-			error(data, "PIPE");
-		i++;
+		add_g_c_node(data, &data->g_c, (void **)data->heredoc_fd, false);
 	}
 	return ;
 }
@@ -151,12 +141,18 @@ void	malloc_heredoc_fd(t_data *data, int nbr)
 ** - Ensures proper cleanup of resources to prevent file descriptor leaks.
 */
 
-void	close_fd(t_data *data, int hd_index)
+void	close_heredoc_fd(t_data *data)
 {
-	while (hd_index > 0)
+	int	index;
+
+	index = 0;
+	if (data->nbr_heredoc > 0)
 	{
-		close (data->heredoc_fd[hd_index][0]);
-		close (data->heredoc_fd[hd_index][1]);
-		hd_index--;
+		while (index <= data->nbr_heredoc - 1)
+		{
+			close (data->heredoc_fd[index]);
+			index++;
+		}
 	}
+	return ;
 }

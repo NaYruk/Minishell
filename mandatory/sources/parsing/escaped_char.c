@@ -56,7 +56,7 @@ void	stock_escaped_char(char *line, int *start,
 		char_stock(start, escaped_line, index, '\r');
 	else
 	{
-		stock_char(escaped_line, line[(*start)++]);
+		stock_char(NULL, escaped_line, line[(*start)++]);
 		(*index)++;
 	}
 }
@@ -89,7 +89,8 @@ void	check_escaped_content(t_data *data, char **line,
 		malloc_error(data);
 	e_c.escaped_line[(e_c.index)++] = SIMPLE_QUOTES;
 	while ((*line)[e_c.start] && (*line)[e_c.start] != SIMPLE_QUOTES)
-		stock_escaped_char(*line, &(e_c.start), &(e_c.escaped_line), &(e_c.index));
+		stock_escaped_char(*line, &(e_c.start),
+			&(e_c.escaped_line), &(e_c.index));
 	e_c.escaped_line[(e_c.index)++] = SIMPLE_QUOTES;
 	e_c.escaped_line[e_c.index] = '\0';
 	e_c.old_line = *new_line;

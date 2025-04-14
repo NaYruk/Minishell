@@ -94,7 +94,8 @@ void	minienv(t_data *data)
 	data->env[0] = ft_strdup("PWD=");
 	data->env[0] = ft_strjoin(data->env[0], pwd);
 	data->env[1] = ft_strdup("SHLVL=0");
-	data->env[2] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
+	data->env[2] = ft_strdup
+		("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
 	data->env[3] = ft_strdup("OLDPWD");
 	data->env[4] = NULL;
 	free (pwd);

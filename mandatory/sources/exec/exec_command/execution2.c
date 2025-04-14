@@ -63,7 +63,7 @@ void	handle_fork(t_data *data, int *cmd_process,
 	}
 	else
 	{
-		if (*cmd_process > 0)
+		if (*cmd_process > 0 && (data->part_of_line - 2) > 0)
 			close(data->old_read_pipe);
 		if (*cmd_process < data->part_of_line - 1)
 			close(data->current_pipe[1]);

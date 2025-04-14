@@ -61,8 +61,8 @@ void	handle_signal_status(int status, t_data *data,
 
 void	wait_all(t_data *data, int nbr_of_fork)
 {
-	int	i;
-	int	status;
+	int				i;
+	int				status;
 	t_signal_flags	flags;
 
 	i = 0;

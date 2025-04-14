@@ -86,7 +86,8 @@ typedef struct s_data
 	char		*prompt;
 	char		**env;
 	pid_t		*pids;
-	int			**heredoc_fd;
+	int			*heredoc_fd;
+	int			nbr_heredoc;
 	int			old_read_pipe;
 	int			current_pipe[2];
 	int			error_built;
@@ -134,7 +135,7 @@ int		is_operator(t_data *data, int *i, char **line);
 bool	operator(char c);
 int		check_absolute_cmd(t_data *data, t_token **current, char **all_cmd_path);
 void	check_escaped_content(t_data *data, char **line, int *i, char **new_line);
-void	stock_char(char **new_line, char c);
+void	stock_char(t_data *data, char **new_line, char c);
 int		expand_till(t_data *data, char **new_line, char *line, int *i);
 void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
 
@@ -197,7 +198,7 @@ void	wait_all(t_data *data, int nbr_of_fork);
 void	free_all(t_data *data);
 void	update_exit_status(t_data *data);
 void	redirect_pipes(t_data *data, int cmd_process);
-void	close_fd(t_data *data, int hd_index);
+void	close_heredoc_fd(t_data *data);
 void	malloc_heredoc_fd(t_data *data, int nbr);
 int		nbr_of_heredoc(t_data *data);
 bool	catch_signal(t_data *data, char *line, char *delimiter, int fd);

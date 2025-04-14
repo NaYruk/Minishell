@@ -71,8 +71,6 @@ int	handle_execution(t_data *data, t_token **current,
 	}
 	else if (data->nbr_of_command > 0 && data->exec->arg_cmd)
 		exec_build_or_cmd(data, cmd_process, nbr_of_fork);
-	else
-		close(data->current_pipe[1]);
 	return (0);
 }
 
@@ -103,11 +101,15 @@ void	exec(t_data *data, t_token *current)
 		setup_pipe(data, cmd_process);
 		if (handle_execution(data, &current, &cmd_process, &nbr_of_fork) == -1)
 			break ;
-		data->old_read_pipe = data->current_pipe[0];
+		if (cmd_process < data->part_of_line - 1)
+			data->old_read_pipe = data->current_pipe[0];
 		cmd_process++;
 		free_exec_struct(data);
 	}
 	wait_all(data, nbr_of_fork);
+	if (data->part_of_line > 1)
+		close(data->old_read_pipe);
+	close_heredoc_fd(data);
 	close (data->stdin_backup);
 	close (data->stdout_backup);
 }

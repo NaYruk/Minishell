@@ -47,7 +47,5 @@ int	exec_builtin(t_data *data, char **args_cmd, int cmd_process)
 	else if (ft_strcmp(args_cmd[0], "export") == 0)
 		return (data->exit_status = ft_export(data, args_cmd),
 			data->exit_status);
-	if (cmd_process < data->part_of_line - 1)
-		close(data->current_pipe[1]);
 	return (0);
 }

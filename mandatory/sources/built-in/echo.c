@@ -54,7 +54,7 @@ static	void	print_args(char **cmd_args, int *index)
 				printf("%s", cmd_args[*index + 1]);
 			if (cmd_args[*index + 2])
 				printf(" ");
-			}
+		}
 		(*index)++;
 	}
 }

@@ -97,7 +97,7 @@ void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i)
 		free(var_name);
 	}
 	else if (prompt[*i] != DOUBLE_QUOTES)
-		stock_char(new_line, '$');
+		stock_char(data, new_line, '$');
 	(*i)--;
 }
 
@@ -136,6 +136,6 @@ int	expand_till(t_data *data, char **new_line, char *line, int *i)
 		free(old_line);
 	}
 	else
-		stock_char(new_line, line[*i]);
+		stock_char(data, new_line, line[*i]);
 	return (0);
 }

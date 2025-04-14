@@ -19,6 +19,11 @@ void	free_all(t_data *data)
 	free_exec_struct(data);
 	free_token(data);
 	free(data->prompt);
+	close(data->stdin_backup);
+	close(data->stdout_backup);
+	close_heredoc_fd(data);
+	if ((data->part_of_line - 1) > 0 && data->old_read_pipe != -1)
+		close(data->old_read_pipe);
 	free_garbage(data);
 }
 
@@ -40,6 +45,9 @@ int	child_process(t_data *data, int i)
 		exit(EXIT_FAILURE);
 	}
 	setup_signals_execution();
+	close(data->stdin_backup);
+	close(data->stdout_backup);
+	close_heredoc_fd(data);
 	if (execve(data->exec->cmd_path, data->exec->arg_cmd, data->env) == -1)
 	{
 		perror("Execve :");

@@ -20,26 +20,13 @@
 ** - Redirects `STDIN` to the heredoc file descriptor using `dup2`.
 ** - Closes the heredoc file descriptor after redirection is set up.
 */
-
-void	redirect_heredoc(t_data *data, t_exec_redir *current, int cmd_process)
-{
-	if (current != NULL && current->type == HEREDOC)
-	{
-		if (last_heredoc(current) == true)
-		{
-			if (dup2(data->heredoc_fd[cmd_process][0], STDIN_FILENO) == -1)
-				error(data, "dup2");
-			close(data->heredoc_fd[cmd_process][0]);
-		}
-	}
-}
-
 /* REDIRECT_INFILE = In the case of we have a infile
 					  redirect STDIN in the infile 
 					 In the case of we have a heredoc
 					  redirect STDIN is last pipe heredoc */
 
-int	redirect_infile(t_data *data, t_exec_redir *current)
+int	redirect_infile_heredoc(t_data *data,
+		t_exec_redir *current, int cmd_process)
 {
 	int	fd_file;
 
@@ -55,6 +42,14 @@ int	redirect_infile(t_data *data, t_exec_redir *current)
 		}
 		dup2(fd_file, STDIN_FILENO);
 		close (fd_file);
+	}
+	if (current != NULL && current->type == HEREDOC)
+	{
+		if (last_heredoc(current) == true)
+		{
+			if (dup2(data->heredoc_fd[cmd_process], STDIN_FILENO) == -1)
+				error(data, "dup2");
+		}
 	}
 	return (0);
 }
@@ -120,7 +115,8 @@ void	redirect_pipes(t_data *data, int cmd_process)
 	{
 		if (dup2(data->old_read_pipe, STDIN_FILENO) == -1)
 			error(data, "dup2");
-		close(data->old_read_pipe);
+		if ((data->part_of_line - 2) > 0)
+			close(data->old_read_pipe);
 	}
 	if (cmd_process < (data->part_of_line - 1))
 	{
@@ -151,8 +147,7 @@ int	setup_redirection(t_data *data, int cmd_process)
 	redirect_pipes(data, cmd_process);
 	while (current != NULL)
 	{
-		redirect_heredoc(data, current, cmd_process);
-		if (redirect_infile(data, current) == -1)
+		if (redirect_infile_heredoc(data, current, cmd_process) == -1)
 			return (-1);
 		if (redirect_outfile(data, current) == -1)
 			return (-1);
