@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 10:29:41 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:14:00 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 	line = NULL;
 	setup_signals_heredoc();
 	fd = open("/dev/tty", O_RDONLY);
+	g_signal = 0;
 	while (1)
 	{
 		ft_putstr_fd("> ", STDOUT_FILENO);
@@ -45,6 +46,11 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 		line = ft_strtrim(line, "\n");
 		free(old_line);
 		if (catch_signal(data, line, delimiter, fd) == true)
+		{
+			if (!line)
+				break;
+			return;
+		}
 			return ;
 		if (ft_strcmp(line, delimiter) == 0)
 		{
