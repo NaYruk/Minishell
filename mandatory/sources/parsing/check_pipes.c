@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_pipes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:11:00 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 17:25:22 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/15 22:49:54 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,26 +109,27 @@ int	check_potential_errors(t_data *data, int nbr, t_token *current)
 	STATUS = 2 = DOUBLE QUOTES
 	we have several error for the pipes, dependinf on the number of pipes.
 */
-int	check_pipes(t_data *data)
+int	check_pipes(t_data *data, t_token *current)
 {
-	t_token	*current;
 	int		nbr;
 
 	nbr = 0;
-	current = data->lst_token;
-	if (check_first_and_last_node(current, data) == -1)
-		return (-1);
-	while (current->next != NULL)
+	if (current != NULL)
 	{
-		if (current->quote_char == '\0')
+		if (!current->prev || !current->next)
+		{
+			if (check_first_and_last_node(current, data) == -1)
+				return (-1);
+		}
+		else if (current->quote_char == '\0')
 		{
 			nbr = pipes_nbr(current->line, nbr);
 			if (check_potential_errors(data, nbr, current) != 0)
 				return (-1);
 		}
-		current = current->next;
 	}
-	if (check_first_and_last_node(current, data) == -1)
-		return (-1);
 	return (0);
 }
+
+// check les node dans l ordre, remanier les fonctions pour faire
+//node par node avec un current mobile.

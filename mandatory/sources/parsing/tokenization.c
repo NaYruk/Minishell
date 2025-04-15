@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 18:52:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:10:37 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,22 @@ static void	cmd_or_arg(t_data *data)
 	return ;
 }
 
+int	check_pipes_and_rafter(t_data *data)
+{
+	t_token	*current;
+	
+	current = data->lst_token;
+	while (current != NULL)
+	{
+		if (check_pipes(data, current) == -1)
+			return (-1);
+		if (check_rafter(data, current) == -1)
+			return (-1);
+		current = current->next;
+	}
+	return (0);
+}
+
 /*
 ** tokenization:
 ** - This is the main function for tokenizing
@@ -127,9 +143,7 @@ int	tokenization(t_data *data)
 		return (-1);
 	ft_gettype(data);
 	cmd_or_arg(data);
-	if (check_pipes(data) == -1)
-		return (-1);
-	if (check_rafter(data) == -1)
+	if (check_pipes_and_rafter(data) == -1)
 		return (-1);
 	return (0);
 }
