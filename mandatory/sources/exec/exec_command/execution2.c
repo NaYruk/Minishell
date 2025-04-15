@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:21:11 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/11 02:10:09 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:27:51 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	handle_fork(t_data *data, int *cmd_process,
 	{
 		if (*cmd_process > 0 && (data->part_of_line - 2) > 0)
 			close(data->old_read_pipe);
-		if (*cmd_process < data->part_of_line - 1)
-			close(data->current_pipe[1]);
+		/* if (*cmd_process < data->part_of_line - 1)
+			close(data->current_pipe[1]); */
 	}
 }
 

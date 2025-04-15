@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:34:23 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/13 16:28:11 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:09:34 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,15 @@ char	*get_expand_line(char *line, int *i)
 int	check_dollar_interrogation(t_data *data, char **new_line, int *i)
 {
 	char	*after_expand;
+	char	*old_line;
 
 	after_expand = NULL;
 	if (data->prompt[*i] == '?')
 	{
 		after_expand = ft_itoa(data->exit_status);
-		*new_line = ft_strjoin(*new_line, after_expand);
+		old_line = *new_line;
+		*new_line = ft_strjoin(old_line, after_expand);
+		free(old_line);
 		free(after_expand);
 		return (1);
 	}
