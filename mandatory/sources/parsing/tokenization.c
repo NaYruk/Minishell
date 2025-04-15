@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 18:52:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:05:35 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int	tokenization(t_data *data)
 	cmd_or_arg(data);
 	if (check_pipes(data) == -1)
 		return (-1);
-	if (check_rafter(data) == -1)
+	if (check_rafter(data) == -1) // je suis un connard mon parsing est terrible soit Humain Marc de temps a autre !
 		return (-1);
 	return (0);
 }

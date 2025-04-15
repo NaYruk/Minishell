@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/15 17:23:02 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:07:05 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 {
 	char	*line;
 	char	*delimiter;
-	int		fd;
+	int		fd = 0;
 	
 	delimiter = current->line;
 	line = NULL;
@@ -41,7 +41,10 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 	{
 		line = readline("> ");
 		if (catch_signal(data, line, delimiter, fd) == true)
+		{
+			close(fd);
 			return ;
+		}
 		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
@@ -146,6 +149,7 @@ int	exec_heredoc(t_data *data)
 	if (exec_heredoc2(data, current, tmp) == 1)
 	{
 		g_signal = 0;
+		setup_signals_interactive();
 		return (-1);
 	}
 	return (0);
