@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/15 17:16:57 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:23:02 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 {
 	char	*line;
-	char	*old_line;
 	char	*delimiter;
 	int		fd;
 	
@@ -37,13 +36,9 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 	line = NULL;
 	setup_signals_heredoc();
 	fd = open("/dev/tty", O_RDONLY);
+	g_signal = 0;
 	while (1)
 	{
-		/* ft_putstr_fd("> ", STDOUT_FILENO);
-		line = get_next_line(STDIN_FILENO);
-		old_line = line;
-		line = ft_strtrim(line, "\n");
-		free(old_line); */
 		line = readline("> ");
 		if (catch_signal(data, line, delimiter, fd) == true)
 			return ;
