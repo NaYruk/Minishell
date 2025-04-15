@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 22:19:43 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:35:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,10 @@ void	redirect_pipes(t_data *data, int cmd_process)
 	{
 		if (dup2(data->current_pipe[1], STDOUT_FILENO) == -1)
 			error(data, "dup2");
-		close(data->current_pipe[0]);
 		close(data->current_pipe[1]);
 	}
+	if ((data->part_of_line - 1) > 0 || cmd_process < (data->part_of_line - 1))
+		close(data->current_pipe[0]);
 	return ;
 }
 

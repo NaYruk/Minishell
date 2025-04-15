@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:57:17 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/10 23:24:41 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:36:03 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ void	setup_signals_interactive(void)
 
 static void	sig_sigint_heredoc(int signum)
 {
-	(void)signum;
-	g_signal = SIGINT;
-	ft_putstr_fd("\n", STDOUT_FILENO);
-	close(STDIN_FILENO);
+	if (signum == SIGINT)
+	{
+		g_signal = SIGINT;
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		close(STDIN_FILENO);
+	}
 }
 
 void	setup_signals_heredoc(void)

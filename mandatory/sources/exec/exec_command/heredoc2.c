@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   heredoc2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 10:29:41 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:34:53 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ bool	catch_signal(t_data *data, char *line, char *delimiter, int fd)
 		}
 		if (!line && g_signal != SIGINT)
 		{
-			ft_putstr_fd("\n", 2);
 			ft_putstr_fd("warning: here-document delimited by EOF. Wanted: '", 2);
 			ft_putstr_fd(delimiter, 2);
 			ft_putstr_fd("'.\n", 2);
