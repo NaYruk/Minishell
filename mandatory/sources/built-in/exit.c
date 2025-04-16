@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/16 13:22:00 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:12:02 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	number_too_large(char *line)
 
 	size = ft_strlen(line);
 	i = 0;
-	if (line[i] == '+' || line[-] == '-')
+	if (line[i] == '+' || line[i] == '-')
 		i++;
 	while (line[i++] == '0')
 		size--;
