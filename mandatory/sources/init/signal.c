@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:57:17 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/15 20:36:03 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:39:29 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@
 	In interactive mode, CTRL+C (SIGINT) interrupts input and display a new
 	prompt. CTRL+\ is ignored.
 */
-
-void	update_exit_status(t_data *data)
-{
-	if (g_signal)
-		data->exit_status = g_signal + 128;
-}
 
 static void	sig_sigint_interactive(int signum)
 {

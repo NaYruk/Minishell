@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/15 16:55:13 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:35:16 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	exec(t_data *data, t_token *current)
 void	execution(t_data *data)
 {
 	t_token	*current;
-	
+
 	data->old_read_pipe = -1;
 	current = data->lst_token;
 	set_nbr_of_commands(data);
