@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/16 08:05:30 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/16 12:29:04 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,10 @@ int		ft_is_white_spaces(char c);
 int		cut_the_line(t_data *data);
 int		is_operator(t_data *data, int *i, char **line);
 bool	operator(char c);
-int		check_absolute_cmd(t_data *data, t_token **current, char **all_cmd_path);
-void	check_escaped_content(t_data *data, char **line, int *i, char **new_line);
+int		check_absolute_cmd(t_data *data, t_token **current,
+			char **all_cmd_path);
+void	check_escaped_content(t_data *data, char **line,
+			int *i, char **new_line);
 void	stock_char(t_data *data, char **new_line, char c);
 int		expand_till(t_data *data, char **new_line, char *line, int *i);
 void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i);
@@ -194,7 +196,8 @@ int		exec_heredoc(t_data *data);
 int		child_process(t_data *data, int i);
 int		setup_redirection(t_data *data, int cmd_process);
 int		set_exec_struct(t_data *data, t_token **current);
-void	add_new_redir_node(t_data *data, t_exec_redir **lst, char *line, int type);
+void	add_new_redir_node(t_data *data, t_exec_redir **lst,
+			char *line, int type);
 void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork);
 void	wait_all(t_data *data, int nbr_of_fork);
 void	free_all(t_data *data);

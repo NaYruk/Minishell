@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/11 00:42:52 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/16 12:37:32 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,18 @@
 
 int	g_signal = 0;
 
-void	print_list(t_data *data)
+void	update_exit_status(t_data *data)
 {
-	t_token *current = data->lst_token;
-	
-	while (current != NULL)
-	{
-		printf("%s, %d, %c\n", current->line, current->token, current->quote_char);
-		current = current->next;
-	}
+	if (g_signal)
+		data->exit_status = g_signal + 128;
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	*data = NULL;
+	t_data	*data;
 	int		status;
 
+	data = NULL;
 	(void)argv;
 	if (argc != 1)
 	{
@@ -53,7 +49,6 @@ int	main(int argc, char **argv, char **envp)
 			if (tokenization(data) == 0)
 				execution(data);
 		}
-		//print_list(data);
 		free(data->prompt);
 		free_token(data);
 	}

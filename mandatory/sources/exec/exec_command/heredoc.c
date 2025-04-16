@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 10:29:41 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/16 12:32:53 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 	char	*old_line;
 	char	*delimiter;
 	int		fd;
-	
+
 	delimiter = current->line;
 	line = NULL;
 	setup_signals_heredoc();
@@ -68,11 +68,12 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 ** - Returns 0 on success or 1 if interrupted by a signal (e.g., SIGINT).
 */
 
-int	read_heredoc(t_data *data, t_token *current, int tmp[2], bool *heredoc_detected_in_pipe)
+int	read_heredoc(t_data *data, t_token *current, int tmp[2], bool *hd_detected)
 {
-	if (current->token == HEREDOC && current->next && current->next->token == ARG)
+	if (current->token == HEREDOC && current->next
+		&& current->next->token == ARG)
 	{
-		if (*heredoc_detected_in_pipe)
+		if (*hd_detected)
 			close(tmp[0]);
 		if (pipe(tmp) == -1)
 			error(data, "PIPE");
@@ -83,7 +84,7 @@ int	read_heredoc(t_data *data, t_token *current, int tmp[2], bool *heredoc_detec
 			close(tmp[0]);
 			return (1);
 		}
-		*heredoc_detected_in_pipe = true;
+		*hd_detected = true;
 		setup_signals_interactive();
 	}
 	return (0);
@@ -105,7 +106,7 @@ int	exec_heredoc2(t_data *data, t_token *current, int tmp[2])
 {
 	int		hd_index;
 	bool	heredoc_detected_in_pipe;
-	
+
 	hd_index = 0;
 	heredoc_detected_in_pipe = false;
 	while (current != NULL)
@@ -117,7 +118,7 @@ int	exec_heredoc2(t_data *data, t_token *current, int tmp[2])
 			if (heredoc_detected_in_pipe)
 			{
 				data->heredoc_fd[hd_index] = tmp[0];
-                hd_index++;
+				hd_index++;
 			}
 			heredoc_detected_in_pipe = false;
 		}
@@ -141,7 +142,7 @@ int	exec_heredoc(t_data *data)
 {
 	t_token	*current;
 	int		tmp[2];
-	
+
 	data->nbr_heredoc = nbr_of_heredoc(data);
 	if (data->nbr_heredoc == 0)
 		return (0);
