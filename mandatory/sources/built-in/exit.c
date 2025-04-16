@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/14 17:45:26 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/16 07:52:09 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static void	print_exit_error(char *message, int status)
 
 static void	clean_and_exit(t_data *data, int status)
 {
-	printf("exit\n");
 	free_all(data);
 	exit (status);
 }
@@ -55,11 +54,10 @@ static int	number_too_large(char *line)
 
 	size = ft_strlen(line);
 	i = 0;
-	while (line[i] == '0')
-	{
+	if (line[i] == '+' || line[i] == '-')
 		i++;
+	while (line[i++] == '0')
 		size--;
-	}
 	if (size > 20)
 		return (1);
 	else if (size == 20)
@@ -105,18 +103,18 @@ int	ft_exit(t_data *data, char **args_cmd)
 	{
 		print_exit_error("too many arguments", 1);
 		status = 1;
-		return (data->exit_status = status);
 	}
 	else if (args_cmd[1] && (ft_str_is_digit(args_cmd[1]) == 1
 			|| args_cmd[1][0] == '\0'))
 	{
 		print_exit_error(args_cmd[1], 2);
 		status = 2;
-		clean_and_exit(data, status);
-		exit(status);
 	}
 	else if (args_cmd[1])
+	{
 		status = exit_value(args_cmd[1], &too_large);
-	clean_and_exit(data, status);
-	return (status);
+		if (!too_large)
+			printf("exit\n");
+	}
+	return (clean_and_exit(data, status), status);
 }

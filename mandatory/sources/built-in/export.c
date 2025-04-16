@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:39:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 12:39:13 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/16 08:05:04 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	ft_add_new_env(t_data *data, char *name, char *value)
+void	ft_add_new_env(t_data *data, char *name, char *value)
 {
 	int		old_size;
 	int		len_total;
