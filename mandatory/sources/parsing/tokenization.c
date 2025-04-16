@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/15 23:17:07 by marcmilliot      ###   ########.fr       */
+/*   Updated: 2025/04/16 14:39:04 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void	cmd_or_arg(t_data *data)
 int	check_pipes_and_rafter(t_data *data)
 {
 	t_token	*current;
-	
+
 	current = data->lst_token;
 	while (current != NULL)
 	{
