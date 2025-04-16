@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/11 00:53:23 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/16 08:05:30 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ int		ft_echo(t_data *data, char **args_cmd);
 int		ft_unset(t_data *data, char **args_cmd);
 int		ft_export(t_data *data, char **args_cmd);
 char	*ft_getenv(t_data *data, char *name, int *available);
+void	ft_add_new_env(t_data *data, char *name, char *value);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
 void	ft_realloc_env(t_data *data, size_t new_size);
