@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/16 08:06:01 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:20:55 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	ft_cd(t_data *data, char **args_cmd)
 	char	*current_dir;
 	char	*old_pwd;
 	char	*path;
-	int		available;
 
 	if (args_cmd[0] && args_cmd[1] && args_cmd[2])
 		return (data->exit_status = 1, cd_error(NULL, 1));
@@ -83,11 +82,7 @@ int	ft_cd(t_data *data, char **args_cmd)
 		return (free (old_pwd), data->exit_status = 1, EXIT_FAILURE);
 	if (chdir(path) == -1 && args_cmd[1][0] != '\0')
 		return (free(old_pwd), data->exit_status = 1, cd_error(path, 0));
-	ft_getenv(data, "OLDPWD", &available);
-	if (available == 0)
-		ft_add_new_env(data, "OLDPWD", old_pwd);
-	else
-		ft_update_env(data, "OLDPWD", old_pwd);
+	ft_update_env(data, "OLDPWD", old_pwd);
 	free (old_pwd);
 	current_dir = getcwd(NULL, 0);
 	ft_update_env(data, "PWD", current_dir);

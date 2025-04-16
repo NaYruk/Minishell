@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_rafter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 17:12:45 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 17:26:30 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/15 22:54:45 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,12 @@ static int	error_rafter(t_data *data, int nbr, t_token *current)
 	If the last token is a Rafter token, it is an error.
 */
 
-int	check_rafter(t_data *data)
+int	check_rafter(t_data *data, t_token *current)
 {
-	t_token	*current;
 	int		nbr;
 
 	nbr = 0;
-	current = data->lst_token;
-	while (current != NULL)
+	if (current != NULL)
 	{
 		if (current->quote_char == '\0')
 		{
@@ -145,7 +143,6 @@ int	check_rafter(t_data *data)
 					return (token_error(data, NULL, 1));
 			}
 		}
-		current = current->next;
 	}
 	return (0);
 }

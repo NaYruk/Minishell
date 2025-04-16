@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/16 08:05:30 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/15 22:55:17 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,8 @@ void	add_new_token(t_data *data, t_token **lst, char *line);
 void	free_token(t_data *data);
 
 /* Function for check any error after the tokenisation */
-int		check_rafter(t_data *data);
-int		check_pipes(t_data *data);
+int		check_rafter(t_data *data, t_token *current);
+int		check_pipes(t_data *data, t_token *current);
 void	replace_dollars(t_data *data, char **line);
 int		token_error(t_data *data, char *line, bool newline);
 
@@ -162,7 +162,6 @@ int		ft_echo(t_data *data, char **args_cmd);
 int		ft_unset(t_data *data, char **args_cmd);
 int		ft_export(t_data *data, char **args_cmd);
 char	*ft_getenv(t_data *data, char *name, int *available);
-void	ft_add_new_env(t_data *data, char *name, char *value);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
 void	ft_realloc_env(t_data *data, size_t new_size);
