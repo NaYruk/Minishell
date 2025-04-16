@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/15 22:55:17 by marcmilliot      ###   ########.fr       */
+/*   Updated: 2025/04/16 13:19:42 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int		ft_export(t_data *data, char **args_cmd);
 char	*ft_getenv(t_data *data, char *name, int *available);
 void	ft_update_env(t_data *data, char *name, char *value);
 void	ft_delete_env(t_data *data, char *name);
+void	ft_add_new_env(t_data *data, char *name, char *value);
 void	ft_realloc_env(t_data *data, size_t new_size);
 int		exec_builtin(t_data *data, char **args_cmd, int cmd_process);
 
