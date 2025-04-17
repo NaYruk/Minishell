@@ -6,11 +6,21 @@
 /*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 13:12:19 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/05 04:01:12 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/17 01:56:51 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* 
+	ft_check_env - Checks if an environment variable matches a give name. 
+	
+	This function compares the given name with the environment variable. 
+	It determines if the variable exists and whether it has a value:
+	- 0 if the variable does not match
+	- 1 if the variable exists without a value. 
+	- 2 if the variable exists with a value. 
+*/
 
 static int	ft_check_env(char *env, char *name, int len, int *available)
 {
@@ -30,9 +40,12 @@ static int	ft_check_env(char *env, char *name, int len, int *available)
 }
 
 /* 
-	Function that obtains a value of an environnement variable if it exists
-	It looks like the getenv function.
-	name is the name of the variable without '='.
+	ft_getenv - Retrieves the value of an environment variable. 
+	
+	This function searches for the specified environment variable in 
+	'data->env'.
+	If the variable exists and has a value, it returns a pointer to the value. 
+	If the variable exists without a value, it returns NULL. 
 */
 
 char	*ft_getenv(t_data *data, char *name, int *available)
@@ -59,6 +72,14 @@ char	*ft_getenv(t_data *data, char *name, int *available)
 	return (NULL);
 }
 
+/* 
+	ft_create_env_variable - Creates a new environment variable string. 
+
+	This function allocates memory and creates a new environment variable
+	string in the format 'name=value'. 
+	If 'value' is NULL, the string will only contain 'name='. 
+*/
+
 static char	*ft_create_env_variable(char *name, char *value)
 {
 	char	*result;
@@ -80,9 +101,11 @@ static char	*ft_create_env_variable(char *name, char *value)
 }
 
 /* 
-	Function that adds or modifies an environnement variable
-	It looks like the setenv function.
-	name is the name of the variable without '='.
+	ft_update_env - Updates an environment variable.
+
+	This function searches for the environment variable in 'data->env'.
+	If the variable exists, it updates its value.
+	If it does not exists, the function does nothing.
 */
 
 void	ft_update_env(t_data *data, char *name, char *value)
@@ -109,8 +132,11 @@ void	ft_update_env(t_data *data, char *name, char *value)
 }
 
 /* 
-	Function that delete an environnement variable.
-	name is the name of the variable without '='.
+	ft_delete_env - Deletes an environment variable.
+
+	This function searches for the environment variable in 'data->env'.
+	If the variable exists, it removes it from the environment and shifts
+	the remaining variables to fill the gap.
 */
 
 void	ft_delete_env(t_data *data, char *name)

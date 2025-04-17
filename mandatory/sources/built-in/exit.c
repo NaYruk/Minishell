@@ -3,28 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/16 14:12:02 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:00:54 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /* 
-	Function to built-in command exit.
-	Exit status of exit is 0.
-
-	10000000000000000000
-	exit a : quitte le programme et renvoie 2
-	exit: a: numeric argument required
+	print_exit_error - Print an error message. 
 	
-
-	exit 122 33 ou exit 122 a: ne quitte pas et renvoie 1
-	exit: too many arguments
-
-	
+	If 'status is 1, it prints the message as is.
+	If 'status' is 2, it appends ": numeric argument required" to the message. 
 */
 
 static void	print_exit_error(char *message, int status)
@@ -41,11 +33,20 @@ static void	print_exit_error(char *message, int status)
 	ft_putstr_fd("\n", 2);
 }
 
+/* 
+	clean_and_exit - Frees allocated ressources and exit the program. 
+*/
+
 static void	clean_and_exit(t_data *data, int status)
 {
 	free_all(data);
 	exit (status);
 }
+
+/* 
+	number_too_large - Checks if a numeric strings exceeds the range 
+					   				of a long long
+*/
 
 static int	number_too_large(char *line)
 {
@@ -74,6 +75,14 @@ static int	number_too_large(char *line)
 	return (0);
 }
 
+/* 
+	exit_value - Converts a string to and exit status value. 
+
+	This function converts the string to a long long number and determines
+	the appropriate exit status value. If the number is too large, it sets
+	'*too_large' to 1 and returns -1. Otherwise, it returns value modulo 256.  
+*/
+
 static int	exit_value(char *line, int *too_large)
 {
 	long long	value;
@@ -82,13 +91,24 @@ static int	exit_value(char *line, int *too_large)
 	{
 		print_exit_error(line, 2);
 		*too_large = 1;
-		return (2);
+		return (-1);
 	}
 	value = ft_atoll(line);
 	if (value >= 0 && value <= 255)
 		return ((int)value);
 	return ((int)value % 256);
 }
+
+/* 
+	ft_exit - Implements the 'exit' command. 
+
+	This function handles the logic for the 'exit' command: 
+	- If no arguments, it exits with the last exit status. 
+	- If multiple arguments, it prints an error and does not exit. 
+	- If the argument is not a valid number, it prints an error and
+					exit with status 2.
+	- If the argument is valid, it calculates the exit status and exits.
+*/
 
 int	ft_exit(t_data *data, char **args_cmd)
 {
@@ -103,6 +123,7 @@ int	ft_exit(t_data *data, char **args_cmd)
 	{
 		print_exit_error("too many arguments", 1);
 		status = 1;
+		return (status);
 	}
 	else if (args_cmd[1] && (ft_str_is_digit(args_cmd[1]) == 1
 			|| args_cmd[1][0] == '\0'))
@@ -114,7 +135,7 @@ int	ft_exit(t_data *data, char **args_cmd)
 	{
 		status = exit_value(args_cmd[1], &too_large);
 		if (!too_large)
-			printf("\n");
+			ft_putstr_fd("exit\n", 2);
 	}
 	return (clean_and_exit(data, status), status);
 }

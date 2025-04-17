@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 10:52:03 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/03/29 02:30:32 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:45:48 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /* 
-	Function used to delete an environnement variable.
-	Works without the '=' sign in the variable name. 
+	ft_unset - Removes environment variables.
+
+	This function iterates though the arguments provided to the 'unset' command
+	and removes the corrresponding environment variables from the environment.
 */
 
 int	ft_unset(t_data *data, char **args_cmd)

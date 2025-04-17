@@ -6,11 +6,15 @@
 /*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 03:05:05 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/05 04:33:54 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/17 02:04:23 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* 
+	search_egal - Searches the '=' character in a string. 
+*/
 
 static int	search_egal(char *str)
 {
@@ -25,6 +29,10 @@ static int	search_egal(char *str)
 	}
 	return (-1);
 }
+
+/* 
+	verif_name - Verifies the validity of an environment variable name.
+*/
 
 int	ft_verif_name(char *str)
 {
@@ -55,6 +63,16 @@ int	ft_verif_name(char *str)
 	return (0);
 }
 
+/* 
+	ft_extract_name_value - Extracts the name and value from an 
+								environment variable string.
+	
+	This function parses the given string to separate the name and value of an
+	environment variable. 
+	If the string contains `+=`, it handles appending logic.
+	If the string contains only a name, the value is set to NULL.
+*/
+
 void	ft_extract_name_value(char *str, char **name, char **value)
 {
 	char	*pos;
@@ -82,6 +100,14 @@ void	ft_extract_name_value(char *str, char **name, char **value)
 	if (!*name || (pos && !*value))
 		malloc_error(NULL);
 }
+
+/* 
+	ft_realloc_env - Reallocates the environment array to a new size.
+
+	This function reallocates the 'data->env' array to the specified size. 
+	It copies the existing environment variables into the new array
+	and initializes the remaining slots to NULL. The old array is freed. 
+*/
 
 void	ft_realloc_env(t_data *data, size_t new_size)
 {
