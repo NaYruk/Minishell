@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 02:36:58 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 17:08:49 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:03:16 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static char	**get_all_cmd_paths(t_data *data)
 ** - Handles memory allocation errors by calling `malloc_error` if necessary.
 */
 
-void	find_cmd_path(t_data *data, char **all_cmd_paths,
+int		find_cmd_path(t_data *data, char **all_cmd_paths,
 			t_token **current, int *i)
 {
 	char	*test_cmd_path;
@@ -116,7 +116,9 @@ void	find_cmd_path(t_data *data, char **all_cmd_paths,
 		while (all_cmd_paths[++(*i)] != NULL)
 			free(all_cmd_paths[(*i)]);
 		free(all_cmd_paths);
+		return (1);
 	}
+	return (0);
 }
 
 /*
@@ -139,8 +141,19 @@ int	get_cmd_path(t_data *data, t_token **current)
 
 	i = -1;
 	all_cmd_paths = get_all_cmd_paths(data);
-	find_cmd_path(data, all_cmd_paths, current, &i);
+	if (find_cmd_path(data, all_cmd_paths, current, &i) == 1)
+		all_cmd_paths = NULL;
 	if (check_absolute_cmd(data, current, all_cmd_paths) == -2)
+	{
+		if (all_cmd_paths != NULL)
+		{
+			i = -1;
+			while (all_cmd_paths[++i] != NULL)
+				free(all_cmd_paths[i]);
+			free(all_cmd_paths);
+			all_cmd_paths = NULL;
+		}
 		return (-1);
+	}
 	return (0);
 }
