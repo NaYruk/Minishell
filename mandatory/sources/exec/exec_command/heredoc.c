@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/16 14:38:10 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:17:56 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,19 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 {
 	char	*line;
 	char	*delimiter;
-	int		fd;
 
-	fd = 0;
 	delimiter = current->line;
 	line = NULL;
 	setup_signals_heredoc();
-	fd = open("/dev/tty", O_RDONLY);
 	g_signal = 0;
 	while (1)
 	{
 		line = readline("> ");
-		if (catch_signal(data, line, delimiter, fd) == true)
-		{
-			close(fd);
+		if (catch_signal(data, line, delimiter) == true)
 			return ;
-		}
 		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
-			close (fd);
 			return ;
 		}
 		ft_putstr_fd(line, write_pipe);

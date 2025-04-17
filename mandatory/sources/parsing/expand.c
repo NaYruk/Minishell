@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:34:23 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/15 16:09:34 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:26:00 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 ** - Updates the index to point to the character after the variable name.
 */
 
-char	*get_expand_line(char *line, int *i)
+char	*get_expand_line(t_data *data, char *line, int *i)
 {
 	int		count;
 	char	*line_expand;
@@ -32,6 +32,8 @@ char	*get_expand_line(char *line, int *i)
 	while (line[count] && (line[count] == '_' || ft_isalnum(line[count])))
 		count++;
 	line_expand = ft_strndup(&(line[*i]), count - *i);
+	if (!line_expand)
+		malloc_error(data);
 	*i = count;
 	return (line_expand);
 }
@@ -56,11 +58,26 @@ int	check_dollar_interrogation(t_data *data, char **new_line, int *i)
 		after_expand = ft_itoa(data->exit_status);
 		old_line = *new_line;
 		*new_line = ft_strjoin(old_line, after_expand);
+		if (!(*new_line))
+			malloc_error(data);
 		free(old_line);
 		free(after_expand);
 		return (1);
 	}
 	return (0);
+}
+
+void	save_after_expand(t_data *data, char **new_line,
+			char **after_expand, char **tmp)
+{
+	if (*after_expand)
+	{
+		*tmp = ft_strjoin(*new_line, *after_expand);
+		if (!(*tmp))
+			malloc_error(data);
+		free (*new_line);
+		*new_line = *tmp;
+	}
 }
 
 /*
@@ -73,6 +90,8 @@ int	check_dollar_interrogation(t_data *data, char **new_line, int *i)
 **		and appends it to the new_line buffer.
 ** - If the variable is not found, it appends nothing or the literal
 **		`$` if no valid variable name follows.
+** - SAVE_AFTER_EXPAND is the function for save in new_line the
+** 		expand line.
 */
 
 void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i)
@@ -89,14 +108,9 @@ void	expand_dollar(t_data *data, char **new_line, char *prompt, int *i)
 		return ;
 	else if ((ft_isalnum(prompt[*i]) || prompt[*i] == '_'))
 	{
-		var_name = get_expand_line(prompt, i);
+		var_name = get_expand_line(data, prompt, i);
 		after_expand = ft_getenv(data, var_name, NULL);
-		if (after_expand)
-		{
-			tmp = ft_strjoin(*new_line, after_expand);
-			free (*new_line);
-			*new_line = tmp;
-		}
+		save_after_expand(data, new_line, &after_expand, &tmp);
 		free(var_name);
 	}
 	else if (prompt[*i] != DOUBLE_QUOTES)
@@ -136,6 +150,8 @@ int	expand_till(t_data *data, char **new_line, char *line, int *i)
 		}
 		old_line = *new_line;
 		*new_line = ft_strjoin(old_line, home);
+		if (!(*new_line))
+			malloc_error(data);
 		free(old_line);
 	}
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/16 14:38:35 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:18:03 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ bool	last_heredoc(t_exec_redir *current)
 ** - Returns `true` if a signal or EOF is caught, otherwise returns `false`.
 */
 
-bool	catch_signal(t_data *data, char *line, char *delimiter, int fd)
+bool	catch_signal(t_data *data, char *line, char *delimiter)
 {
 	if (!line || g_signal == SIGINT)
 	{
-		if (fd != -1)
+		if (data->stdin_backup != -1)
 		{
-			dup2(fd, STDIN_FILENO);
-			close(fd);
+			if (dup2(data->stdin_backup, STDIN_FILENO))
+				error(data, "dup2");
 		}
 		if (!line && g_signal != SIGINT)
 		{

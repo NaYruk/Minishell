@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/17 15:38:22 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:15:42 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,7 @@ int	ft_exit(t_data *data, char **args_cmd)
 	else if (args_cmd[1] && args_cmd[2])
 	{
 		print_exit_error("too many arguments", 1);
-		status = 1;
-		return (status);
+		return (status = 1, status);
 	}
 	else if (args_cmd[1] && (ft_str_is_digit(args_cmd[1]) == 1
 			|| args_cmd[1][0] == '\0'))

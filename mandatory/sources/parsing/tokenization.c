@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/17 15:44:00 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:26:10 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void	cmd_or_arg(t_data *data)
 int	check_pipes_and_rafter(t_data *data)
 {
 	t_token	*current;
-	
+
 	current = data->lst_token;
 	while (current != NULL)
 	{

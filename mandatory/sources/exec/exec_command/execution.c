@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:49:08 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/16 14:35:16 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:12:15 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	handle_execution(t_data *data, t_token **current,
 			free_exec_struct(data);
 			return (-1);
 		}
+		if ((data->part_of_line - 1) > 0 && data->old_read_pipe != -1)
+			close(data->old_read_pipe);
 	}
 	else if (data->nbr_of_command > 0 && data->exec->arg_cmd)
 		exec_build_or_cmd(data, cmd_process, nbr_of_fork);
