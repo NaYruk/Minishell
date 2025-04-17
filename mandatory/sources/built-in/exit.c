@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/17 01:00:54 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/17 15:30:59 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int	exit_value(char *line, int *too_large)
 	{
 		print_exit_error(line, 2);
 		*too_large = 1;
-		return (-1);
+		return (2);
 	}
 	value = ft_atoll(line);
 	if (value >= 0 && value <= 255)
@@ -134,8 +134,8 @@ int	ft_exit(t_data *data, char **args_cmd)
 	else if (args_cmd[1])
 	{
 		status = exit_value(args_cmd[1], &too_large);
-		if (!too_large)
-			ft_putstr_fd("exit\n", 2);
+		// if (!too_large)
+		// 	ft_putstr_fd("exit\n", 2);
 	}
 	return (clean_and_exit(data, status), status);
 }
