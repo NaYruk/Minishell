@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/17 15:30:59 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:38:22 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,8 @@ int	ft_exit(t_data *data, char **args_cmd)
 	else if (args_cmd[1])
 	{
 		status = exit_value(args_cmd[1], &too_large);
-		// if (!too_large)
-		// 	ft_putstr_fd("exit\n", 2);
+		if (!too_large)
+			ft_putstr_fd("exit\n", 2);
 	}
 	return (clean_and_exit(data, status), status);
 }
