@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:39:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 12:39:13 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:41:24 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	ft_add_new_env(t_data *data, char *name, char *value)
+/* 
+	ft_add_new_env - Adds a new environment variable.
+
+	This functions creates a new environment variable by combining
+	the name and value, reallocates the array to include the new variable.
+*/
+
+void	ft_add_new_env(t_data *data, char *name, char *value)
 {
 	int		old_size;
 	int		len_total;
@@ -37,6 +44,10 @@ static void	ft_add_new_env(t_data *data, char *name, char *value)
 	data->env[old_size + 1] = NULL;
 }
 
+/* 
+	ft_handle_append - Handles appending a value to an existing env variable
+*/
+
 static void	ft_handle_append(t_data *data, t_env *env)
 {
 	if (env->existing_value)
@@ -48,6 +59,15 @@ static void	ft_handle_append(t_data *data, t_env *env)
 	ft_update_env(data, env->name, env->new_value);
 	free (env->new_value);
 }
+
+/*  
+	ft_add_env - Adds or updates an environment variable
+
+	This function extracts the name and value from the input string, verifies
+	the name, and either adds a new variable, appends to an existing or updates
+	its value.
+	If the name is invalid, it returns an error. 
+*/
 
 static int	ft_add_env(t_data *data, char *str)
 {
@@ -66,6 +86,14 @@ static int	ft_add_env(t_data *data, char *str)
 		ft_update_env(data, env.name, env.value);
 	return (free(env.name), free (env.value), 0);
 }
+
+/* 
+	ft_process_export - Processes the arguments of the 'export' command. 
+
+	This function iterates trhough the arguments of the 'export' command,
+	validates each variable name, and adds or updates the env variable.
+	If an invalid name is encountered, it sets the error flag. 
+*/
 
 static void	ft_process_export(t_data *data, int *error, char **args_cmd)
 {
@@ -91,6 +119,15 @@ static void	ft_process_export(t_data *data, int *error, char **args_cmd)
 	}
 	return ;
 }
+
+/* 
+	ft_export - Implements the 'export' command. 
+
+	This function handles the logic for the 'export':
+	- If no arguments, it displays the current env variables. 
+	- If arguments are provided,it processes each one to add or updates var. 
+	- If an invalid variable name is encoutered, it sets the exit status to 1. 
+*/
 
 int	ft_export(t_data *data, char **args_cmd)
 {

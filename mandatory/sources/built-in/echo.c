@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:23:30 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/09 22:19:03 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 00:41:32 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,10 @@ static int	check_option(char *str)
 }
 
 /* 
-	Function that prints all arguments of the echo command. 
-	If the line of argument = '\0', it is no printed. 
-	The variable first_arg is used to determine if a first argument
-	has been arleady printed, to avoid to put a 
-	" " (space) before the first argument
+	print_args - Prints the arguments of the 'echo' command. 
+
+	It prints each argument, separated by a space, unless the argument
+	is an empty line. 
 */
 
 static	void	print_args(char **cmd_args, int *index)
@@ -60,7 +59,11 @@ static	void	print_args(char **cmd_args, int *index)
 }
 
 /* 
-	Function that reproduces the behavior of the echo command in bash.
+	ft_echo - Implements the 'echo' command:
+	
+	- If no arguments, it prints a newline and exits successfully. 
+	- It checks for the '-n' option.
+	- Prints args, separated by spaces. 
 */
 
 int	ft_echo(t_data *data, char **args_cmd)

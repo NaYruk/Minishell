@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/10 11:20:55 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 00:36:39 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /* 
-	Function to display an error message when using cd.
+	cd_error - Displays an error message for the 'cd' command.
+	If 'many_args' is true, it print an error message for too many arguments. 
+	Otherwise, it prints an error message for the specified path. 
 */
 
 static int	cd_error(char *path, int many_args)
@@ -33,10 +35,12 @@ static int	cd_error(char *path, int many_args)
 }
 
 /* 
-	Function to obtain the path to use chdir. 
-	If no argument or cd ~, the path obtained is the home path. 
-	If cd -, the path obtained is the path to the previous directory. 
-	Otherwise, the path is the argument to the cd command. 
+	get_cd_path - Determines the path to use for the 'cd' command.
+	This function determunes the target path for the 'cd' command,
+	based on the arguments:
+	- If no arguments, it retrieves the 'HOME'.
+	- If the argument is "-", it retrieves the 'OLDPWD'. 
+	- Otherwise, it uses the provided argument as the path.
 */
 
 static char	*get_cd_path(t_data *data, char **args_cmd)
@@ -68,11 +72,24 @@ static char	*get_cd_path(t_data *data, char **args_cmd)
 	return (path);
 }
 
+/* 
+	ft_cd - Implements the 'cd' command. 
+
+	This functions handles the logic for changing 
+	the current working directory:
+	- If too many arguments, it displays an error. 
+	- Retrieves the current directory and determine 
+	  the target path with get_cd_path. 
+	- Change the directory using 'chdir'. 
+	- Updates the 'OLDPWD' et 'PWD'. 
+*/
+
 int	ft_cd(t_data *data, char **args_cmd)
 {
 	char	*current_dir;
 	char	*old_pwd;
 	char	*path;
+	int		available;
 
 	if (args_cmd[0] && args_cmd[1] && args_cmd[2])
 		return (data->exit_status = 1, cd_error(NULL, 1));
@@ -82,7 +99,11 @@ int	ft_cd(t_data *data, char **args_cmd)
 		return (free (old_pwd), data->exit_status = 1, EXIT_FAILURE);
 	if (chdir(path) == -1 && args_cmd[1][0] != '\0')
 		return (free(old_pwd), data->exit_status = 1, cd_error(path, 0));
-	ft_update_env(data, "OLDPWD", old_pwd);
+	ft_getenv(data, "OLDPWD", &available);
+	if (available == 0)
+		ft_add_new_env(data, "OLDPWD", old_pwd);
+	else
+		ft_update_env(data, "OLDPWD", old_pwd);
 	free (old_pwd);
 	current_dir = getcwd(NULL, 0);
 	ft_update_env(data, "PWD", current_dir);

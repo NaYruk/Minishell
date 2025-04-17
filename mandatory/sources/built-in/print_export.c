@@ -6,11 +6,15 @@
 /*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 20:51:52 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/05 03:07:35 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/17 01:43:19 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/* 
+	ft_duplicate_env - Duplicates the environment variables.
+*/
 
 char	**ft_duplicate_env(t_data *data)
 {
@@ -36,6 +40,10 @@ char	**ft_duplicate_env(t_data *data)
 	return (tmp);
 }
 
+/* 
+	ft_sort_env - Sorts the environment variables alphabetically. 
+*/
+
 static void	ft_sort_env(char **env)
 {
 	int		i;
@@ -59,6 +67,10 @@ static void	ft_sort_env(char **env)
 		i++;
 	}
 }
+
+/* 
+	ft_display_env - Displays the environment variables. 
+*/
 
 void	ft_display_env(char **tmp)
 {
