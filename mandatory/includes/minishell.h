@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/17 18:32:10 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:35:56 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # include "../../Libft/includes/libft.h"
 # include "./define.h"
 
-//extern int	g_signal;
+extern int	g_signal;
 
 typedef struct s_signal_flags
 {
