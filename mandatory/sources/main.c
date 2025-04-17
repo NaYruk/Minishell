@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:17:55 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/17 15:26:11 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:09:07 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ int	g_signal = 0;
 void	update_exit_status(t_data *data)
 {
 	if (g_signal)
+	{
 		data->exit_status = g_signal + 128;
-	g_signal = 0;
+		g_signal = 0;
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
