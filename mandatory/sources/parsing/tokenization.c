@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 18:08:52 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/17 18:26:10 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/19 00:22:54 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ int	tokenization(t_data *data)
 	if (check_quotes(data, data->prompt) == -1)
 		return (-1);
 	replace_dollars(data, &data->prompt);
+	if (check_quotes(data, data->prompt) == -1)
+		return (-1);
 	if (cut_the_line(data) == -1 || data->lst_token == NULL)
 		return (-1);
 	ft_gettype(data);

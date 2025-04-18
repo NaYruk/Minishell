@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 20:04:12 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/10 22:20:27 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/19 00:01:12 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ int	args_and_cmd(t_data *data, t_token **current)
 
 int	set_exec_struct(t_data *data, t_token **current)
 {
+	t_token	*cmd;
+	
+	cmd	= NULL;
 	data->error_built = -1;
 	if ((*current)->token == PIPE)
 		*current = (*current)->next;
@@ -77,8 +80,8 @@ int	set_exec_struct(t_data *data, t_token **current)
 	{
 		if ((*current)->token == PIPE)
 			break ;
-		if (args_and_cmd(data, current) == -1)
-			return (-1);
+		if ((*current)->token == CMD)
+			cmd = *current;
 		set_heredoc(data, *current);
 		if (set_append(data, *current) == -1)
 			return (-1);
@@ -88,5 +91,7 @@ int	set_exec_struct(t_data *data, t_token **current)
 			return (-1);
 		*current = (*current)->next;
 	}
+	if (cmd && args_and_cmd(data, &cmd) == -1)
+		return (-1);
 	return (0);
 }
