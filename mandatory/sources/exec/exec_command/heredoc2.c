@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:01:44 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/17 18:18:03 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:53:40 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ bool	catch_signal(t_data *data, char *line, char *delimiter)
 			ft_putstr_fd("Wanted: '", 2);
 			ft_putstr_fd(delimiter, 2);
 			ft_putstr_fd("'.\n", 2);
+			data->exit_status = 0;
 		}
 		if (g_signal == SIGINT)
 			update_exit_status(data);
