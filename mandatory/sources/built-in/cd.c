@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/17 00:36:39 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/18 20:58:47 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,32 @@
 	Otherwise, it prints an error message for the specified path. 
 */
 
-static int	cd_error(char *path, int many_args)
+static int	cd_error(t_data *data, char *path, int many_args)
 {
 	if (many_args)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
+		data->exit_status = 1;
+		return (EXIT_FAILURE);
 	}
-	else
+	else if (path[0] != '\0')
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": ", 2);
 		perror("");
 	}
-	return (EXIT_FAILURE);
+	if (path && path[0] != '\0')
+	{
+		data->exit_status = 1;
+		return (EXIT_FAILURE);
+	}
+	else
+	{
+		data->exit_status = 0;
+		return (0);
+	}
+
 }
 
 /* 
@@ -92,13 +104,13 @@ int	ft_cd(t_data *data, char **args_cmd)
 	int		available;
 
 	if (args_cmd[0] && args_cmd[1] && args_cmd[2])
-		return (data->exit_status = 1, cd_error(NULL, 1));
+		return (cd_error(data, NULL, 1));
 	old_pwd = getcwd(NULL, 0);
 	path = get_cd_path(data, args_cmd);
 	if (!path)
 		return (free (old_pwd), data->exit_status = 1, EXIT_FAILURE);
-	if (chdir(path) == -1 && args_cmd[1][0] != '\0')
-		return (free(old_pwd), data->exit_status = 1, cd_error(path, 0));
+	if (chdir(path) == -1)
+		return (free(old_pwd), cd_error(data, path, 0));
 	ft_getenv(data, "OLDPWD", &available);
 	if (available == 0)
 		ft_add_new_env(data, "OLDPWD", old_pwd);

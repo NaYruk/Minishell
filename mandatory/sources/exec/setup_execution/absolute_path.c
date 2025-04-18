@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:31:22 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/17 16:49:28 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/18 19:09:41 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,10 @@ int	check_permissions(t_data *data, t_token **current, char **test_cmd_path)
 
 int	check_existing(t_data *data, t_token **current, char **all_cmd_path)
 {
+	(void)all_cmd_path;
 	if (!data->exec->cmd_path && !exec_build((*current)->line)
 		&& ((ft_strncmp((*current)->line, "./", 2) == 0
-				|| ft_strncmp((*current)->line, "/", 1) == 0) || !all_cmd_path))
+				|| ft_strncmp((*current)->line, "/", 1) == 0)))
 	{
 		ft_putstr_fd((*current)->line, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
