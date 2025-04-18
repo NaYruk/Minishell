@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/15 16:35:42 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:16:13 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	redirect_infile_heredoc(t_data *data,
 		if (fd_file == -1)
 		{
 			perror(current->arg);
-			data->exit_status = 1;
-			return (-1);
+			return (data->exit_status = 1, -1);
 		}
-		dup2(fd_file, STDIN_FILENO);
+		if (dup2(fd_file, STDIN_FILENO) == -1)
+			error(data, "dup2");
 		close (fd_file);
 	}
 	if (current != NULL && current->type == HEREDOC)
@@ -73,7 +73,8 @@ int	redirect_outfile(t_data *data, t_exec_redir *current)
 			data->exit_status = 1;
 			return (-1);
 		}
-		dup2(fd_file, STDOUT_FILENO);
+		if (dup2(fd_file, STDOUT_FILENO) == -1)
+			error(data, "dup2");
 		close(fd_file);
 	}
 	return (0);

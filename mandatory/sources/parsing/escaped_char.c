@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 18:04:00 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 22:03:17 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:01:15 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static void	char_stock(int *start, char **escaped_line, int *index, char c)
 void	stock_escaped_char(char *line, int *start,
 			char **escaped_line, int *index)
 {
+	char	*old_line;
+
 	if (line[*start] == '\\' && line[*start + 1] == 'a')
 		char_stock(start, escaped_line, index, '\a');
 	else if (line[*start] == '\\' && line[*start + 1] == 'b')
@@ -56,7 +58,9 @@ void	stock_escaped_char(char *line, int *start,
 		char_stock(start, escaped_line, index, '\r');
 	else
 	{
-		stock_char(NULL, escaped_line, line[(*start)++]);
+		old_line = *escaped_line;
+		*escaped_line = ft_strjoin(*escaped_line, &line[(*start)++]);
+		free(old_line);
 		(*index)++;
 	}
 }
@@ -77,16 +81,15 @@ void	check_escaped_content(t_data *data, char **line,
 {
 	t_escaped_char	e_c;
 
+	ft_memset(&e_c, 0, sizeof(t_escaped_char));
 	e_c.start = *i + 2;
 	e_c.end = e_c.start;
-	e_c.index = 0;
-	e_c.old_line = NULL;
-	e_c.escaped_line = NULL;
 	while ((*line)[e_c.end] && (*line)[e_c.end] != SIMPLE_QUOTES)
 		(e_c.end)++;
-	e_c.escaped_line = calloc(sizeof(char) * (e_c.end - e_c.start + 3), 0);
+	e_c.escaped_line = malloc(sizeof(char) * (e_c.end - e_c.start) + 3);
 	if (!(e_c.escaped_line))
 		malloc_error(data);
+	ft_memset(e_c.escaped_line, 0, sizeof(char) * (e_c.end - e_c.start) + 3);
 	e_c.escaped_line[(e_c.index)++] = SIMPLE_QUOTES;
 	while ((*line)[e_c.start] && (*line)[e_c.start] != SIMPLE_QUOTES)
 		stock_escaped_char(*line, &(e_c.start),

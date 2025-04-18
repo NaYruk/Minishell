@@ -6,7 +6,7 @@
 /*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:31:22 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 16:30:44 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:49:28 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int	check_permissions(t_data *data, t_token **current, char **test_cmd_path)
 		else if (access((*current)->line, X_OK) == 0)
 		{
 			*test_cmd_path = ft_strdup((*current)->line);
+			if (!(*test_cmd_path))
+				malloc_error(data);
 			data->exec->cmd_path = *test_cmd_path;
 			return (-1);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/16 14:46:39 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:35:56 by mmilliot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ void	redirect_pipes(t_data *data, int cmd_process);
 void	close_heredoc_fd(t_data *data);
 void	malloc_heredoc_fd(t_data *data, int nbr);
 int		nbr_of_heredoc(t_data *data);
-bool	catch_signal(t_data *data, char *line, char *delimiter, int fd);
+bool	catch_signal(t_data *data, char *line, char *delimiter);
 bool	last_heredoc(t_exec_redir *current);
 
 #endif
