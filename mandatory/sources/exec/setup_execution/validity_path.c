@@ -80,6 +80,24 @@ int	check_permissions(t_data *data, t_token **current, char **test_cmd_path)
 	return (0);
 }
 
+/* Function for check if the PATH envionnement variable is unset or not */
+
+bool	path_unset(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	if (data->env)
+	{
+		while(data->env[++i] != NULL)
+		{
+			if (ft_strnstr(data->env[i], "PATH=", 5))
+				return (false);
+		}
+	}
+	return (true);
+}
+
 /*
 ** check_existing:
 ** - This function checks if the command exists and is valid for execution.
@@ -90,12 +108,11 @@ int	check_permissions(t_data *data, t_token **current, char **test_cmd_path)
 ** - Returns 0 if the command exists, or -2 if it does not exist or is invalid.
 */
 
-int	check_existing(t_data *data, t_token **current, char **all_cmd_path)
+int	check_existing(t_data *data, t_token **current)
 {
-	(void)all_cmd_path;
 	if (!data->exec->cmd_path && !exec_build((*current)->line)
 		&& ((ft_strncmp((*current)->line, "./", 2) == 0
-				|| ft_strncmp((*current)->line, "/", 1) == 0)))
+			|| ft_strncmp((*current)->line, "/", 1) == 0 || path_unset(data))))
 	{
 		ft_putstr_fd((*current)->line, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
@@ -123,7 +140,7 @@ int	check_existing(t_data *data, t_token **current, char **all_cmd_path)
 ** - Returns 0 on success, -1 for permission errors, or -2 for other errors.
 */
 
-int	check_absolute_cmd(t_data *data, t_token **current, char **all_cmd_path)
+int	check_validity_cmd(t_data *data, t_token **current)
 {
 	int		status;
 	char	*test_cmd_path;
@@ -133,7 +150,7 @@ int	check_absolute_cmd(t_data *data, t_token **current, char **all_cmd_path)
 	status = check_permissions(data, current, &test_cmd_path);
 	if (status != 0)
 		return (status);
-	status = check_existing(data, current, all_cmd_path);
+	status = check_existing(data, current);
 	if (status != 0)
 		return (status);
 	return (0);

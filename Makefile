@@ -45,7 +45,7 @@ SRC = $(SRC_PATH)main.c \
 	  $(SRC_PATH)exec/setup_execution/get_cmd_path.c \
 	  $(SRC_PATH)exec/setup_execution/get_args.c \
 	  $(SRC_PATH)exec/setup_execution/set_redirections.c \
-	  $(SRC_PATH)exec/setup_execution/absolute_path.c \
+	  $(SRC_PATH)exec/setup_execution/validity_path.c \
 	  $(SRC_PATH)exec/setup_execution/redir_chained_list.c \
 
 OBJ_DIR = ./tmp

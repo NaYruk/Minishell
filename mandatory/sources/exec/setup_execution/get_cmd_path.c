@@ -143,7 +143,7 @@ int	get_cmd_path(t_data *data, t_token **current)
 	all_cmd_paths = get_all_cmd_paths(data);
 	if (find_cmd_path(data, all_cmd_paths, current, &i) == 1)
 		all_cmd_paths = NULL;
-	if (check_absolute_cmd(data, current, all_cmd_paths) == -2)
+	if (check_validity_cmd(data, current) == -2)
 	{
 		if (all_cmd_paths != NULL)
 		{

@@ -134,8 +134,7 @@ int		ft_is_white_spaces(char c);
 int		cut_the_line(t_data *data);
 int		is_operator(t_data *data, int *i, char **line);
 bool	operator(char c);
-int		check_absolute_cmd(t_data *data, t_token **current,
-			char **all_cmd_path);
+int		check_validity_cmd(t_data *data, t_token **current);
 void	check_escaped_content(t_data *data, char **line,
 			int *i, char **new_line);
 void	stock_char(t_data *data, char **new_line, char c);

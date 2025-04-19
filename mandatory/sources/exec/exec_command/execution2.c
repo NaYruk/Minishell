@@ -50,6 +50,8 @@ void	handle_fork(t_data *data, int *cmd_process,
 	int	status;
 
 	data->pids[++(*nbr_of_fork)] = fork();
+	if (data->pids[*nbr_of_fork] == -1)
+		error(data, "Fork");
 	if (data->pids[*nbr_of_fork] == 0)
 	{
 		if (is_builtin == true)

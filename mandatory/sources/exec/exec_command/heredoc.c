@@ -45,6 +45,7 @@ void	read_heredoc_to_pipe(t_data *data, int write_pipe, t_token *current)
 			free(line);
 			return ;
 		}
+		replace_dollars(data, &line);
 		ft_putstr_fd(line, write_pipe);
 		ft_putstr_fd("\n", write_pipe);
 		free(line);
