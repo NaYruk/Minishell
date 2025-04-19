@@ -89,7 +89,7 @@ bool	path_unset(t_data *data)
 	i = -1;
 	if (data->env)
 	{
-		while(data->env[++i] != NULL)
+		while (data->env[++i] != NULL)
 		{
 			if (ft_strnstr(data->env[i], "PATH=", 5))
 				return (false);
@@ -112,7 +112,8 @@ int	check_existing(t_data *data, t_token **current)
 {
 	if (!data->exec->cmd_path && !exec_build((*current)->line)
 		&& ((ft_strncmp((*current)->line, "./", 2) == 0
-			|| ft_strncmp((*current)->line, "/", 1) == 0 || path_unset(data))))
+				|| ft_strncmp((*current)->line, "/", 1) == 0
+				|| path_unset(data))))
 	{
 		ft_putstr_fd((*current)->line, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);

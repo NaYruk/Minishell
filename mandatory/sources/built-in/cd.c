@@ -43,7 +43,6 @@ static int	cd_error(t_data *data, char *path, int many_args)
 		data->exit_status = 0;
 		return (0);
 	}
-
 }
 
 /* 

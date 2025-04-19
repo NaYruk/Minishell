@@ -92,8 +92,8 @@ static char	**get_all_cmd_paths(t_data *data)
 ** - Handles memory allocation errors by calling `malloc_error` if necessary.
 */
 
-int		find_cmd_path(t_data *data, char **all_cmd_paths,
-			t_token **current, int *i)
+int	find_cmd_path(t_data *data, char **all_cmd_paths,
+		t_token **current, int *i)
 {
 	char	*test_cmd_path;
 

@@ -71,8 +71,8 @@ int	args_and_cmd(t_data *data, t_token **current)
 int	set_exec_struct(t_data *data, t_token **current)
 {
 	t_token	*cmd;
-	
-	cmd	= NULL;
+
+	cmd = NULL;
 	data->error_built = -1;
 	if ((*current)->token == PIPE)
 		*current = (*current)->next;
