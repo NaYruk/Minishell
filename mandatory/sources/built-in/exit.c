@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/17 18:15:42 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/21 01:23:40 by melvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,25 +112,19 @@ static int	exit_value(char *line, int *too_large)
 
 int	ft_exit(t_data *data, char **args_cmd)
 {
-	int			status;
-	int			too_large;
+	int	status;
+	int	too_large;
 
 	status = 0;
 	too_large = 0;
 	if (!args_cmd[1])
 		status = data->exit_status;
-	else if (args_cmd[1] && args_cmd[2])
-	{
-		print_exit_error("too many arguments", 1);
-		return (status = 1, status);
-	}
-	else if (args_cmd[1] && (ft_str_is_digit(args_cmd[1]) == 1
-			|| args_cmd[1][0] == '\0'))
-	{
-		print_exit_error(args_cmd[1], 2);
-		status = 2;
-	}
-	else if (args_cmd[1])
+	else if (ft_str_is_digit(args_cmd[1]) != 0 || args_cmd[1][0] == '\0'
+				|| number_too_large(args_cmd[1]))
+		status = (print_exit_error(args_cmd[1], 2), 2);
+	else if (args_cmd[2])
+		return (print_exit_error("too many arguments", 1), 1);
+	else
 	{
 		status = exit_value(args_cmd[1], &too_large);
 		if (!too_large)
