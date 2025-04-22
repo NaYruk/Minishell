@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_redirections.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:23:42 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/09 17:10:28 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:26:48 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	set_outfile(t_data *data, t_token *current)
 		add_new_redir_node(data, &data->exec->t_exec_redir,
 			current->next->line, OUTFILE);
 		fd_file = open(current->next->line,
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd_file == -1)
 		{
 			perror(current->next->line);
