@@ -35,7 +35,15 @@ you can activate the valgrind.supp file with : `--suppressions=valgrind.supp --g
 > Precision : This is not the real bash comportement, this is a simple reproduction.
 
 ## Subject :
-Link to the Minishell Subject : ()
+
+Link to the Minishell Subject : (https://github.com/NaYruk/Minishell/blob/master/Minishell_Subject.pdf)
+
+## Debug :
+
+For debug we have mostly used two tester :
+MPANIC tester : (https://github.com/ChewyToast/mpanic)
+Minishell tester : (https://github.com/LucasKuhn/minishell_tester)
+
 ## Author
 
 👤 **NaYruk and Mcotonea Mulhouse 42 Students**
