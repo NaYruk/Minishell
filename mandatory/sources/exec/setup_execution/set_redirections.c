@@ -6,7 +6,7 @@
 /*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 23:23:42 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/22 23:26:48 by marcmilliot      ###   ########.fr       */
+/*   Updated: 2025/04/23 02:55:52 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int	set_heredoc(t_data *data, t_token *current)
 	{
 		add_new_redir_node(data, &data->exec->t_exec_redir,
 			current->next->line, HEREDOC);
+		data->heredoc_in_pipe = 1;
 	}
 	return (0);
 }

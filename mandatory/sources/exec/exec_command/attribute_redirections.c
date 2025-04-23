@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   attribute_redirections.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 21:27:10 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/17 18:16:13 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/23 02:54:52 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	redirect_infile_heredoc(t_data *data,
 		{
 			if (dup2(data->heredoc_fd[data->hd_index], STDIN_FILENO) == -1)
 				error(data, "dup2");
-			data->hd_index++;
 		}
 	}
 	return (0);

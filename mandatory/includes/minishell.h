@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:59:31 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/19 00:35:38 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/23 02:55:38 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdio.h>
 # include <stdbool.h>
 # include <signal.h>
 # include <sys/wait.h>
@@ -89,6 +89,7 @@ typedef struct s_data
 	int			*heredoc_fd;
 	int			nbr_heredoc;
 	int			hd_index;
+	int			heredoc_in_pipe;
 	int			old_read_pipe;
 	int			current_pipe[2];
 	int			error_built;

@@ -3,7 +3,7 @@ BROOM = \033[33m🧹\033[0m
 SUCCESS = \033[32m✔\033[0m
 
 CC = cc
-INCLUDES = -I./mandatory/includes
+INCLUDES = -I./mandatory/includes -I/opt/homebrew/opt/readline/include
 CFLAGS = -Wall -Wextra -Werror -g3 $(INCLUDES)
 
 SRC_PATH = ./mandatory/sources/
@@ -59,7 +59,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT_LIB)
 	@echo "\n$(PROGRESS) Compiled in progress $(PROGRESS)...\n"
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -lreadline -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -L/opt/homebrew/opt/readline/lib -lreadline -o $(NAME)
 	@echo "$(SUCCESS) Compiling is finished $(SUCCESS) !!!"
 
 $(LIBFT_LIB):

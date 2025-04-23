@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marcmilliot <marcmilliot@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 14:21:11 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/17 15:57:20 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/23 02:56:57 by marcmilliot      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,7 @@ void	exec_build_or_cmd(t_data *data, int *cmd_process, int *nbr_of_fork)
 	}
 	else
 		handle_fork(data, cmd_process, nbr_of_fork, false);
+	if (data->heredoc_in_pipe == 1)
+		data->hd_index++;
+	data->heredoc_in_pipe = 0;
 }
