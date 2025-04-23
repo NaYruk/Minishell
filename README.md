@@ -23,16 +23,19 @@ On MacOS :
 - Need to add the library in the Makefile :
 	For example :
 	- add : `-I/opt/homebrew/opt/readline/include`, in INCLUDE =
-	- add : `-L/opt/homebrew/opt/readline/lib -lreadline -o` in `@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) $(NAME)`
+	- add : `-L/opt/homebrew/opt/readline/lib -lreadline -o` 
+		in `@$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) $(NAME)`
 - Just do `make` and `./minishell`
 
 The valgrind.supp file is here for delete the readline valgrind error.
 The readline function have some leaks, this is not to manage in minishell.
 you can activate the valgrind.supp file with : `--suppressions=valgrind.supp --gen-suppressions=all`
 
-# A prompt will be appear, you can enjoy in this beautiful Shell !
+## 🎉 A prompt will be appear, you can enjoy in this beautiful Shell ! 🎉
 > Precision : This is not the real bash comportement, this is a simple reproduction.
 
+## Subject :
+Link to the Minishell Subject : ()
 ## Author
 
 👤 **NaYruk and Mcotonea Mulhouse 42 Students**
