@@ -6,7 +6,7 @@
 /*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:39:36 by mmilliot          #+#    #+#             */
-/*   Updated: 2025/04/11 00:44:21 by mcotonea         ###   ########.fr       */
+/*   Updated: 2025/04/23 07:28:34 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	update_shlvl(t_data *data)
 {
 	char	*shlvl_str;
 	int		shlvl;
+	int		available;
 
 	shlvl_str = ft_getenv(data, "SHLVL", NULL);
 	if (shlvl_str)
@@ -66,7 +67,11 @@ void	update_shlvl(t_data *data)
 	shlvl_str = ft_itoa(shlvl);
 	if (!shlvl_str)
 		malloc_error(data);
-	ft_update_env(data, "SHLVL", shlvl_str);
+	ft_getenv(data, "SHLVL", &available);
+	if (available == 0)
+		ft_add_new_env(data, "SHLVL", shlvl_str);
+	else
+		ft_update_env(data, "SHLVL", shlvl_str);
 	free (shlvl_str);
 }
 

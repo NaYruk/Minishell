@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:26:51 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/21 01:23:40 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/23 07:35:51 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,10 @@ int	ft_exit(t_data *data, char **args_cmd)
 	status = 0;
 	too_large = 0;
 	if (!args_cmd[1])
+	{
 		status = data->exit_status;
+		ft_putstr_fd("exit\n", 2);
+	}
 	else if (ft_str_is_digit(args_cmd[1]) != 0 || args_cmd[1][0] == '\0'
 				|| number_too_large(args_cmd[1]))
 		status = (print_exit_error(args_cmd[1], 2), 2);

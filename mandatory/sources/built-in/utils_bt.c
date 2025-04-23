@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bt.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melvin <melvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 13:12:19 by melvin            #+#    #+#             */
-/*   Updated: 2025/04/17 01:56:51 by melvin           ###   ########.fr       */
+/*   Updated: 2025/04/23 07:25:08 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,9 @@ void	ft_update_env(t_data *data, char *name, char *value)
 		return ;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0)
+		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0
+			&& (data->env[i][ft_strlen(name)] == '='
+			|| data->env[i][ft_strlen(name)] == '\0'))
 		{
 			if (value)
 			{
@@ -147,7 +149,9 @@ void	ft_delete_env(t_data *data, char *name)
 	i = 0;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0)
+		if (ft_strncmp(data->env[i], name, ft_strlen(name)) == 0
+			&& (data->env[i][ft_strlen(name)] == '='
+			|| data->env[i][ft_strlen(name)] == '\0'))
 		{
 			free (data->env[i]);
 			j = i;

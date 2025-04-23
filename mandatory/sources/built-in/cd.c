@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmilliot <mmilliot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcotonea <mcotonea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:48:21 by mcotonea          #+#    #+#             */
-/*   Updated: 2025/04/18 20:58:47 by mmilliot         ###   ########.fr       */
+/*   Updated: 2025/04/23 07:50:40 by mcotonea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	ft_cd(t_data *data, char **args_cmd)
 	old_pwd = getcwd(NULL, 0);
 	path = get_cd_path(data, args_cmd);
 	if (!path)
-		return (free (old_pwd), data->exit_status = 1, EXIT_FAILURE);
+		return (free (old_pwd), data->exit_status = 1, 1);
 	if (chdir(path) == -1)
 		return (free(old_pwd), cd_error(data, path, 0));
 	ft_getenv(data, "OLDPWD", &available);
@@ -115,9 +115,11 @@ int	ft_cd(t_data *data, char **args_cmd)
 		ft_add_new_env(data, "OLDPWD", old_pwd);
 	else
 		ft_update_env(data, "OLDPWD", old_pwd);
-	free (old_pwd);
 	current_dir = getcwd(NULL, 0);
-	ft_update_env(data, "PWD", current_dir);
-	free (current_dir);
-	return (data->exit_status = 0, EXIT_SUCCESS);
+	ft_getenv(data, "PWD", &available);
+	if (available == 0)
+		ft_add_new_env(data,"PWD", current_dir);
+	else
+		ft_update_env(data, "PWD", current_dir);
+	return (free (old_pwd), free(current_dir), data->exit_status = 0, 0);
 }
