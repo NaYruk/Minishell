@@ -29,20 +29,21 @@ On MacOS :
 
 The valgrind.supp file is here for delete the readline valgrind error.
 The readline function have some leaks, this is not to manage in minishell.
-you can activate the valgrind.supp file with : `--suppressions=valgrind.supp --gen-suppressions=all`
+you can activate the valgrind.supp file with : 
+- `--suppressions=valgrind.supp --gen-suppressions=all`
 
 ## 🎉 A prompt will be appear, you can enjoy in this beautiful Shell ! 🎉
 > Precision : This is not the real bash comportement, this is a simple reproduction.
 
 ## Subject :
 
-Link to the Minishell Subject : (https://github.com/NaYruk/Minishell/blob/master/Minishell_Subject.pdf)
+Link to the Minishell Subject : [Subject](https://github.com/NaYruk/Minishell/blob/master/Minishell_Subject.pdf)
 
 ## Debug :
 
 For debug we have mostly used two tester :
-MPANIC tester : (https://github.com/ChewyToast/mpanic)
-Minishell tester : (https://github.com/LucasKuhn/minishell_tester)
+- MPANIC tester : (https://github.com/ChewyToast/mpanic)
+- Minishell tester : (https://github.com/LucasKuhn/minishell_tester)
 
 ## Author
 
